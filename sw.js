@@ -1,4 +1,4 @@
-const CACHE_NAME = 'delcalc-v30';
+const CACHE_NAME = 'delcalc-v33';
 const ASSETS = [
   './',
   './index.html',
