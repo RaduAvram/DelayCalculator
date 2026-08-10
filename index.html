@@ -2413,7 +2413,7 @@ footer{
         <h1>Delay Calculator</h1>
       </div>
       <div class="quick-actions">
-        <button class="btn-action" id="btnLang" title="Comută Limba / Switch Language" aria-label="Switch Language">🌐 <span id="btnLangVal">RO</span></button>
+        <button class="btn-action" id="btnLang" title="Switch Language / Comută Limba" aria-label="Switch Language"><span id="btnLangVal">EN</span></button>
         <button class="btn-action" id="btnTextSize" title="Adjust Interface Text Size" aria-label="Text Size Settings" data-i18n-title="btn_text_size_title">🗚 Text: <span id="btnTextSizeVal">100%</span></button>
         <button class="btn-action" id="btnTheme" title="Toggle Light/Dark Theme" aria-label="Toggle theme" data-i18n-title="btn_theme_title">☀️ Light</button>
         <button class="btn-action" id="btnSyncSubs" title="Set Sub R distance to match Sub L" aria-label="Sync Sub R to Sub L" data-i18n-title="btn_sync_subs_title"><span data-i18n="btn_sync_subs">⚡ Sync L=R</span></button>
@@ -3201,7 +3201,7 @@ const state = {
 
 const i18n = {
   en: {
-    lang_btn: 'RO',
+    lang_btn: 'EN',
     lang_btn_title: 'Comută limba în Română',
     btn_text_size_title: 'Adjust Interface Text Size',
     btn_theme_title: 'Toggle Light/Dark Theme',
@@ -3320,7 +3320,7 @@ const i18n = {
     rec_short_warn: 'Move Cabinets',
   },
   ro: {
-    lang_btn: 'EN',
+    lang_btn: 'RO',
     lang_btn_title: 'Switch language to English',
     btn_text_size_title: 'Ajustează dimensiunea textului',
     btn_theme_title: 'Comută tema luminoasă/întunecată',
@@ -3455,7 +3455,7 @@ function applyLanguage(lang) {
   document.documentElement.lang = lang;
 
   const btnLangVal = document.getElementById('btnLangVal');
-  if (btnLangVal) btnLangVal.textContent = lang === 'en' ? 'RO' : 'EN';
+  if (btnLangVal) btnLangVal.textContent = lang === 'ro' ? 'RO' : 'EN';
   const btnLang = document.getElementById('btnLang');
   if (btnLang) {
     btnLang.title = t('lang_btn_title');
