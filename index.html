@@ -1883,13 +1883,200 @@ h1{
   .sticky-summary{ display:none; }
 }
 
-footer{
-  margin-top:28px;
-  font-family:var(--sans);
-  font-size:12px;
-  color:var(--dim2);
-  text-align:center;
-  line-height:1.5;
+/* ═══════════════════════════════════════════════════════════════
+   18. MOBILE & NARROW SCREEN OPTIMIZATIONS (< 472px, e.g. Pixel 10 at 412x924)
+   ═══════════════════════════════════════════════════════════════ */
+@media(max-width: 472px){
+  body{
+    padding:14px 10px 88px;
+  }
+
+  .layout-grid{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .inputs-col,
+  .results-col{
+    display:contents;
+  }
+
+  /* Specific Mobile Card Ordering:
+     1. HPF
+     2. Xover
+     3. Geometry inputs
+     4. Direct field values
+     5. Polarity inversion
+     6. Signal flow
+     7. Sub-Sub sync (Step 1)
+     8. Top-Sub sync (Step 2)
+     9. Field Quick Reference
+  */
+  #cardHpf{ order:1; }
+  #cardXo{ order:2; }
+  #cardGeom{ order:3; }
+  #cardDirect{ order:4; }
+  #phaseCard{ order:5; }
+  #flowPanel{ order:6; }
+  #cardStep1{ order:7; }
+  #cardStep2{ order:8; }
+  #cardQuickRef{ order:9; }
+
+  /* Reset outer card margins for uniform flex gap */
+  .panel,
+  .quickref,
+  #flowPanel,
+  #cardDirect,
+  #cardQuickRef{
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+  }
+
+  .panel{
+    padding:16px 14px;
+    border-radius:8px !important;
+  }
+
+  /* Centered and scaled rotary dial controls */
+  .filter-controls{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:184px;
+    margin-bottom:12px;
+    padding:4px 0;
+  }
+
+  .filter-controls .vintage-switch{
+    position:absolute;
+    left:4px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:5;
+  }
+
+  .filter-controls .rotary-wrap{
+    flex:0 0 auto;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+
+  .filter-controls .rotary-container{
+    transform:scale(0.96);
+    transform-origin:center center;
+  }
+
+  /* Stepper button touch ergonomics on mobile */
+  .stepper-control{
+    height:52px;
+  }
+
+  .step-btn{
+    width:44px;
+    min-width:44px;
+    font-size:16px;
+  }
+
+  .stepper-input{
+    font-size:17px;
+  }
+
+  /* Nixie / LCD Display Unit Scaling for mobile */
+  .nixie-housing{
+    padding:8px 6px;
+    min-height:62px;
+    justify-content:center;
+  }
+
+  .nixie-tube,
+  .lcd-cell{
+    width:27px;
+    height:42px;
+  }
+
+  .nixie-view .lcd-char-svg,
+  .lcd-view .lcd-char-svg{
+    width:23px;
+    height:38px;
+  }
+
+  .nixie-dot-tube,
+  .lcd-dot-wrap{
+    width:9px;
+    height:42px;
+  }
+
+  .nixie-unit-tube,
+  .lcd-unit-cell{
+    width:17px;
+    height:30px;
+  }
+
+  .nixie-status-tube,
+  .lcd-status-cell{
+    width:27px;
+    height:42px;
+  }
+
+  /* Direct Values Card */
+  .direct-body{
+    gap:8px;
+  }
+
+  .direct-switch-col{
+    padding:4px 6px;
+  }
+
+  .direct-grid{
+    gap:6px;
+  }
+
+  .direct-ch-card{
+    padding:6px 8px;
+  }
+
+  .direct-ch-title{
+    font-size:10px;
+  }
+
+  .direct-ch-val{
+    font-size:15px;
+  }
+
+  .direct-ch-dist{
+    font-size:10.5px;
+  }
+
+  /* Phase Grid */
+  .phase-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .phase-option-box{
+    padding:10px 12px;
+  }
+
+  .phase-opt-val{
+    font-size:20px;
+  }
+
+  /* Header Quick Actions */
+  .quick-actions{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .btn-action{
+    height:38px;
+    padding:0 12px;
+    font-size:12px;
+  }
 }
 </style>
 </head>
@@ -1940,7 +2127,7 @@ footer{
     <div class="inputs-col">
 
       <!-- PANEL 1: SUB HIGH-PASS FILTER (HPF) -->
-      <div class="panel">
+      <div class="panel" id="cardHpf">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2010,7 +2197,7 @@ footer{
       </div>
 
       <!-- PANEL 2: SUB → TOP CROSSOVER (XO) -->
-      <div class="panel">
+      <div class="panel" id="cardXo">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2076,7 +2263,7 @@ footer{
       </div>
 
       <!-- PANEL 2: GEOMETRY & ENVIRONMENT (Brushed Metal) -->
-      <div class="panel">
+      <div class="panel" id="cardGeom">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2166,7 +2353,7 @@ footer{
       </div>
 
       <!-- QUICK REFERENCE -->
-      <div class="quickref">
+      <div class="quickref" id="cardQuickRef">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2181,7 +2368,7 @@ footer{
       </div>
 
       <!-- FIELD QUICK DIRECT VALUES -->
-      <div class="quickref direct-values-card" style="margin-top:16px;">
+      <div class="quickref direct-values-card" id="cardDirect">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2239,7 +2426,7 @@ footer{
     <div class="results-col">
 
       <!-- STEP 1 RESULT CARD (Nixie Tube) -->
-      <div class="panel">
+      <div class="panel" id="cardStep1">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2256,7 +2443,7 @@ footer{
       </div>
 
       <!-- STEP 2 RESULT CARD (Nixie Tube) -->
-      <div class="panel">
+      <div class="panel" id="cardStep2">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -2323,7 +2510,7 @@ footer{
       </div>
 
       <!-- SIGNAL FLOW DIAGRAM (with Fullscreen Mode & Scaled Up High-Contrast SVG) -->
-      <div class="panel flow-panel" id="flowPanel" style="margin-top:16px;">
+      <div class="panel flow-panel" id="flowPanel">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
