@@ -195,7 +195,7 @@ h1{
 }
 .inputs-col{ order:1; display:flex; flex-direction:column; gap:16px; }
 .results-col{ order:2; display:flex; flex-direction:column; gap:16px; }
-@media(min-width:900px){
+@media(min-width:900px), (min-width:700px) and (orientation:landscape){
   body{ padding:20px 24px 60px; }
   h1{ font-size:24px; font-weight:800; letter-spacing:-0.02em; }
   .layout-grid{
@@ -1877,14 +1877,12 @@ h1{
   font-family:var(--mono);
   font-size:16px;
   font-weight:700;
-  color:var(--accent);
-}
-@media(min-width:900px){
+@media(min-width:900px), (min-width:700px) and (orientation:landscape){
   .sticky-summary{ display:none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   18. MOBILE & NARROW SCREEN OPTIMIZATIONS (< 472px, e.g. Pixel 10 at 412x924)
+   18. MOBILE PORTRAIT CANVAS (< 472px, e.g. Pixel 10 at 412x924)
    ═══════════════════════════════════════════════════════════════ */
 @media(max-width: 472px){
   body{
@@ -2076,6 +2074,421 @@ h1{
     height:38px;
     padding:0 12px;
     font-size:12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   19. LANDSCAPE & COMPACT DESKTOP (e.g. Pixel 10 at 924x412, Tablets)
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 700px) and (orientation: landscape), (min-width: 900px) and (max-width: 1060px), (max-height: 560px) and (min-width: 700px) {
+  body{
+    padding:10px 14px 36px;
+  }
+  .wrap{
+    max-width:100%;
+  }
+  header{
+    margin-bottom:10px;
+    padding-bottom:8px;
+  }
+  .title-row{
+    gap:8px;
+  }
+  h1{
+    font-size:18px;
+    margin:0 0 2px;
+  }
+  .sub{
+    font-size:11.5px;
+  }
+  .btn-action{
+    height:32px;
+    padding:0 10px;
+    font-size:11.5px;
+  }
+  .layout-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:stretch;
+    gap:12px;
+  }
+  .results-col{
+    order:1;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    height:100%;
+  }
+  .inputs-col{
+    order:2;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    height:100%;
+  }
+  .sticky-summary{
+    display:none;
+  }
+
+  /* Scaled-down cards */
+  .panel{
+    padding:12px 14px;
+    margin-bottom:10px;
+    border-radius:8px !important;
+  }
+  .panel h2{
+    font-size:11.5px;
+    margin:0 0 8px;
+    gap:6px;
+  }
+  .panel h2 .stagenum{
+    width:20px;
+    height:20px;
+    font-size:11px;
+  }
+
+  /* Filter Cards & Dial scaling */
+  .filter-card-header{
+    margin-bottom:6px;
+  }
+  .filter-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:8px;
+    min-height:auto;
+    position:static;
+  }
+  .filter-controls .vintage-switch{
+    position:static;
+    transform:none;
+    --switch-w:40px;
+    --switch-h:70px;
+    --switch-thumb-size:32px;
+    gap:4px;
+  }
+  .vs-track[data-pos="bottom"] .vs-thumb{
+    top:calc(70px - 32px - 5px);
+  }
+  .vs-label{
+    font-size:10.5px;
+  }
+  .rotary-wrap{
+    flex:0 0 auto;
+    gap:4px;
+    margin:0;
+  }
+  .rotary-container{
+    transform:scale(0.88);
+    transform-origin:center center;
+    margin:-4px 0;
+  }
+  .rotary-value{
+    font-size:11.5px;
+    padding:3px 10px;
+  }
+  .rotary-value .rv-sub{
+    font-size:10px;
+  }
+
+  /* Steppers */
+  .field{
+    margin-bottom:8px;
+  }
+  .field-label-row{
+    margin-bottom:4px;
+  }
+  .field label{
+    font-size:11.5px;
+  }
+  .field-hint{
+    font-size:10px;
+    padding:1px 6px;
+  }
+  .stepper-control{
+    height:44px;
+    border-radius:6px !important;
+  }
+  .step-btn{
+    width:38px;
+    min-width:38px;
+    font-size:14px;
+  }
+  .stepper-input{
+    font-size:15px;
+  }
+  .unit-tag{
+    font-size:11px;
+    right:8px;
+  }
+
+  /* Geometry 2-column grid and compact buttons */
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .grid2 .field{
+    margin-bottom:6px;
+  }
+  .grid2 .field label{
+    font-size:10.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .grid2 .stepper-control{
+    height:40px;
+  }
+  .grid2 .step-btn{
+    width:32px;
+    min-width:32px;
+    font-size:11.5px;
+    font-weight:700;
+  }
+  .grid2 .stepper-input{
+    font-size:13.5px;
+  }
+  .grid2 .stepper-input-wrap{
+    padding:0 4px;
+  }
+  .grid2 .unit-tag{
+    font-size:10px;
+    right:4px;
+  }
+  .note{
+    font-size:11px;
+    padding:6px 10px;
+    margin-top:8px;
+  }
+
+  /* Results / Nixie Tube Display Module */
+  .readout{
+    padding:10px 12px;
+    margin-top:6px;
+  }
+  .readout .desc{
+    font-size:11.5px;
+    margin-top:6px;
+  }
+  .nixie-housing{
+    padding:6px 6px;
+    min-height:52px;
+    border-radius:6px !important;
+  }
+  .nixie-tube,
+  .lcd-cell{
+    width:24px;
+    height:38px;
+    border-radius:4px !important;
+  }
+  .nixie-view .lcd-char-svg,
+  .lcd-view .lcd-char-svg{
+    width:20px;
+    height:34px;
+  }
+  .nixie-dot-tube,
+  .lcd-dot-wrap{
+    width:7px;
+    height:38px;
+  }
+  .nixie-view .lcd-dot-svg,
+  .lcd-view .lcd-dot-svg{
+    width:7px;
+    height:34px;
+  }
+  .nixie-unit-tube,
+  .lcd-unit-cell{
+    width:15px;
+    height:28px;
+  }
+  .nixie-unit-tube .lcd-char-svg,
+  .lcd-unit-cell .lcd-char-svg{
+    width:13px;
+    height:24px;
+  }
+  .nixie-status-tube,
+  .lcd-status-cell{
+    width:24px;
+    height:38px;
+  }
+  .nixie-sep,
+  .lcd-sep{
+    height:28px;
+    margin:0 3px;
+  }
+  .nixie-plate{
+    font-size:9px;
+    margin-top:5px;
+  }
+  .breakdown{
+    font-size:11px;
+    margin-top:8px;
+    padding-top:6px;
+  }
+  .breakdown div{
+    padding:2px 0;
+  }
+
+  /* Phase / Polarity Inversion Card */
+  .phase-header-row{
+    margin-bottom:8px;
+    gap:6px;
+  }
+  .phase-badge{
+    font-size:9.5px;
+    padding:3px 8px;
+  }
+  .phase-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-bottom:8px;
+  }
+  .phase-option-box{
+    padding:8px 10px;
+  }
+  .phase-opt-tag{
+    font-size:9.5px;
+    margin-bottom:3px;
+  }
+  .phase-opt-val{
+    font-size:18px;
+    margin-bottom:2px;
+  }
+  .phase-opt-val .unit{
+    font-size:11.5px;
+  }
+  .phase-opt-target{
+    font-size:10px;
+  }
+  .phase-status-pill{
+    font-size:9.5px;
+    margin-top:4px;
+    padding:2px 6px;
+  }
+  .phase-action-box{
+    padding:8px 10px;
+    margin-bottom:8px;
+  }
+  .phase-action-title{
+    font-size:10px;
+    margin-bottom:4px;
+  }
+  .phase-action-steps{
+    font-size:11px;
+    line-height:1.4;
+  }
+  .phase-action-steps ol{
+    margin-left:14px;
+  }
+  .phase-action-steps li{
+    margin-bottom:3px;
+  }
+
+  /* Signal Flow in Landscape Mode */
+  .flow-panel{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:10px 12px 14px;
+    margin-top:0 !important;
+  }
+  .flow-header-row{
+    margin-bottom:6px;
+  }
+  .flow-fullscreen-btn{
+    padding:3px 8px;
+    font-size:10.5px;
+  }
+  .flow-landscape-svg{
+    display:block;
+    flex:1;
+    width:100%;
+    height:auto;
+    min-height:120px;
+    max-height:180px;
+    margin:0 auto;
+  }
+  .flow-mobile-svg{
+    display:none;
+  }
+
+  /* Direct Values & Quick Reference */
+  .direct-values-card{
+    margin-top:10px !important;
+    padding:10px 12px;
+  }
+  .direct-header-row{
+    margin-bottom:6px;
+  }
+  .direct-badge{
+    font-size:9px;
+    padding:2px 6px;
+  }
+  .direct-body{
+    gap:8px;
+  }
+  .direct-switch-col{
+    padding:4px 6px;
+  }
+  .direct-switch-col .vintage-switch{
+    --switch-w:36px;
+    --switch-h:62px;
+    --switch-thumb-size:28px;
+    gap:3px;
+  }
+  .direct-switch-col .vs-track[data-pos="bottom"] .vs-thumb{
+    top:calc(62px - 28px - 4px);
+  }
+  .direct-switch-title{
+    font-size:8.5px;
+  }
+  .direct-switch-hint{
+    font-size:7.5px;
+  }
+  .direct-grid{
+    gap:6px;
+  }
+  .direct-ch-card{
+    padding:5px 8px;
+  }
+  .direct-ch-title{
+    font-size:9.5px;
+    margin-bottom:2px;
+  }
+  .direct-ch-val{
+    font-size:14px;
+  }
+  .direct-ch-dist{
+    font-size:10px;
+    margin-top:1px;
+  }
+  .direct-note{
+    font-size:10px;
+    margin-top:6px;
+    padding-top:4px;
+  }
+
+  .quickref{
+    padding:10px 12px;
+    margin-top:10px !important;
+    font-size:11.5px;
+  }
+  .quickref .qtitle{
+    font-size:10px;
+    margin-bottom:6px;
+  }
+  .qline{
+    padding:4px 2px;
+  }
+  .qline .k{
+    font-size:11.5px;
+  }
+  .qline .v{
+    font-size:11.5px;
   }
 }
 </style>
