@@ -1,0 +1,19 @@
+{
+  "name": "Delay Calculator",
+  "short_name": "DelCalc",
+  "description": "Professional sub/top delay alignment calculator for live sound — OP-1 inspired skeuomorphic interface",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e0e10",
+  "theme_color": "#ff9d00",
+  "icons": [
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity"]
+}
