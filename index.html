@@ -33,7 +33,9 @@
    1. DESIGN TOKENS & THEMES
    ═══════════════════════════════════════════════════════════════ */
 :root{
+  --base-text-scale:1.15;
   --text-scale:1;
+  --font-scale:calc(var(--base-text-scale, 1.15) * var(--text-scale, 1));
   --bg:#0a0a0c;
   --panel:#151518;
   --panel2:#1a1921;
@@ -69,6 +71,13 @@
   --switch-h:84px;
   --switch-thumb-size:38px;
   --metal-grain:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.30 0.35 0.35 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* Responsive Mobile & Tablet Base Text Scale (Default: 135% Baseline) */
+@media(max-width:1024px){
+  :root{
+    --base-text-scale:1.35;
+  }
 }
 
 [data-theme="light"]{
@@ -162,14 +171,14 @@ header{
   flex-wrap:wrap;
 }
 h1{
-  font-size:calc(clamp(18px, 2.2vw, 24px) * var(--text-scale, 1));
+  font-size:calc(clamp(18px, 2.2vw, 24px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:-.02em;
   margin:0 0 2px;
 }
 .sub{
   color:var(--dim);
-  font-size:calc(clamp(11.5px, 1.2vw, 13.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(11.5px, 1.2vw, 13.5px) * var(--font-scale, 1));
   max-width:75ch;
 }
 
@@ -179,7 +188,7 @@ h1{
   border-radius:6px !important;
   color:var(--text);
   font-family:var(--sans);
-  font-size:calc(clamp(11px, 1.2vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.2vw, 13px) * var(--font-scale, 1));
   font-weight:600;
   letter-spacing:0.01em;
   height:clamp(32px, 4vw, 42px);
@@ -316,6 +325,21 @@ h1{
     transform:scale(clamp(0.84, 22vw, 0.96));
     margin:calc((clamp(0.84, 22vw, 0.96) - 1) * 80px) 0;
   }
+
+  /* 50% Bigger Stepper Buttons & Controls on Mobile */
+  .stepper-control{
+    height:clamp(52px, 7vw, 66px);
+  }
+  .step-btn{
+    flex:0 0 clamp(42px, 8.5vw, 70px);
+    min-width:38px;
+    font-size:calc(clamp(17px, 2.4vw, 24px) * var(--font-scale, 1));
+  }
+  .grid2 .step-btn{
+    flex:0 0 clamp(38px, 7.5vw, 60px);
+    min-width:34px;
+    font-size:calc(clamp(15px, 2.0vw, 20px) * var(--font-scale, 1));
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -387,7 +411,7 @@ h1{
 
 .panel h2{
   font-family:var(--sans);
-  font-size:calc(clamp(11.5px, 1.3vw, 12.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(11.5px, 1.3vw, 12.5px) * var(--font-scale, 1));
   text-transform:uppercase;
   letter-spacing:.08em;
   color:#d4d0ca;
@@ -414,7 +438,7 @@ h1{
   align-items:center;
   justify-content:center;
   font-family:var(--mono);
-  font-size:calc(clamp(11px, 1.2vw, 12px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.2vw, 12px) * var(--font-scale, 1));
   color:var(--accent);
   font-weight:700;
   box-shadow:inset 0 1px 0.5px rgba(255,255,255,0.35), 0 1px 3px rgba(0,0,0,0.6);
@@ -445,7 +469,7 @@ h1{
   gap:4px;
 }
 .field label{
-  font-size:calc(clamp(11px, 1.3vw, 12.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.3vw, 12.5px) * var(--font-scale, 1));
   color:#c0baa0;
   font-family:var(--sans);
   font-weight:600;
@@ -457,7 +481,7 @@ h1{
   text-shadow:0 1px 0 rgba(255,255,255,0.9);
 }
 .field-hint{
-  font-size:calc(clamp(9.5px, 1.1vw, 11.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11.5px) * var(--font-scale, 1));
   color:#a6a094;
   font-family:var(--sans);
   font-weight:600;
@@ -494,8 +518,8 @@ h1{
   min-width:0;
   background:linear-gradient(180deg, #111016 0%, #15141c 50%, #0e0d13 100%);
   border:1px solid #302d3c;
-  border-radius:clamp(5px, 0.8vw, 8px) !important;
-  height:clamp(40px, 4.6vw, 54px);
+  border-radius:clamp(6px, 1vw, 10px) !important;
+  height:clamp(48px, 5.5vw, 64px);
   overflow:hidden;
   box-shadow:
     inset 0 2.5px 6px rgba(0,0,0,0.85),
@@ -518,11 +542,11 @@ h1{
     0 1px 0 rgba(255,255,255,0.95);
 }
 
-/* Machined Brushed Aluminum Push Buttons - Fully Fluid Sizing */
+/* Machined Brushed Aluminum Push Buttons - Fully Fluid Sizing (25% Bigger on Desktop) */
 .step-btn{
-  flex:0 0 clamp(26px, 3.8vw, 52px);
+  flex:0 0 clamp(34px, 4.8vw, 65px);
   width:auto;
-  min-width:22px;
+  min-width:28px;
   background:
     linear-gradient(180deg,
       rgba(255,255,255,0.28) 0%,
@@ -541,7 +565,7 @@ h1{
     inset -1px 0 0.5px rgba(0,0,0,0.4);
   color:#ede9e3;
   font-family:var(--mono);
-  font-size:calc(clamp(11px, 1.3vw, 17px) * var(--text-scale, 1));
+  font-size:calc(clamp(14px, 1.6vw, 21px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:-0.02em;
   text-shadow:0 -1px 0 rgba(0,0,0,0.95), 0 1px 0.5px rgba(255,255,255,0.18);
@@ -556,8 +580,8 @@ h1{
   transition:all 0.12s cubic-bezier(0.2, 0.8, 0.4, 1);
 }
 .grid2 .step-btn{
-  flex:0 0 clamp(24px, 3.2vw, 42px);
-  font-size:calc(clamp(10.5px, 1.15vw, 14px) * var(--text-scale, 1));
+  flex:0 0 clamp(30px, 4.0vw, 52px);
+  font-size:calc(clamp(13px, 1.4vw, 18px) * var(--font-scale, 1));
 }
 .step-btn.plus{
   border-right:none;
@@ -671,7 +695,7 @@ h1{
   border:none;
   color:#fffaea;
   font-family:var(--mono);
-  font-size:calc(clamp(13px, 1.8vw, 18px) * var(--text-scale, 1));
+  font-size:calc(clamp(13px, 1.8vw, 18px) * var(--font-scale, 1));
   font-weight:700;
   text-align:center;
   padding:0;
@@ -686,7 +710,7 @@ h1{
   position:absolute;
   right:clamp(4px, 0.8vw, 10px);
   font-family:var(--mono);
-  font-size:calc(clamp(9.5px, 1.1vw, 12px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 12px) * var(--font-scale, 1));
   color:#8e887e;
   font-weight:700;
   pointer-events:none;
@@ -723,7 +747,7 @@ h1{
 }
 .vs-label{
   font-family:var(--sans);
-  font-size:calc(clamp(10px, 1.2vw, 12px) * var(--text-scale, 1));
+  font-size:calc(clamp(10px, 1.2vw, 12px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:0.06em;
   color:var(--dim);
@@ -964,7 +988,7 @@ h1{
 /* Current Value Display Below Knob */
 .rotary-value{
   font-family:var(--mono);
-  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--font-scale, 1));
   font-weight:700;
   color:var(--text);
   text-align:center;
@@ -978,7 +1002,7 @@ h1{
 }
 .rotary-value .rv-sub{
   font-family:var(--sans);
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   color:var(--accent);
   font-weight:700;
   margin-left:4px;
@@ -1278,7 +1302,7 @@ h1{
 
 .nixie-plate{
   font-family:var(--sans);
-  font-size:calc(clamp(8.5px, 1.1vw, 10.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(8.5px, 1.1vw, 10.5px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:0.10em;
   text-transform:uppercase;
@@ -1352,7 +1376,7 @@ h1{
 }
 .readout .desc{
   font-family:var(--sans);
-  font-size:calc(clamp(11.5px, 1.2vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11.5px, 1.2vw, 13px) * var(--font-scale, 1));
   color:var(--dim);
   margin-top:8px;
   line-height:1.45;
@@ -1369,7 +1393,7 @@ h1{
 }
 
 .breakdown{
-  font-size:calc(clamp(11px, 1.2vw, 12.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.2vw, 12.5px) * var(--font-scale, 1));
   color:var(--dim);
   margin-top:10px;
   border-top:1px dashed #363342;
@@ -1393,7 +1417,7 @@ h1{
 
 .note{
   font-family:var(--sans);
-  font-size:calc(clamp(11px, 1.2vw, 12.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.2vw, 12.5px) * var(--font-scale, 1));
   color:#a29c90;
   background:linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 100%);
   border:1px solid #34323e;
@@ -1431,7 +1455,7 @@ h1{
 }
 .phase-badge{
   font-family:var(--sans);
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:0.04em;
   padding:4px clamp(6px, 1vw, 12px);
@@ -1511,7 +1535,7 @@ h1{
 
 .phase-opt-tag{
   font-family:var(--sans);
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.05em;
@@ -1523,18 +1547,18 @@ h1{
 }
 .phase-opt-val{
   font-family:var(--mono);
-  font-size:calc(clamp(16px, 2.4vw, 24px) * var(--text-scale, 1));
+  font-size:calc(clamp(16px, 2.4vw, 24px) * var(--font-scale, 1));
   font-weight:700;
   color:var(--text);
   margin-bottom:3px;
 }
 .phase-opt-val .unit{
-  font-size:calc(clamp(11px, 1.4vw, 14px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.4vw, 14px) * var(--font-scale, 1));
   color:var(--dim);
   font-weight:500;
 }
 .phase-opt-target{
-  font-size:calc(clamp(10px, 1.2vw, 12px) * var(--text-scale, 1));
+  font-size:calc(clamp(10px, 1.2vw, 12px) * var(--font-scale, 1));
   color:var(--dim);
   font-family:var(--sans);
   font-weight:500;
@@ -1544,7 +1568,7 @@ h1{
   align-items:center;
   gap:4px;
   font-family:var(--sans);
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   font-weight:700;
   margin-top:6px;
   padding:2px 6px;
@@ -1577,7 +1601,7 @@ h1{
 }
 .phase-action-title{
   font-family:var(--sans);
-  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--font-scale, 1));
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:0.06em;
@@ -1589,7 +1613,7 @@ h1{
 }
 .phase-action-steps{
   font-family:var(--sans);
-  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--font-scale, 1));
   color:var(--text);
   line-height:1.45;
 }
@@ -1623,7 +1647,7 @@ h1{
   border-radius:8px !important;
   color:var(--red);
   font-family:var(--sans);
-  font-size:calc(clamp(11.5px, 1.3vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11.5px, 1.3vw, 13px) * var(--font-scale, 1));
   margin-bottom:14px;
   line-height:1.4;
   width:100%;
@@ -1642,7 +1666,7 @@ h1{
   border:1px solid #383544;
   border-radius:clamp(6px, 1vw, 10px) !important;
   padding:clamp(20px, 2.6vw, 26px) clamp(18px, 2.4vw, 24px) clamp(20px, 2.6vw, 26px);
-  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--text-scale, 1));
+  font-size:calc(clamp(11px, 1.3vw, 13px) * var(--font-scale, 1));
   margin-top:clamp(8px, 1.4vw, 14px);
   box-shadow:
     0 4px 20px rgba(0,0,0,0.5),
@@ -1670,7 +1694,7 @@ h1{
 .quickref .qtitle{
   font-family:var(--sans);
   color:#d4d0ca;
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   text-transform:uppercase;
   letter-spacing:.08em;
   margin-bottom:8px;
@@ -1693,8 +1717,8 @@ h1{
   border-bottom-color:#bcb6ad;
 }
 .qline:last-child{ border-bottom:none; }
-.qline .k{ color:var(--dim); font-size:calc(clamp(11px, 1.3vw, 13px) * var(--text-scale, 1)); font-weight:500; }
-.qline .v{ color:var(--accent); font-family:var(--mono); font-weight:700; font-size:calc(clamp(11px, 1.3vw, 13px) * var(--text-scale, 1)); }
+.qline .k{ color:var(--dim); font-size:calc(clamp(11px, 1.3vw, 13px) * var(--font-scale, 1)); font-weight:500; }
+.qline .v{ color:var(--accent); font-family:var(--mono); font-weight:700; font-size:calc(clamp(11px, 1.3vw, 13px) * var(--font-scale, 1)); }
 
 /* ═══════════════════════════════════════════════════════════════
    15b. DIRECT VALUES GRID & POLARITY SWITCH
@@ -1712,7 +1736,7 @@ h1{
 }
 .direct-badge{
   font-family:var(--sans);
-  font-size:calc(clamp(9px, 1.1vw, 10.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(9px, 1.1vw, 10.5px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:0.04em;
   padding:2px clamp(4px, 0.8vw, 8px);
@@ -1767,7 +1791,7 @@ h1{
 }
 .direct-switch-title{
   font-family:var(--sans);
-  font-size:calc(clamp(8px, 1vw, 9.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(8px, 1vw, 9.5px) * var(--font-scale, 1));
   font-weight:800;
   letter-spacing:0.06em;
   color:var(--dim);
@@ -1776,7 +1800,7 @@ h1{
 }
 .direct-switch-hint{
   font-family:var(--sans);
-  font-size:calc(clamp(7.5px, 0.9vw, 9px) * var(--text-scale, 1));
+  font-size:calc(clamp(7.5px, 0.9vw, 9px) * var(--font-scale, 1));
   font-weight:700;
   letter-spacing:0.04em;
   color:var(--dim);
@@ -1809,7 +1833,7 @@ h1{
 }
 .direct-ch-title{
   font-family:var(--sans);
-  font-size:calc(clamp(9px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9px, 1.1vw, 11px) * var(--font-scale, 1));
   font-weight:700;
   color:var(--dim);
   letter-spacing:0.06em;
@@ -1818,7 +1842,7 @@ h1{
 }
 .direct-ch-val{
   font-family:var(--mono);
-  font-size:calc(clamp(13px, 1.6vw, 16.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(13px, 1.6vw, 16.5px) * var(--font-scale, 1));
   font-weight:800;
   color:var(--accent);
   letter-spacing:-0.02em;
@@ -1826,13 +1850,13 @@ h1{
 }
 .direct-ch-dist{
   font-family:var(--mono);
-  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--text-scale, 1));
+  font-size:calc(clamp(9.5px, 1.1vw, 11px) * var(--font-scale, 1));
   color:var(--dim);
   margin-top:1px;
 }
 .direct-note{
   font-family:var(--sans);
-  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--font-scale, 1));
   color:var(--dim);
   padding:4px 2px 0;
   border-top:1px dashed var(--border);
@@ -1862,7 +1886,7 @@ h1{
   align-items:center;
   gap:5px;
   padding:3px clamp(6px, 1vw, 10px);
-  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--text-scale, 1));
+  font-size:calc(clamp(10px, 1.2vw, 11.5px) * var(--font-scale, 1));
   font-weight:700;
   cursor:pointer;
   z-index:3;
@@ -2026,7 +2050,7 @@ h1{
 }
 .sticky-lbl{
   font-family:var(--sans);
-  font-size:calc(10px * var(--text-scale, 1));
+  font-size:calc(10px * var(--font-scale, 1));
   color:var(--dim);
   text-transform:uppercase;
   letter-spacing:0.06em;
@@ -2034,7 +2058,7 @@ h1{
 }
 .sticky-val{
   font-family:var(--mono);
-  font-size:calc(15px * var(--text-scale, 1));
+  font-size:calc(15px * var(--font-scale, 1));
   font-weight:700;
   color:var(--accent);
 }
@@ -2123,7 +2147,7 @@ h1{
   justify-content:center;
   font-family:var(--mono);
   font-weight:700;
-  font-size:calc(12px * var(--text-scale, 1));
+  font-size:calc(12px * var(--font-scale, 1));
   height:36px;
 }
 .modal-slider-wrap{
@@ -2140,7 +2164,7 @@ h1{
   display:flex;
   justify-content:space-between;
   font-family:var(--sans);
-  font-size:calc(11px * var(--text-scale, 1));
+  font-size:calc(11px * var(--font-scale, 1));
   font-weight:700;
   color:var(--dim);
   margin-bottom:6px;
@@ -2148,7 +2172,7 @@ h1{
 .slider-label-row #sliderValLabel{
   color:var(--accent);
   font-family:var(--mono);
-  font-size:calc(12.5px * var(--text-scale, 1));
+  font-size:calc(12.5px * var(--font-scale, 1));
 }
 .modal-range{
   width:100%;
@@ -2195,7 +2219,7 @@ h1{
   border-radius:4px !important;
   color:var(--dim);
   font-family:var(--mono);
-  font-size:calc(11px * var(--text-scale, 1));
+  font-size:calc(11px * var(--font-scale, 1));
   font-weight:700;
   padding:4px 8px;
   cursor:pointer;
@@ -2224,7 +2248,7 @@ h1{
 }
 .preview-title{
   font-family:var(--sans);
-  font-size:calc(9.5px * var(--text-scale, 1));
+  font-size:calc(9.5px * var(--font-scale, 1));
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:0.06em;
@@ -2234,7 +2258,7 @@ h1{
 .preview-text{
   font-family:var(--sans);
   color:var(--text);
-  font-size:calc(12.5px * var(--text-scale, 1));
+  font-size:calc(12.5px * var(--font-scale, 1));
   line-height:1.4;
 }
 .modal-footer{
@@ -2250,7 +2274,7 @@ h1{
 footer{
   margin-top:24px;
   font-family:var(--sans);
-  font-size:calc(12px * var(--text-scale, 1));
+  font-size:calc(12px * var(--font-scale, 1));
   color:var(--dim2);
   text-align:center;
   line-height:1.5;
