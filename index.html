@@ -826,6 +826,38 @@ h1{
   box-shadow:inset 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(255,255,255,0.8);
 }
 
+/* Compact Half-Size Vintage Switch (for Geometry panel) */
+.vintage-switch.compact{
+  gap:1px;
+}
+.vintage-switch.compact .vs-label{
+  font-size:calc(clamp(8px, 0.95vw, 10px) * var(--font-scale, 1));
+}
+.vintage-switch.compact .vs-track{
+  width:clamp(22px, 2.7vw, 28px);
+  height:clamp(40px, 4.6vw, 48px);
+  border-radius:14px !important;
+}
+.vintage-switch.compact .vs-thumb{
+  width:clamp(16px, 1.9vw, 20px);
+  height:clamp(16px, 1.9vw, 20px);
+  left:2px;
+  top:2px;
+}
+.vintage-switch.compact .vs-thumb::after{
+  width:6px;
+  height:6px;
+}
+.vintage-switch.compact .vs-track[data-pos="bottom"] .vs-thumb{
+  top:calc(100% - clamp(16px, 1.9vw, 20px) - 2px);
+}
+
+.stepper-control.bypassed{
+  opacity:0.38;
+  pointer-events:none;
+  filter:grayscale(0.85);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    8. SKEUOMORPHIC VINTAGE AUDIO ROTARY KNOB
    ═══════════════════════════════════════════════════════════════ */
@@ -1917,7 +1949,7 @@ h1{
 .svg-box-label{
   fill:var(--text);
   font-family:var(--sans);
-  font-size:15px;
+  font-size:14px;
   font-weight:800;
   letter-spacing:0.06em;
 }
@@ -1933,7 +1965,7 @@ h1{
 .svg-box-dist{
   fill:var(--accent);
   font-family:var(--mono);
-  font-size:13.5px;
+  font-size:13px;
   font-weight:800;
 }
 .svg-bus-line{
@@ -1941,11 +1973,18 @@ h1{
   stroke-width:2.2;
   stroke-dasharray:5 4;
 }
+.svg-bus-active{
+  stroke:var(--accent);
+  stroke-width:2.4;
+  stroke-dasharray:6 3;
+  filter:drop-shadow(0 0 3px var(--accent-glow));
+}
 .svg-ray-line{
   stroke:var(--accent);
-  stroke-width:1.4;
-  stroke-dasharray:4 3;
-  stroke-opacity:0.45;
+  stroke-width:1.6;
+  stroke-dasharray:5 3;
+  stroke-opacity:0.65;
+  filter:drop-shadow(0 0 4px var(--accent-glow));
 }
 .svg-badge-bg{
   fill:var(--bg);
@@ -1958,10 +1997,29 @@ h1{
   stroke:#b0aaa0;
   filter:drop-shadow(0 2px 6px rgba(0,0,0,0.08));
 }
+.svg-badge-input{
+  fill:rgba(245,158,11,0.12);
+  stroke:var(--amber);
+  stroke-width:1.4;
+  filter:drop-shadow(0 0 10px rgba(245,158,11,0.25));
+}
+[data-theme="light"] .svg-badge-input{
+  fill:rgba(217,119,6,0.10);
+  stroke:var(--amber);
+}
+.svg-badge-input.bypassed{
+  fill:rgba(255,255,255,0.03);
+  stroke:var(--border);
+  filter:none;
+}
+[data-theme="light"] .svg-badge-input.bypassed{
+  fill:rgba(0,0,0,0.03);
+  stroke:var(--border);
+}
 .svg-tag-title{
   fill:var(--dim);
   font-family:var(--sans);
-  font-size:11px;
+  font-size:10.5px;
   font-weight:800;
   letter-spacing:0.06em;
   text-transform:uppercase;
@@ -1969,22 +2027,68 @@ h1{
 .svg-tag-value{
   fill:var(--accent);
   font-family:var(--mono);
+  font-size:14.5px;
+  font-weight:800;
+}
+.svg-tag-input-val{
+  fill:var(--amber);
+  font-family:var(--mono);
   font-size:15px;
   font-weight:800;
 }
 .svg-tag-sub{
   fill:var(--text);
   font-family:var(--mono);
-  font-size:13px;
+  font-size:12.5px;
   font-weight:700;
 }
 .svg-listener-label{
   fill:var(--dim);
   font-family:var(--sans);
-  font-size:12px;
+  font-size:11.5px;
   font-weight:800;
   letter-spacing:0.08em;
   text-transform:uppercase;
+}
+.svg-stage-deck{
+  fill:rgba(0,0,0,0.22);
+  stroke:var(--border);
+  stroke-width:1;
+}
+[data-theme="light"] .svg-stage-deck{
+  fill:rgba(0,0,0,0.025);
+  stroke:var(--border);
+}
+.svg-backline-zone{
+  fill:rgba(245,158,11,0.04);
+  stroke:rgba(245,158,11,0.4);
+  stroke-width:1.2;
+  stroke-dasharray:4 4;
+  transition:all 0.2s;
+}
+.svg-backline-zone.bypassed{
+  fill:rgba(255,255,255,0.015);
+  stroke:var(--border);
+  stroke-dasharray:2 4;
+  opacity:0.45;
+}
+[data-theme="light"] .svg-backline-zone{
+  fill:rgba(217,119,6,0.04);
+  stroke:rgba(217,119,6,0.45);
+}
+.svg-profile-box{
+  fill:rgba(0,0,0,0.45);
+  stroke:var(--border-bright);
+  stroke-width:1;
+}
+[data-theme="light"] .svg-profile-box{
+  fill:rgba(255,255,255,0.9);
+  stroke:#b0aaa0;
+}
+.svg-dim-line{
+  stroke:var(--dim);
+  stroke-width:1.2;
+  stroke-dasharray:2 2;
 }
 
 /* Fullscreen Overrides */
@@ -2307,7 +2411,6 @@ footer{
     <div class="title-row">
       <div>
         <h1>Delay Calculator</h1>
-        <div class="sub" data-i18n="header_sub">Professional sub/top delay alignment for live sound.</div>
       </div>
       <div class="quick-actions">
         <button class="btn-action" id="btnLang" title="Comută Limba / Switch Language" aria-label="Switch Language">🌐 <span id="btnLangVal">RO</span></button>
@@ -2472,6 +2575,7 @@ footer{
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <h2 data-i18n="geom_header">Geometry &amp; Environment</h2>
+        <!-- Sub Distances -->
         <div class="grid2">
           <div class="field">
             <div class="field-label-row">
@@ -2504,6 +2608,36 @@ footer{
             </div>
           </div>
         </div>
+
+        <!-- Stage Backline Alignment (Exclusive Input Delay) with Compact Toggle Switch -->
+        <div class="field" id="backlineFieldRow">
+          <div class="field-label-row">
+            <label for="backlineDist" id="backlineLabel" data-i18n="backlineDist_label">Stage Backline to PA Front</label>
+            <span class="field-hint" id="backlineHint" data-i18n="backline_hint_active">Acoustic drums/amps → PA front</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:clamp(8px, 1.2vw, 14px);">
+            <!-- Compact Half-size Toggle Switch for Backline Enable/Disable -->
+            <div class="vintage-switch compact" style="margin-right:2px;">
+              <span class="vs-label top active" id="backlineLabelOn">ON</span>
+              <div class="vs-track" id="backlineSwitch" data-pos="top" title="Toggle Stage Backline Alignment Delay (ON = Live Band / OFF = Solo PA)" data-i18n-title="backline_switch_title">
+                <div class="vs-thumb"></div>
+              </div>
+              <span class="vs-label bottom" id="backlineLabelOff">OFF</span>
+            </div>
+            <!-- Backline Distance Stepper Control -->
+            <div class="stepper-control" id="backlineStepper" style="flex:1;">
+              <button type="button" class="step-btn" data-target="backlineDist" data-step="-1">−1</button>
+              <button type="button" class="step-btn" data-target="backlineDist" data-step="-0.1">−.1</button>
+              <div class="stepper-input-wrap">
+                <input type="number" id="backlineDist" class="stepper-input" value="5.00" min="0" max="50" step="0.1">
+                <span class="unit-tag">m</span>
+              </div>
+              <button type="button" class="step-btn plus" data-target="backlineDist" data-step="0.1">+.1</button>
+              <button type="button" class="step-btn plus" data-target="backlineDist" data-step="1">+1</button>
+            </div>
+          </div>
+        </div>
+
         <div class="field">
           <div class="field-label-row">
             <label for="temp" data-i18n="temp_label">Ambient Temperature</label>
@@ -2563,6 +2697,7 @@ footer{
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="qtitle" data-i18n="qref_title">Field Quick Reference</div>
         <div class="qline"><span class="k" data-i18n="qref_speed">Speed of sound (configured temperature)</span><span class="v" id="qSpeed">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_input_delay">Input Delay: Stage Backline → PA</span><span class="v" id="qInputDelay" style="color:var(--amber);">—</span></div>
         <div class="qline"><span class="k" data-i18n="qref_step1">Step 1: Output delay → closer sub</span><span class="v" id="qStep1">—</span></div>
         <div class="qline"><span class="k" data-i18n="qref_step2">Step 2: Output delay (0° Normal)</span><span class="v" id="qStep2">—</span></div>
         <div class="qline"><span class="k" data-i18n="qref_step2_inv">Step 2: Output delay (180° Inverted)</span><span class="v" id="qStep2Inv">—</span></div>
@@ -2582,6 +2717,12 @@ footer{
           <span class="direct-badge" id="dirBadge">0° NORMAL</span>
         </div>
 
+        <!-- Master Backline Input Delay Indicator -->
+        <div class="direct-input-row" id="dirInputRow" style="margin-top:8px; margin-bottom:8px; padding:6px 10px; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-family:var(--sans); font-size:11px; font-weight:700; color:var(--amber); letter-spacing:0.04em;" data-i18n="input_delay_card_title">SYSTEM INPUT DELAY (BACKLINE)</div>
+          <div style="font-family:var(--mono); font-size:14px; font-weight:800; color:var(--amber);" id="dirInputDelay">14.5 ms</div>
+        </div>
+
         <div class="direct-body">
           <!-- Vintage Polarity Toggle Switch -->
           <div class="direct-switch-col">
@@ -2596,7 +2737,7 @@ footer{
             <div class="direct-switch-hint" id="polSwitchHint">0° ONLY</div>
           </div>
 
-          <!-- 2x2 Channel Values Matrix -->
+          <!-- 2x2 Channel Values Matrix (Output Delays) -->
           <div class="direct-grid">
             <div class="direct-ch-card">
               <div class="direct-ch-title" id="dirSubLTitle" data-i18n="sub_left">SUB LEFT</div>
@@ -2729,135 +2870,235 @@ footer{
           </button>
         </div>
 
-        <!-- Landscape SVG (Scaled up & high-contrast distance tags) -->
-        <svg class="flow-landscape-svg" viewBox="0 0 900 320" id="flowSvgLandscape">
+        <!-- 1. LANDSCAPE TABLET / DESKTOP & FULLSCREEN SVG (viewBox="0 0 940 450") -->
+        <svg class="flow-landscape-svg" viewBox="0 0 940 450" id="flowSvgLandscape">
           <defs>
-            <linearGradient id="speakerGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.06)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.3)"/>
+            <linearGradient id="speakerGradLand" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.4)"/>
+            </linearGradient>
+            <linearGradient id="backlineGradLand" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="rgba(245,158,11,0.08)"/>
+              <stop offset="50%" stop-color="rgba(245,158,11,0.03)"/>
+              <stop offset="100%" stop-color="rgba(245,158,11,0.08)"/>
             </linearGradient>
           </defs>
 
+          <!-- Stage Deck Area Boundary -->
+          <rect class="svg-stage-deck" x="25" y="12" width="890" height="248" rx="8"/>
+          <line class="svg-dim-line" x1="30" y1="112" x2="910" y2="112" stroke-opacity="0.5"/>
+          <text x="470" y="108" text-anchor="middle" class="svg-tag-title" style="font-size:9px; fill:var(--dim2); letter-spacing:0.12em;" data-i18n="stage_deck">STAGE FRONT LINE (PA BAFFLE PLANE)</text>
+
+          <!-- Stage Backline Zone (Acoustic Instruments) -->
+          <g id="flowBacklineGroupLand">
+            <rect class="svg-backline-zone" id="flowBacklineZoneLand" x="40" y="18" width="860" height="60" rx="6" fill="url(#backlineGradLand)"/>
+            <text class="svg-tag-title" id="flowBacklineTitleLand" x="58" y="44" style="font-size:11px; fill:var(--amber); letter-spacing:0.08em;" data-i18n="stage_backline_zone">STAGE BACKLINE (DRUMS 🥁 / AMPS 🎸)</text>
+            <text class="svg-tag-sub" id="flowBacklineDistLand" x="58" y="62" style="font-size:11px; fill:var(--dim);">d_backline: 5.00 m</text>
+
+            <line class="svg-dim-line" x1="270" y1="48" x2="320" y2="48" stroke="var(--amber)"/>
+            <line class="svg-dim-line" x1="620" y1="48" x2="670" y2="48" stroke="var(--amber)"/>
+
+            <!-- Exclusive System Input Delay Badge -->
+            <rect class="svg-badge-bg svg-badge-input" id="flowBacklineBadgeLand" x="320" y="24" width="300" height="48" rx="7"/>
+            <text class="svg-tag-title" x="470" y="40" text-anchor="middle" style="font-size:9.5px; fill:var(--amber);" data-i18n="input_delay_title">SYSTEM INPUT DELAY (BACKLINE → PA)</text>
+            <text class="svg-tag-input-val" id="flowBacklineValLand" x="470" y="60" text-anchor="middle">14.5 ms</text>
+          </g>
+
+          <!-- Stack Left: Top L Mounted Over Sub L -->
+          <g id="flowStackLeftLand">
+            <rect class="svg-box" x="38" y="118" width="144" height="54" rx="6"/>
+            <rect class="svg-box-sub" x="43" y="123" width="134" height="44" rx="4" fill="url(#speakerGradLand)"/>
+            <path d="M 52 145 L 76 133 L 76 157 Z" fill="rgba(56,189,248,0.2)" stroke="var(--accent)" stroke-width="1"/>
+            <circle cx="128" cy="145" r="15" fill="rgba(0,0,0,0.6)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="128" cy="145" r="6" fill="var(--panel2)" stroke="var(--accent)" stroke-width="0.8"/>
+            <text class="svg-box-label" x="98" y="140" text-anchor="middle" style="font-size:13px;">TOP L</text>
+            <text class="svg-tag-title" x="98" y="156" text-anchor="middle" style="font-size:9px;">15" + HORN</text>
+
+            <rect class="svg-box" x="38" y="180" width="144" height="64" rx="6"/>
+            <rect class="svg-box-sub" x="43" y="185" width="134" height="54" rx="4" fill="url(#speakerGradLand)"/>
+            <circle cx="74" cy="212" r="18" fill="rgba(0,0,0,0.65)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="74" cy="212" r="7" fill="var(--panel2)" stroke="var(--border)" stroke-width="1"/>
+            <circle cx="146" cy="212" r="18" fill="rgba(0,0,0,0.65)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="146" cy="212" r="7" fill="var(--panel2)" stroke="var(--border)" stroke-width="1"/>
+            <text class="svg-box-label" x="110" y="206" text-anchor="middle" style="font-size:13px;">SUB L</text>
+            <rect class="svg-pill-bg" x="78" y="214" width="64" height="20" rx="3"/>
+            <text class="svg-box-dist" id="flowSubLDist" x="110" y="228" text-anchor="middle" style="font-size:11.5px;">20.0 m</text>
+
+            <line class="svg-bus-line" x1="28" y1="145" x2="28" y2="212" stroke="var(--accent)"/>
+            <polygon points="28,142 25,148 31,148" fill="var(--accent)"/>
+            <polygon points="28,215 25,209 31,209" fill="var(--accent)"/>
+
+            <!-- 2.5D Depth Offset Profile Indicator -->
+            <rect class="svg-profile-box" x="190" y="118" width="112" height="54" rx="5"/>
+            <text class="svg-tag-title" x="246" y="132" text-anchor="middle" style="font-size:9.5px;" data-i18n="depthOffset_label">VOICE COIL DEPTH</text>
+            <text class="svg-tag-value" id="flowDepthLLand" x="246" y="148" text-anchor="middle" style="font-size:12px;">⤹ +0.08 m</text>
+            <text class="svg-tag-title" id="flowDepthLStatusLand" x="246" y="163" text-anchor="middle" style="font-size:8.5px; fill:var(--accent);" data-i18n="depth_recessed">TOP RECESSED</text>
+
+            <line class="svg-bus-line" x1="182" y1="145" x2="190" y2="145"/>
+            <line class="svg-bus-line" x1="182" y1="212" x2="190" y2="212"/>
+
+            <!-- Step 2 (L) Output Delay Badge -->
+            <rect class="svg-badge-bg" x="190" y="180" width="112" height="64" rx="6"/>
+            <text class="svg-tag-title" x="246" y="196" text-anchor="middle" style="font-size:9.5px;">STEP 2 (L)</text>
+            <text class="svg-tag-title" x="246" y="209" text-anchor="middle" style="font-size:8.5px; fill:var(--dim2);" data-i18n="topSubDist_label">HEIGHT DIFF</text>
+            <text class="svg-tag-value" id="flowTopLDist" x="246" y="222" text-anchor="middle" style="font-size:11.5px;">↕ 1.20 m</text>
+            <text class="svg-tag-value" id="flowStep2L_land" x="246" y="237" text-anchor="middle" style="font-size:11px;">—</text>
+          </g>
+
+          <!-- Stack Right: Top R Mounted Over Sub R -->
+          <g id="flowStackRightLand">
+            <rect class="svg-box" x="758" y="118" width="144" height="54" rx="6"/>
+            <rect class="svg-box-sub" x="763" y="123" width="134" height="44" rx="4" fill="url(#speakerGradLand)"/>
+            <circle cx="812" cy="145" r="15" fill="rgba(0,0,0,0.6)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="812" cy="145" r="6" fill="var(--panel2)" stroke="var(--accent)" stroke-width="0.8"/>
+            <path d="M 888 145 L 864 133 L 864 157 Z" fill="rgba(56,189,248,0.2)" stroke="var(--accent)" stroke-width="1"/>
+            <text class="svg-box-label" x="842" y="140" text-anchor="middle" style="font-size:13px;">TOP R</text>
+            <text class="svg-tag-title" x="842" y="156" text-anchor="middle" style="font-size:9px;">15" + HORN</text>
+
+            <rect class="svg-box" x="758" y="180" width="144" height="64" rx="6"/>
+            <rect class="svg-box-sub" x="763" y="185" width="134" height="54" rx="4" fill="url(#speakerGradLand)"/>
+            <circle cx="794" cy="212" r="18" fill="rgba(0,0,0,0.65)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="794" cy="212" r="7" fill="var(--panel2)" stroke="var(--border)" stroke-width="1"/>
+            <circle cx="866" cy="212" r="18" fill="rgba(0,0,0,0.65)" stroke="var(--border-bright)" stroke-width="1.2"/>
+            <circle cx="866" cy="212" r="7" fill="var(--panel2)" stroke="var(--border)" stroke-width="1"/>
+            <text class="svg-box-label" x="830" y="206" text-anchor="middle" style="font-size:13px;">SUB R</text>
+            <rect class="svg-pill-bg" x="798" y="214" width="64" height="20" rx="3"/>
+            <text class="svg-box-dist" id="flowSubRDist" x="830" y="228" text-anchor="middle" style="font-size:11.5px;">20.0 m</text>
+
+            <line class="svg-bus-line" x1="912" y1="145" x2="912" y2="212" stroke="var(--accent)"/>
+            <polygon points="912,142 909,148 915,148" fill="var(--accent)"/>
+            <polygon points="912,215 909,209 915,209" fill="var(--accent)"/>
+
+            <rect class="svg-profile-box" x="638" y="118" width="112" height="54" rx="5"/>
+            <text class="svg-tag-title" x="694" y="132" text-anchor="middle" style="font-size:9.5px;" data-i18n="depthOffset_label">VOICE COIL DEPTH</text>
+            <text class="svg-tag-value" id="flowDepthRLand" x="694" y="148" text-anchor="middle" style="font-size:12px;">⤹ +0.08 m</text>
+            <text class="svg-tag-title" id="flowDepthRStatusLand" x="694" y="163" text-anchor="middle" style="font-size:8.5px; fill:var(--accent);" data-i18n="depth_recessed">TOP RECESSED</text>
+
+            <line class="svg-bus-line" x1="750" y1="145" x2="758" y2="145"/>
+            <line class="svg-bus-line" x1="750" y1="212" x2="758" y2="212"/>
+
+            <!-- Step 2 (R) Output Delay Badge -->
+            <rect class="svg-badge-bg" x="638" y="180" width="112" height="64" rx="6"/>
+            <text class="svg-tag-title" x="694" y="196" text-anchor="middle" style="font-size:9.5px;">STEP 2 (R)</text>
+            <text class="svg-tag-title" x="694" y="209" text-anchor="middle" style="font-size:8.5px; fill:var(--dim2);" data-i18n="topSubDist_label">HEIGHT DIFF</text>
+            <text class="svg-tag-value" id="flowTopRDist" x="694" y="222" text-anchor="middle" style="font-size:11.5px;">↕ 1.20 m</text>
+            <text class="svg-tag-value" id="flowStep2R_land" x="694" y="237" text-anchor="middle" style="font-size:11px;">—</text>
+          </g>
+
+          <!-- Step 1 Sub-to-Sub Output Delay Bus -->
+          <line class="svg-bus-line svg-bus-active" x1="182" y1="212" x2="758" y2="212"/>
+          <rect class="svg-badge-bg" x="315" y="184" width="310" height="56" rx="8"/>
+          <text class="svg-tag-title" x="470" y="202" text-anchor="middle" data-i18n="flow_step1_title">STEP 1 · SUB-TO-SUB OUTPUT DELAY</text>
+          <text class="svg-tag-value" id="flowStep1_land" x="470" y="226" text-anchor="middle" style="font-size:15px;">—</text>
+
           <!-- Acoustic Convergence Ray Lines to Listener -->
-          <line class="svg-ray-line" x1="117" y1="192" x2="442" y2="270"/>
-          <line class="svg-ray-line" x1="782" y1="192" x2="458" y2="270"/>
-          
-          <rect class="svg-badge-bg" x="180" y="222" width="130" height="32" rx="6"/>
-          <text class="svg-tag-sub" id="flowRayL" x="245" y="243" text-anchor="middle">dL: 20.0 m</text>
-          
-          <rect class="svg-badge-bg" x="590" y="222" width="130" height="32" rx="6"/>
-          <text class="svg-tag-sub" id="flowRayR" x="655" y="243" text-anchor="middle">dR: 20.0 m</text>
+          <line class="svg-ray-line" x1="110" y1="244" x2="456" y2="385"/>
+          <line class="svg-ray-line" x1="830" y1="244" x2="484" y2="385"/>
 
-          <!-- Step 1 Inter-Sub Alignment Bus -->
-          <line class="svg-bus-line" x1="195" y1="158" x2="705" y2="158"/>
-          <rect class="svg-badge-bg" x="305" y="128" width="290" height="60" rx="8"/>
-          <text class="svg-tag-title" x="450" y="148" text-anchor="middle" data-i18n="flow_step1_title">STEP 1 · SUB-TO-SUB SYNC</text>
-          <text class="svg-tag-value" id="flowStep1_land" x="450" y="174" text-anchor="middle">—</text>
+          <rect class="svg-badge-bg" x="180" y="295" width="145" height="34" rx="6"/>
+          <text class="svg-tag-sub" id="flowRayL" x="252" y="316" text-anchor="middle">dL: 20.0 m (58.2 ms)</text>
 
-          <!-- Step 2 Left Vertical Alignment Bus -->
-          <line class="svg-bus-line" x1="117" y1="82" x2="117" y2="124"/>
-          <rect class="svg-badge-bg" x="175" y="36" width="145" height="50" rx="7"/>
-          <text class="svg-tag-title" x="247" y="56" text-anchor="middle">STEP 2 (L)</text>
-          <text class="svg-tag-value" id="flowStep2L_land" x="247" y="77" text-anchor="middle">—</text>
+          <rect class="svg-badge-bg" x="615" y="295" width="145" height="34" rx="6"/>
+          <text class="svg-tag-sub" id="flowRayR" x="687" y="316" text-anchor="middle">dR: 20.0 m (58.2 ms)</text>
 
-          <!-- Step 2 Right Vertical Alignment Bus -->
-          <line class="svg-bus-line" x1="782" y1="82" x2="782" y2="124"/>
-          <rect class="svg-badge-bg" x="580" y="36" width="145" height="50" rx="7"/>
-          <text class="svg-tag-title" x="652" y="56" text-anchor="middle">STEP 2 (R)</text>
-          <text class="svg-tag-value" id="flowStep2R_land" x="652" y="77" text-anchor="middle">—</text>
+          <!-- Centered Reference Listening Position (FOH) -->
+          <circle cx="470" cy="385" r="28" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="3 3"/>
+          <circle cx="470" cy="385" r="18" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-opacity="0.45"/>
+          <circle cx="470" cy="385" r="8" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
+          <line x1="470" y1="362" x2="470" y2="373" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="470" y1="397" x2="470" y2="408" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="447" y1="385" x2="458" y2="385" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="482" y1="385" x2="493" y2="385" stroke="var(--accent)" stroke-width="1.5"/>
 
-          <!-- TOP L Speaker Enclosure -->
-          <rect class="svg-box" x="40" y="14" width="155" height="68" rx="8"/>
-          <rect class="svg-box-sub" x="46" y="20" width="143" height="56" rx="5" fill="url(#speakerGrad)"/>
-          <text class="svg-box-label" x="117" y="38" text-anchor="middle">TOP L</text>
-          <rect class="svg-pill-bg" x="52" y="46" width="131" height="26" rx="4"/>
-          <text class="svg-box-dist" id="flowTopLDist" x="117" y="64" text-anchor="middle">H: 1.20 m</text>
-
-          <!-- TOP R Speaker Enclosure -->
-          <rect class="svg-box" x="705" y="14" width="155" height="68" rx="8"/>
-          <rect class="svg-box-sub" x="711" y="20" width="143" height="56" rx="5" fill="url(#speakerGrad)"/>
-          <text class="svg-box-label" x="782" y="38" text-anchor="middle">TOP R</text>
-          <rect class="svg-pill-bg" x="717" y="46" width="131" height="26" rx="4"/>
-          <text class="svg-box-dist" id="flowTopRDist" x="782" y="64" text-anchor="middle">H: 1.20 m</text>
-
-          <!-- SUB L Speaker Enclosure -->
-          <rect class="svg-box" x="40" y="124" width="155" height="68" rx="8"/>
-          <rect class="svg-box-sub" x="46" y="130" width="143" height="56" rx="5" fill="url(#speakerGrad)"/>
-          <text class="svg-box-label" x="117" y="148" text-anchor="middle">SUB L</text>
-          <rect class="svg-pill-bg" x="52" y="156" width="131" height="26" rx="4"/>
-          <text class="svg-box-dist" id="flowSubLDist" x="117" y="174" text-anchor="middle">20.0 m</text>
-
-          <!-- SUB R Speaker Enclosure -->
-          <rect class="svg-box" x="705" y="124" width="155" height="68" rx="8"/>
-          <rect class="svg-box-sub" x="711" y="130" width="143" height="56" rx="5" fill="url(#speakerGrad)"/>
-          <text class="svg-box-label" x="782" y="148" text-anchor="middle">SUB R</text>
-          <rect class="svg-pill-bg" x="717" y="156" width="131" height="26" rx="4"/>
-          <text class="svg-box-dist" id="flowSubRDist" x="782" y="174" text-anchor="middle">20.0 m</text>
-
-          <!-- Audience / Listening Focal Center Point -->
-          <circle cx="450" cy="272" r="7" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
-          <circle cx="450" cy="272" r="14" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-opacity="0.5"/>
-          <text class="svg-listener-label" x="450" y="302" text-anchor="middle" data-i18n="listening_pos">LISTENING POSITION</text>
+          <rect class="svg-badge-bg" x="310" y="416" width="320" height="26" rx="5"/>
+          <text class="svg-listener-label" x="470" y="433" text-anchor="middle" data-i18n="listening_pos">LISTENING POSITION (FOH CENTERED)</text>
         </svg>
 
-        <!-- Mobile SVG (Scaled up & high-contrast distance tags) -->
-        <svg class="flow-mobile-svg" viewBox="0 0 380 310" id="flowSvgMobile">
-          <!-- Acoustic Convergence Ray Lines to Listener -->
-          <line class="svg-ray-line" x1="71" y1="172" x2="185" y2="258"/>
-          <line class="svg-ray-line" x1="309" y1="172" x2="195" y2="258"/>
-          
-          <rect class="svg-badge-bg" x="70" y="208" width="85" height="26" rx="4"/>
-          <text class="svg-tag-sub" id="flowRayL_mob" x="112" y="225" text-anchor="middle" style="font-size:11.5px;">20.0m</text>
-          
-          <rect class="svg-badge-bg" x="225" y="208" width="85" height="26" rx="4"/>
-          <text class="svg-tag-sub" id="flowRayR_mob" x="267" y="225" text-anchor="middle" style="font-size:11.5px;">20.0m</text>
+        <!-- 2. MOBILE PORTRAIT COMPACT SVG (viewBox="0 0 400 560") -->
+        <svg class="flow-mobile-svg" viewBox="0 0 400 560" id="flowSvgMobile">
+          <!-- Stage Background -->
+          <rect class="svg-stage-deck" x="10" y="8" width="380" height="312" rx="6"/>
 
-          <!-- Top-Sub Vertical Alignment Bus -->
-          <line class="svg-bus-line" x1="71" y1="68" x2="71" y2="116"/>
-          <line class="svg-bus-line" x1="309" y1="68" x2="309" y2="116"/>
+          <!-- Stage Backline Section -->
+          <g id="flowBacklineGroupMob">
+            <rect class="svg-backline-zone" id="flowBacklineZoneMob" x="18" y="14" width="364" height="66" rx="5"/>
+            <text class="svg-tag-title" id="flowBacklineTitleMob" x="200" y="30" text-anchor="middle" style="font-size:9.5px; fill:var(--amber);" data-i18n="stage_backline_zone">STAGE BACKLINE (DRUMS 🥁 / AMPS 🎸)</text>
+            <rect class="svg-badge-bg svg-badge-input" id="flowBacklineBadgeMob" x="65" y="36" width="270" height="38" rx="5"/>
+            <text class="svg-tag-input-val" id="flowBacklineValMob" x="200" y="60" text-anchor="middle" style="font-size:13.5px;">INPUT: 14.5 ms</text>
+          </g>
+
+          <!-- Stage Front Line Indicator -->
+          <line class="svg-dim-line" x1="15" y1="92" x2="385" y2="92" stroke-opacity="0.4"/>
+
+          <!-- Left Stack: Top L & Sub L -->
+          <g id="flowStackLeftMob">
+            <rect class="svg-box" x="18" y="100" width="114" height="46" rx="5"/>
+            <text class="svg-box-label" x="75" y="120" text-anchor="middle" style="font-size:12px;">TOP L</text>
+            <rect class="svg-pill-bg" x="24" y="126" width="102" height="16" rx="3"/>
+            <text class="svg-box-dist" id="flowTopLDist_mob" x="75" y="138" text-anchor="middle" style="font-size:10px;">H: 1.20m</text>
+
+            <rect class="svg-box" x="18" y="152" width="114" height="52" rx="5"/>
+            <text class="svg-box-label" x="75" y="174" text-anchor="middle" style="font-size:12px;">SUB L</text>
+            <rect class="svg-pill-bg" x="24" y="180" width="102" height="18" rx="3"/>
+            <text class="svg-box-dist" id="flowSubLDist_mob" x="75" y="193" text-anchor="middle" style="font-size:10.5px;">20.0 m</text>
+
+            <line class="svg-bus-line" x1="75" y1="146" x2="75" y2="152"/>
+
+            <!-- Depth Offset & Step 2 Badges -->
+            <rect class="svg-profile-box" x="18" y="210" width="114" height="44" rx="4"/>
+            <text class="svg-tag-title" x="75" y="224" text-anchor="middle" style="font-size:8px;" data-i18n="depthOffset_label">DEPTH</text>
+            <text class="svg-tag-value" id="flowDepthLMob" x="75" y="242" text-anchor="middle" style="font-size:11px;">⤹ +0.08 m</text>
+
+            <rect class="svg-badge-bg" x="18" y="260" width="114" height="38" rx="5"/>
+            <text class="svg-tag-title" x="75" y="274" text-anchor="middle" style="font-size:8.5px;">STEP 2 (L)</text>
+            <text class="svg-tag-value" id="flowStep2L_mob" x="75" y="291" text-anchor="middle" style="font-size:11px;">—</text>
+          </g>
+
+          <!-- Right Stack: Top R & Sub R -->
+          <g id="flowStackRightMob">
+            <rect class="svg-box" x="268" y="100" width="114" height="46" rx="5"/>
+            <text class="svg-box-label" x="325" y="120" text-anchor="middle" style="font-size:12px;">TOP R</text>
+            <rect class="svg-pill-bg" x="274" y="126" width="102" height="16" rx="3"/>
+            <text class="svg-box-dist" id="flowTopRDist_mob" x="325" y="138" text-anchor="middle" style="font-size:10px;">H: 1.20m</text>
+
+            <rect class="svg-box" x="268" y="152" width="114" height="52" rx="5"/>
+            <text class="svg-box-label" x="325" y="174" text-anchor="middle" style="font-size:12px;">SUB R</text>
+            <rect class="svg-pill-bg" x="274" y="180" width="102" height="18" rx="3"/>
+            <text class="svg-box-dist" id="flowSubRDist_mob" x="325" y="193" text-anchor="middle" style="font-size:10.5px;">20.0 m</text>
+
+            <line class="svg-bus-line" x1="325" y1="146" x2="325" y2="152"/>
+
+            <!-- Depth Offset & Step 2 Badges -->
+            <rect class="svg-profile-box" x="268" y="210" width="114" height="44" rx="4"/>
+            <text class="svg-tag-title" x="325" y="224" text-anchor="middle" style="font-size:8px;" data-i18n="depthOffset_label">DEPTH</text>
+            <text class="svg-tag-value" id="flowDepthRMob" x="325" y="242" text-anchor="middle" style="font-size:11px;">⤹ +0.08 m</text>
+
+            <rect class="svg-badge-bg" x="268" y="260" width="114" height="38" rx="5"/>
+            <text class="svg-tag-title" x="325" y="274" text-anchor="middle" style="font-size:8.5px;">STEP 2 (R)</text>
+            <text class="svg-tag-value" id="flowStep2R_mob" x="325" y="291" text-anchor="middle" style="font-size:11px;">—</text>
+          </g>
 
           <!-- Step 1 Inter-Sub Bus -->
-          <line class="svg-bus-line" x1="130" y1="144" x2="250" y2="144"/>
-          <rect class="svg-badge-bg" x="130" y="120" width="120" height="48" rx="6"/>
-          <text class="svg-tag-title" x="190" y="136" text-anchor="middle" style="font-size:9.5px;">STEP 1 (OUT)</text>
-          <text class="svg-tag-value" id="flowStep1_mob" x="190" y="156" text-anchor="middle" style="font-size:12.5px;">—</text>
+          <line class="svg-bus-line svg-bus-active" x1="132" y1="178" x2="268" y2="178"/>
+          <rect class="svg-badge-bg" x="140" y="154" width="120" height="48" rx="6"/>
+          <text class="svg-tag-title" x="200" y="170" text-anchor="middle" style="font-size:8.5px;">STEP 1 (OUT)</text>
+          <text class="svg-tag-value" id="flowStep1_mob" x="200" y="191" text-anchor="middle" style="font-size:12px;">—</text>
 
-          <!-- Step 2 Badges -->
-          <rect class="svg-badge-bg" x="12" y="70" width="118" height="42" rx="5"/>
-          <text class="svg-tag-title" x="71" y="86" text-anchor="middle" style="font-size:9.5px;">STEP 2 (L)</text>
-          <text class="svg-tag-value" id="flowStep2L_mob" x="71" y="104" text-anchor="middle" style="font-size:12px;">—</text>
+          <!-- Acoustic Convergence Rays -->
+          <line class="svg-ray-line" x1="75" y1="204" x2="192" y2="480"/>
+          <line class="svg-ray-line" x1="325" y1="204" x2="208" y2="480"/>
 
-          <rect class="svg-badge-bg" x="250" y="70" width="118" height="42" rx="5"/>
-          <text class="svg-tag-title" x="309" y="86" text-anchor="middle" style="font-size:9.5px;">STEP 2 (R)</text>
-          <text class="svg-tag-value" id="flowStep2R_mob" x="309" y="104" text-anchor="middle" style="font-size:12px;">—</text>
+          <rect class="svg-badge-bg" x="40" y="340" width="105" height="28" rx="4"/>
+          <text class="svg-tag-sub" id="flowRayL_mob" x="92" y="358" text-anchor="middle" style="font-size:10.5px;">20.0m</text>
 
-          <!-- TOP L -->
-          <rect class="svg-box" x="12" y="12" width="118" height="56" rx="6"/>
-          <text class="svg-box-label" x="71" y="32" text-anchor="middle" style="font-size:13px;">TOP L</text>
-          <rect class="svg-pill-bg" x="20" y="40" width="102" height="22" rx="4"/>
-          <text class="svg-box-dist" id="flowTopLDist_mob" x="71" y="56" text-anchor="middle" style="font-size:11px;">H: 1.20m</text>
+          <rect class="svg-badge-bg" x="255" y="340" width="105" height="28" rx="4"/>
+          <text class="svg-tag-sub" id="flowRayR_mob" x="307" y="358" text-anchor="middle" style="font-size:10.5px;">20.0m</text>
 
-          <!-- TOP R -->
-          <rect class="svg-box" x="250" y="12" width="118" height="56" rx="6"/>
-          <text class="svg-box-label" x="309" y="32" text-anchor="middle" style="font-size:13px;">TOP R</text>
-          <rect class="svg-pill-bg" x="258" y="40" width="102" height="22" rx="4"/>
-          <text class="svg-box-dist" id="flowTopRDist_mob" x="309" y="56" text-anchor="middle" style="font-size:11px;">H: 1.20m</text>
-
-          <!-- SUB L -->
-          <rect class="svg-box" x="12" y="116" width="118" height="56" rx="6"/>
-          <text class="svg-box-label" x="71" y="136" text-anchor="middle" style="font-size:13px;">SUB L</text>
-          <rect class="svg-pill-bg" x="20" y="144" width="102" height="22" rx="4"/>
-          <text class="svg-box-dist" id="flowSubLDist_mob" x="71" y="160" text-anchor="middle" style="font-size:11px;">20.0 m</text>
-          <!-- SUB R -->
-          <rect class="svg-box" x="250" y="116" width="118" height="56" rx="6"/>
-          <text class="svg-box-label" x="309" y="136" text-anchor="middle" style="font-size:13px;">SUB R</text>
-          <rect class="svg-pill-bg" x="258" y="144" width="102" height="22" rx="4"/>
-          <text class="svg-box-dist" id="flowSubRDist_mob" x="309" y="160" text-anchor="middle" style="font-size:11px;">20.0 m</text>
-
-          <!-- Listener Point -->
-          <circle cx="190" cy="260" r="6" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
-          <circle cx="190" cy="260" r="12" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.5"/>
-          <text class="svg-listener-label" x="190" y="290" text-anchor="middle" style="font-size:10.5px;" data-i18n="listening_pos">LISTENING POSITION</text>
+          <!-- Centered Listening Position -->
+          <circle cx="200" cy="480" r="18" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="3 3"/>
+          <circle cx="200" cy="480" r="7" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
+          <rect class="svg-badge-bg" x="65" y="512" width="270" height="26" rx="4"/>
+          <text class="svg-listener-label" x="200" y="529" text-anchor="middle" style="font-size:10px;" data-i18n="listening_pos">LISTENING POSITION (CENTER)</text>
         </svg>
       </div>
 
@@ -2954,14 +3195,14 @@ const state = {
   hpfOrder: 2,
   xoType: 'LR',
   xoOrder: 4,
-  allowPolarityInvert: false
+  allowPolarityInvert: false,
+  enableBackline: true
 };
 
 const i18n = {
   en: {
     lang_btn: 'RO',
     lang_btn_title: 'Comută limba în Română',
-    header_sub: 'Professional sub/top delay alignment for live sound.',
     btn_text_size_title: 'Adjust Interface Text Size',
     btn_theme_title: 'Toggle Light/Dark Theme',
     btn_theme_light: '☀️ Light',
@@ -2981,6 +3222,10 @@ const i18n = {
     geom_header: 'Geometry & Environment',
     subL_label: 'Sub-L to Listener',
     subR_label: 'Sub-R to Listener',
+    backlineDist_label: 'Stage Backline to PA Front',
+    backline_hint_active: 'Acoustic drums/amps → PA front',
+    backline_hint_disabled: 'Backline bypassed (No Band / Solo PA)',
+    backline_switch_title: 'Toggle Stage Backline Alignment Delay (ON = Live Band / OFF = Solo PA)',
     temp_label: 'Ambient Temperature',
     speed_sound_prefix: 'Speed of sound:',
     topSubDist_label: 'Top-to-Sub Height (V)',
@@ -2988,12 +3233,14 @@ const i18n = {
     geom_note: 'Vertical distance computes the hypotenuse propagation path to the listener. Depth offset is positive (+) if the Top is set back behind the Sub.',
     qref_title: 'Field Quick Reference',
     qref_speed: 'Speed of sound (configured temperature)',
+    qref_input_delay: 'Input Delay: Stage Backline → PA',
     qref_step1: 'Step 1: Output delay → closer sub',
     qref_step2: 'Step 2: Output delay (0° Normal)',
     qref_step2_inv: 'Step 2: Output delay (180° Inverted)',
     qref_polarity_rec: 'Recommended Polarity Setting',
     qref_gd: 'Total Sub GD @ crossover freq',
     direct_title: 'Field Quick Direct Values',
+    input_delay_card_title: 'SYSTEM INPUT DELAY (BACKLINE)',
     polarity_title: 'POLARITY',
     pol_0_only: '0° ONLY',
     pol_allow_180: 'ALLOW 180°',
@@ -3033,8 +3280,15 @@ const i18n = {
     flow_fullscreen_title: 'Toggle Fullscreen Routing Diagram',
     fullscreen: 'Fullscreen',
     exit_fullscreen: 'Exit Fullscreen',
-    listening_pos: 'LISTENING POSITION',
-    flow_step1_title: 'STEP 1 · SUB-TO-SUB SYNC',
+    listening_pos: 'LISTENING POSITION (FOH CENTERED)',
+    flow_step1_title: 'STEP 1 · SUB-TO-SUB OUTPUT DELAY',
+    stage_deck: 'STAGE FRONT LINE (PA BAFFLE PLANE)',
+    stage_backline_zone: 'STAGE BACKLINE (DRUMS 🥁 / AMPS 🎸)',
+    stage_backline_bypassed: 'STAGE BACKLINE (DISABLED / BYPASSED)',
+    input_delay_title: 'SYSTEM INPUT DELAY (BACKLINE → PA)',
+    depth_recessed: 'TOP RECESSED',
+    depth_flush: 'FLUSH ALIGNED',
+    depth_forward: 'TOP FORWARD',
     text_size_title: 'Text Size Calibration',
     text_size_plate: 'GLOBAL INTERFACE SCALE',
     preview_title: 'Live Preview',
@@ -3068,7 +3322,6 @@ const i18n = {
   ro: {
     lang_btn: 'EN',
     lang_btn_title: 'Switch language to English',
-    header_sub: 'Aliniere profesională de delay sub/top pentru sunet live.',
     btn_text_size_title: 'Ajustează dimensiunea textului',
     btn_theme_title: 'Comută tema luminoasă/întunecată',
     btn_theme_light: '☀️ Luminos',
@@ -3088,6 +3341,10 @@ const i18n = {
     geom_header: 'Geometrie & Mediu',
     subL_label: 'Sub-L până la Ascultător',
     subR_label: 'Sub-R până la Ascultător',
+    backlineDist_label: 'Distanță Backline Scenă la Front PA',
+    backline_hint_active: 'Tobe/amplificatoare acustice → front PA',
+    backline_hint_disabled: 'Backline dezactivat (PA solo / DJ fără trupă)',
+    backline_switch_title: 'Comută Delay Aliniere Backline Scenă (ON = Trupă live / OFF = PA Solo)',
     temp_label: 'Temperatură Ambientală',
     speed_sound_prefix: 'Viteza sunetului:',
     topSubDist_label: 'Înălțime Top-Sub (V)',
@@ -3095,12 +3352,14 @@ const i18n = {
     geom_note: 'Distanța verticală calculează ipotenuza traseului de propagare către ascultător. Decalajul de adâncime este pozitiv (+) dacă Top-ul este poziționat în spatele Sub-ului.',
     qref_title: 'Ghid Rapid de Referință',
     qref_speed: 'Viteza sunetului (temperatura configurată)',
+    qref_input_delay: 'Input Delay: Backline Scenă → PA',
     qref_step1: 'Pasul 1: Output delay → sub-ul mai apropiat',
     qref_step2: 'Pasul 2: Output delay (0° Normal)',
     qref_step2_inv: 'Pasul 2: Output delay (180° Inversat)',
     qref_polarity_rec: 'Setare Polaritate Recomandată',
     qref_gd: 'Group Delay total Sub @ frecv. crossover',
     direct_title: 'Valori Directe de Lucru',
+    input_delay_card_title: 'SYSTEM INPUT DELAY (BACKLINE)',
     polarity_title: 'POLARITATE',
     pol_0_only: 'DOAR 0°',
     pol_allow_180: 'PERMITE 180°',
@@ -3140,8 +3399,15 @@ const i18n = {
     flow_fullscreen_title: 'Comută diagramă rutare pe ecran complet',
     fullscreen: 'Ecran complet',
     exit_fullscreen: 'Ieșire ecran complet',
-    listening_pos: 'POZIȚIE ASCULTARE',
-    flow_step1_title: 'PASUL 1 · SINCRONIZARE SUB-LA-SUB',
+    listening_pos: 'POZIȚIE ASCULTARE (FOH CENTRAT)',
+    flow_step1_title: 'PASUL 1 · OUTPUT DELAY SUB-LA-SUB',
+    stage_deck: 'LINIA DIN FAȚĂ A SCENEI (FRONT PA)',
+    stage_backline_zone: 'BACKLINE SCENĂ (TOBE 🥁 / AMPLIFICATOARE 🎸)',
+    stage_backline_bypassed: 'BACKLINE SCENĂ (DEZACTIVAT / BYPASS)',
+    input_delay_title: 'SYSTEM INPUT DELAY (BACKLINE → PA)',
+    depth_recessed: 'TOP ÎN SPATE',
+    depth_flush: 'ALINIAT LA FAȚĂ',
+    depth_forward: 'TOP ÎN FAȚĂ',
     text_size_title: 'Calibrare Dimensiune Text',
     text_size_plate: 'SCALĂ GLOBALĂ INTERFAȚĂ',
     preview_title: 'Previzualizare în Direct',
@@ -3225,18 +3491,18 @@ function applyLanguage(lang) {
 
 const ORDER_OPTIONS = {
   BW: [
-    { order: 1, label: '6 dB', sub: '1st', dbPerOct: 6 },
-    { order: 2, label: '12 dB', sub: '2nd', dbPerOct: 12 },
-    { order: 3, label: '18 dB', sub: '3rd', dbPerOct: 18 },
-    { order: 4, label: '24 dB', sub: '4th', dbPerOct: 24 },
-    { order: 6, label: '36 dB', sub: '6th', dbPerOct: 36 },
-    { order: 8, label: '48 dB', sub: '8th', dbPerOct: 48 }
+    { order: 1, label: '6 dB', sub: '1st', dbPerOct: 6, desc: '6 dB/oct' },
+    { order: 2, label: '12 dB', sub: '2nd', dbPerOct: 12, desc: '12 dB/oct' },
+    { order: 3, label: '18 dB', sub: '3rd', dbPerOct: 18, desc: '18 dB/oct' },
+    { order: 4, label: '24 dB', sub: '4th', dbPerOct: 24, desc: '24 dB/oct' },
+    { order: 6, label: '36 dB', sub: '6th', dbPerOct: 36, desc: '36 dB/oct' },
+    { order: 8, label: '48 dB', sub: '8th', dbPerOct: 48, desc: '48 dB/oct' }
   ],
   LR: [
-    { order: 2, label: '12 dB', sub: 'LR2', dbPerOct: 12 },
-    { order: 4, label: '24 dB', sub: 'LR4', dbPerOct: 24 },
-    { order: 6, label: '36 dB', sub: 'LR6', dbPerOct: 36 },
-    { order: 8, label: '48 dB', sub: 'LR8', dbPerOct: 48 }
+    { order: 2, label: '12 dB', sub: 'LR2', dbPerOct: 12, desc: 'LR 12dB' },
+    { order: 4, label: '24 dB', sub: 'LR4', dbPerOct: 24, desc: 'LR 24dB' },
+    { order: 6, label: '36 dB', sub: 'LR6', dbPerOct: 36, desc: 'LR 36dB' },
+    { order: 8, label: '48 dB', sub: 'LR8', dbPerOct: 48, desc: 'LR 48dB' }
   ]
 };
 
@@ -3288,6 +3554,12 @@ const hpfFreqEl = document.getElementById('hpfFreq');
 const xoFreqEl = document.getElementById('xoFreq');
 const subLEl = document.getElementById('subL');
 const subREl = document.getElementById('subR');
+const backlineDistEl = document.getElementById('backlineDist');
+const backlineSwitchEl = document.getElementById('backlineSwitch');
+const backlineLabelOn = document.getElementById('backlineLabelOn');
+const backlineLabelOff = document.getElementById('backlineLabelOff');
+const backlineHintEl = document.getElementById('backlineHint');
+const backlineStepperEl = document.getElementById('backlineStepper');
 const topSubDistEl = document.getElementById('topSubDist');
 const depthOffsetEl = document.getElementById('depthOffset');
 const tempEl = document.getElementById('temp');
@@ -3364,45 +3636,47 @@ class RotaryKnobController {
       line.setAttribute('y1', y1);
       line.setAttribute('x2', x2);
       line.setAttribute('y2', y2);
-      line.setAttribute('class', 'svg-dial-tick' + (i === activeIdx ? ' active' : ''));
+      line.setAttribute('class', 'knob-tick' + (i === activeIdx ? ' active' : ''));
       this.ticksSvgEl.appendChild(line);
       this.tickLines.push(line);
 
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', lx);
       text.setAttribute('y', ly);
-      text.setAttribute('class', 'svg-dial-label' + (i === activeIdx ? ' active' : ''));
-      text.textContent = det.label.replace(' dB', '');
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('dominant-baseline', 'central');
+      text.setAttribute('class', 'knob-tick-label' + (i === activeIdx ? ' active' : ''));
+      text.textContent = det.label;
       this.ticksSvgEl.appendChild(text);
       this.tickLabels.push(text);
     });
   }
 
-  _applyAngle(activeIdx) {
-    this.rotorEl.style.transform = `rotate(${this.currentAngle}deg)`;
-    const det = this.detents[activeIdx];
-    this.valueEl.innerHTML = `${det.label} <span class="rv-sub">${det.sub}</span>`;
+  _applyAngle(idx) {
+    this.rotorEl.style.transform = `rotate(${this.detents[idx].angle}deg)`;
+    this.valueEl.textContent = this.detents[idx].desc;
 
-    this.tickLines.forEach((t, i) => t.classList.toggle('active', i === activeIdx));
-    this.tickLabels.forEach((l, i) => l.classList.toggle('active', i === activeIdx));
+    const badge = this.filterKey === 'hpf' ? hpfSlopeBadge : xoSlopeBadge;
+    if(badge) badge.textContent = this.detents[idx].desc;
 
-    if(this.filterKey === 'hpf'){
-      hpfSlopeBadge.textContent = `${det.order * 6} dB/oct`;
-    } else {
-      xoSlopeBadge.textContent = `${det.order * 6} dB/oct`;
-    }
+    this.tickLines.forEach((l, i) => l.classList.toggle('active', i === idx));
+    this.tickLabels.forEach((t, i) => t.classList.toggle('active', i === idx));
   }
 
   _snapToNearest(angle) {
-    let bestIdx = 0;
-    let bestDist = Infinity;
+    let closestIdx = 0;
+    let minDiff = Infinity;
     this.detents.forEach((d, i) => {
-      const dist = Math.abs(angle - d.angle);
-      if(dist < bestDist) { bestDist = dist; bestIdx = i; }
+      const diff = Math.abs(d.angle - angle);
+      if(diff < minDiff){
+        minDiff = diff;
+        closestIdx = i;
+      }
     });
-    this.currentAngle = this.detents[bestIdx].angle;
-    this.order = this.detents[bestIdx].order;
-    this._applyAngle(bestIdx);
+
+    this.currentAngle = this.detents[closestIdx].angle;
+    this.order = this.detents[closestIdx].order;
+    this._applyAngle(closestIdx);
     recalc();
   }
 
@@ -3509,55 +3783,72 @@ const SEG16_PATHS = {
   h:  'M 8 7.5 L 13.5 19 L 11 20.5 L 5.5 9 Z',
   i:  'M 14.7 5.0 L 17.3 5.0 L 17.3 20.5 L 14.7 20.5 Z',
   j:  'M 24 7.5 L 26.5 9 L 21 20.5 L 18.5 19 Z',
-  k:  'M 18.5 27 L 21 25.5 L 26.5 37 L 24 38.5 Z',
+  k:  'M 24 38.5 L 26.5 37 L 21 25.5 L 18.5 27 Z',
   l:  'M 14.7 25.5 L 17.3 25.5 L 17.3 41.0 L 14.7 41.0 Z',
-  m:  'M 13.5 27 L 8 38.5 L 5.5 37 L 11 25.5 Z'
+  m:  'M 8 38.5 L 13.5 27 L 11 25.5 L 5.5 37 Z'
 };
 
-const SEG16_KEYS = ['a1','a2','b','c','d2','d1','e','f','g1','g2','h','i','j','k','l','m'];
-
 function build16SegSvg(char, isDim = false) {
-  const active = SEG16_MAP[char] || [];
+  const activeSegs = SEG16_MAP[char] || [];
   let paths = '';
-  for(let i = 0; i < SEG16_KEYS.length; i++){
-    const k = SEG16_KEYS[i];
-    const on = !isDim && active.includes(k);
-    paths += `<path class="seg ${on ? 'on' : 'off'}" d="${SEG16_PATHS[k]}"/>`;
+  for (const [segName, d] of Object.entries(SEG16_PATHS)) {
+    const isActive = activeSegs.includes(segName);
+    const cls = isActive ? (isDim ? 'seg-dim' : 'seg-on') : 'seg-off';
+    paths += `<path class="${cls}" d="${d}"/>`;
   }
-  return `<svg class="lcd-char-svg" viewBox="0 0 32 46">${paths}</svg>`;
+  return `<svg class="seg16-char" viewBox="0 0 32 46">${paths}</svg>`;
 }
 
-function build16SegDot() {
-  return `<svg class="lcd-dot-svg" viewBox="0 0 10 46"><circle class="seg on" cx="5" cy="40.5" r="3.4"/></svg>`;
+function build16SegDot(isOn = true) {
+  const cls = isOn ? 'dot-on' : 'dot-off';
+  return `<svg class="seg16-dot" viewBox="0 0 10 46"><circle class="${cls}" cx="5" cy="40" r="2.8"/></svg>`;
 }
 
-function renderNixieValue(containerEl, value, intDigits, fracDigits, isOk) {
-  const abs = Math.abs(value);
-  const str = abs.toFixed(fracDigits);
-  const parts = str.split('.');
-  const intPart = parts[0].padStart(intDigits, '0');
-  const fracPart = parts[1] || '';
+function renderNixieValue(containerEl, value, intDigits = 3, fracDigits = 2, isOk = true) {
+  const valStr = value.toFixed(fracDigits);
+  const [intPartRaw, fracPart] = valStr.split('.');
+  const intPart = intPartRaw.padStart(intDigits, '0');
 
   let nixieHtml = '<div class="nixie-view">';
-  for(let i = 0; i < intPart.length; i++){
+  for (let i = 0; i < intPart.length; i++) {
     const isDim = (i < intPart.length - 1 && intPart[i] === '0' && !intPart.substring(0, i).match(/[1-9]/));
-    nixieHtml += `<div class="nixie-tube">${build16SegSvg(intPart[i], isDim)}</div>`;
+    nixieHtml += `
+      <div class="nixie-tube">
+        <div class="tube-glass">
+          <div class="tube-filament-glow"></div>
+          <div class="tube-grid"></div>
+          ${build16SegSvg(intPart[i], isDim)}
+        </div>
+        <div class="tube-base"></div>
+      </div>`;
   }
-  nixieHtml += `<div class="nixie-dot-tube">${build16SegDot()}</div>`;
-  for(let i = 0; i < fracPart.length; i++){
-    nixieHtml += `<div class="nixie-tube">${build16SegSvg(fracPart[i], false)}</div>`;
+
+  nixieHtml += `
+    <div class="nixie-tube nixie-dot-tube">
+      <div class="tube-glass dot-glass">
+        <div class="tube-filament-glow"></div>
+        ${build16SegDot(true)}
+      </div>
+      <div class="tube-base"></div>
+    </div>`;
+
+  for (let i = 0; i < fracPart.length; i++) {
+    nixieHtml += `
+      <div class="nixie-tube">
+        <div class="tube-glass">
+          <div class="tube-filament-glow"></div>
+          <div class="tube-grid"></div>
+          ${build16SegSvg(fracPart[i], false)}
+        </div>
+        <div class="tube-base"></div>
+      </div>`;
   }
-  nixieHtml += `<div class="nixie-unit-group">
-    <div class="nixie-tube nixie-unit-tube">${build16SegSvg('m')}</div>
-    <div class="nixie-tube nixie-unit-tube">${build16SegSvg('s')}</div>
-  </div>`;
-  nixieHtml += `<div class="nixie-sep"></div>`;
-  nixieHtml += `<div class="nixie-tube nixie-status-tube ${isOk ? 'status-ok' : 'status-dim'}" title="${isOk ? t('within_limit') : t('exceeds_limit')}">
-    ${build16SegSvg('✓', !isOk)}
-  </div>`;
-  nixieHtml += `<div class="nixie-tube nixie-status-tube ${!isOk ? 'status-warn' : 'status-dim'}" title="${isOk ? t('within_limit') : t('exceeds_limit')}">
-    ${build16SegSvg('✕', isOk)}
-  </div>`;
+
+  nixieHtml += `
+    <div class="nixie-unit-box">
+      <span class="unit-text">ms</span>
+      <span class="unit-led ${isOk ? 'led-ok' : 'led-warn'}" title="${isOk ? t('within_limit') : t('exceeds_limit')}"></span>
+    </div>`;
   nixieHtml += '</div>';
 
   let lcdHtml = '<div class="lcd-view">';
@@ -3607,10 +3898,30 @@ document.querySelectorAll('.step-btn').forEach(btn => {
   });
 });
 
-[hpfFreqEl, xoFreqEl, subLEl, subREl, topSubDistEl, depthOffsetEl, tempEl].forEach(el => {
-  el.addEventListener('input', recalc);
-  el.addEventListener('change', recalc);
+[hpfFreqEl, xoFreqEl, subLEl, subREl, backlineDistEl, topSubDistEl, depthOffsetEl, tempEl].forEach(el => {
+  if(el){
+    el.addEventListener('input', recalc);
+    el.addEventListener('change', recalc);
+  }
 });
+
+// Stage Backline Bypass Switch Handler
+if (backlineSwitchEl) {
+  backlineSwitchEl.addEventListener('click', () => {
+    const isTop = backlineSwitchEl.dataset.pos === 'top';
+    backlineSwitchEl.dataset.pos = isTop ? 'bottom' : 'top';
+    if(backlineLabelOn) backlineLabelOn.classList.toggle('active', !isTop);
+    if(backlineLabelOff) backlineLabelOff.classList.toggle('active', isTop);
+    state.enableBackline = !isTop;
+    if(backlineStepperEl) {
+      backlineStepperEl.classList.toggle('bypassed', isTop);
+    }
+    if(backlineHintEl) {
+      backlineHintEl.textContent = !isTop ? t('backline_hint_active') : t('backline_hint_disabled');
+    }
+    recalc();
+  });
+}
 
 const btnTheme = document.getElementById('btnTheme');
 
@@ -3671,11 +3982,13 @@ btnReset.addEventListener('click', () => {
   state.hpfOrder = 2;
   state.xoType = 'LR';
   state.xoOrder = 4;
+  state.enableBackline = true;
 
   hpfFreqEl.value = '40';
   xoFreqEl.value = '125';
   subLEl.value = '20.0';
   subREl.value = '20.0';
+  if(backlineDistEl) backlineDistEl.value = '5.00';
   tempEl.value = '20';
   topSubDistEl.value = '1.20';
   depthOffsetEl.value = '0.08';
@@ -3686,6 +3999,14 @@ btnReset.addEventListener('click', () => {
   document.getElementById('xoSwitch').dataset.pos = 'bottom';
   document.getElementById('xoLabelBW').classList.remove('active');
   document.getElementById('xoLabelLR').classList.add('active');
+
+  if(backlineSwitchEl) {
+    backlineSwitchEl.dataset.pos = 'top';
+    if(backlineLabelOn) backlineLabelOn.classList.add('active');
+    if(backlineLabelOff) backlineLabelOff.classList.remove('active');
+    if(backlineStepperEl) backlineStepperEl.classList.remove('bypassed');
+    if(backlineHintEl) backlineHintEl.textContent = t('backline_hint_active');
+  }
 
   hpfKnob.updateDetents();
   xoKnobCtrl.updateDetents();
@@ -3719,6 +4040,10 @@ function recalc(){
   const dR = Math.max(0.1, parseFloat(subREl.value) || 0.1);
   const topSubDist = Math.max(0, parseFloat(topSubDistEl.value) || 0);
   const depthOffset = parseFloat(depthOffsetEl.value) || 0;
+  const backlineDist = Math.max(0, parseFloat(backlineDistEl ? backlineDistEl.value : '5.00') || 0);
+
+  // 1. STAGE BACKLINE TO PA FRONT INPUT DELAY CALCULATION
+  const backlineDelayMs = state.enableBackline ? (backlineDist / c) * 1000 : 0;
 
   const tL = (dL / c) * 1000;
   const tR = (dR / c) * 1000;
@@ -3915,15 +4240,74 @@ function recalc(){
   const step1Text = step1ms < 0.005 ? '0.0 ms (Matched)' : `${fmt(step1ms, 1)}ms → ${closerSide}`;
   const step2Text = `${fmt(step2abs, 1)}ms (${targetSide.replace(' pair', '').replace('Perechea ', '')})`;
 
+  // Update Landscape / Fullscreen SVG Diagram Elements
+  const flowBacklineBadgeLand = document.getElementById('flowBacklineBadgeLand');
+  const flowBacklineZoneLand = document.getElementById('flowBacklineZoneLand');
+  const flowBacklineValLand = document.getElementById('flowBacklineValLand');
+  const flowBacklineDistLand = document.getElementById('flowBacklineDistLand');
+
+  if (flowBacklineBadgeLand && flowBacklineValLand) {
+    if (state.enableBackline) {
+      flowBacklineBadgeLand.classList.remove('bypassed');
+      if (flowBacklineZoneLand) flowBacklineZoneLand.classList.remove('bypassed');
+      flowBacklineValLand.textContent = `${fmt(backlineDelayMs, 1)} ms`;
+      if (flowBacklineDistLand) flowBacklineDistLand.textContent = `d_backline: ${backlineDist.toFixed(2)} m`;
+    } else {
+      flowBacklineBadgeLand.classList.add('bypassed');
+      if (flowBacklineZoneLand) flowBacklineZoneLand.classList.add('bypassed');
+      flowBacklineValLand.textContent = 'BYPASS (0.0 ms)';
+      if (flowBacklineDistLand) flowBacklineDistLand.textContent = `d_backline: 0.00 m [BYPASSED]`;
+    }
+  }
+
+  // Update Mobile SVG Diagram Elements
+  const flowBacklineBadgeMob = document.getElementById('flowBacklineBadgeMob');
+  const flowBacklineZoneMob = document.getElementById('flowBacklineZoneMob');
+  const flowBacklineValMob = document.getElementById('flowBacklineValMob');
+
+  if (flowBacklineBadgeMob && flowBacklineValMob) {
+    if (state.enableBackline) {
+      flowBacklineBadgeMob.classList.remove('bypassed');
+      if (flowBacklineZoneMob) flowBacklineZoneMob.classList.remove('bypassed');
+      flowBacklineValMob.textContent = `INPUT: ${fmt(backlineDelayMs, 1)} ms`;
+    } else {
+      flowBacklineBadgeMob.classList.add('bypassed');
+      if (flowBacklineZoneMob) flowBacklineZoneMob.classList.add('bypassed');
+      flowBacklineValMob.textContent = 'INPUT: BYPASS (0.0 ms)';
+    }
+  }
+
+  // Depth Offset visual string & status
+  let depthStatusText = t('depth_recessed');
+  if (Math.abs(depthOffset) <= 0.005) depthStatusText = t('depth_flush');
+  else if (depthOffset < -0.005) depthStatusText = t('depth_forward');
+
+  const depthValStr = `⤹ ${depthOffset >= 0 ? '+' : ''}${depthOffset.toFixed(2)} m`;
+
+  const flowDepthLLand = document.getElementById('flowDepthLLand');
+  if (flowDepthLLand) flowDepthLLand.textContent = depthValStr;
+  const flowDepthRLand = document.getElementById('flowDepthRLand');
+  if (flowDepthRLand) flowDepthRLand.textContent = depthValStr;
+
+  const flowDepthLStatusLand = document.getElementById('flowDepthLStatusLand');
+  if (flowDepthLStatusLand) flowDepthLStatusLand.textContent = depthStatusText;
+  const flowDepthRStatusLand = document.getElementById('flowDepthRStatusLand');
+  if (flowDepthRStatusLand) flowDepthRStatusLand.textContent = depthStatusText;
+
+  const flowDepthLMob = document.getElementById('flowDepthLMob');
+  if (flowDepthLMob) flowDepthLMob.textContent = depthValStr;
+  const flowDepthRMob = document.getElementById('flowDepthRMob');
+  if (flowDepthRMob) flowDepthRMob.textContent = depthValStr;
+
   document.getElementById('flowStep1_land').textContent = step1Text;
   document.getElementById('flowStep2L_land').textContent = step2Text;
   document.getElementById('flowStep2R_land').textContent = step2Text;
-  document.getElementById('flowTopLDist').textContent = `H: ${topSubDist.toFixed(2)} m`;
-  document.getElementById('flowTopRDist').textContent = `H: ${topSubDist.toFixed(2)} m`;
+  document.getElementById('flowTopLDist').textContent = `↕ ${topSubDist.toFixed(2)} m`;
+  document.getElementById('flowTopRDist').textContent = `↕ ${topSubDist.toFixed(2)} m`;
   document.getElementById('flowSubLDist').textContent = `${dL.toFixed(1)} m`;
   document.getElementById('flowSubRDist').textContent = `${dR.toFixed(1)} m`;
-  document.getElementById('flowRayL').textContent = `dL: ${dL.toFixed(1)} m`;
-  document.getElementById('flowRayR').textContent = `dR: ${dR.toFixed(1)} m`;
+  document.getElementById('flowRayL').textContent = `dL: ${dL.toFixed(1)}m (${fmt(tL, 1)}ms)`;
+  document.getElementById('flowRayR').textContent = `dR: ${dR.toFixed(1)}m (${fmt(tR, 1)}ms)`;
 
   document.getElementById('flowStep1_mob').textContent = step1ms < 0.005 ? '0 ms' : `${fmt(step1ms, 1)}ms → ${closerSide.replace('SUB ', '')}`;
   document.getElementById('flowStep2L_mob').textContent = step2Text;
@@ -3937,11 +4321,15 @@ function recalc(){
   const mobSubR = document.getElementById('flowSubRDist_mob');
   if (mobSubR) mobSubR.textContent = `${dR.toFixed(1)} m`;
   const mobRayL = document.getElementById('flowRayL_mob');
-  if (mobRayL) mobRayL.textContent = `${dL.toFixed(1)}m`;
+  if (mobRayL) mobRayL.textContent = `${dL.toFixed(1)}m (${fmt(tL, 1)}ms)`;
   const mobRayR = document.getElementById('flowRayR_mob');
-  if (mobRayR) mobRayR.textContent = `${dR.toFixed(1)}m`;
+  if (mobRayR) mobRayR.textContent = `${dR.toFixed(1)}m (${fmt(tR, 1)}ms)`;
 
   document.getElementById('qSpeed').textContent = `${c.toFixed(1)} m/s`;
+  const qInputDelay = document.getElementById('qInputDelay');
+  if (qInputDelay) {
+    qInputDelay.textContent = state.enableBackline ? `${fmt(backlineDelayMs)} ms` : (state.lang === 'ro' ? 'Dezactivat (0.0 ms)' : 'Bypassed (0.0 ms)');
+  }
   document.getElementById('qStep1').textContent = step1ms < 0.005 ? t('none_matched') : `${fmt(step1ms)} ms → ${closerSide}`;
   document.getElementById('qStep2').textContent = `${fmt(step2abs)} ms → ${targetSide}`;
   document.getElementById('qStep2Inv').textContent = `${fmt(invDelayMs)} ms → ${invTargetSide}`;
