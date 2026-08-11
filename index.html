@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -63,23 +63,23 @@
         <h1>Delay Calculator</h1>
       </div>
       <div class="quick-actions">
-        <button class="btn-action" id="btnLang" title="Switch Language / ComutÄƒ Limba" aria-label="Switch Language"><span id="btnLangVal">EN</span></button>
-        <button class="btn-action" id="btnManual" title="Measurement Manual & Field Guide" aria-label="Measurement Manual" data-i18n-title="btn_manual_title"><span class="action-icon">ðŸ“–</span> <span data-i18n="btn_manual">Manual</span></button>
-        <button class="btn-action" id="btnTextSize" title="Adjust Interface Text Size" aria-label="Text Size Settings" data-i18n-title="btn_text_size_title">ðŸ—š Text: <span id="btnTextSizeVal">100%</span></button>
-        <button class="btn-action" id="btnTheme" title="Toggle Light/Dark Theme" aria-label="Toggle theme" data-i18n-title="btn_theme_title"><span class="theme-icon" id="themeIcon">â˜€ï¸</span> <span class="theme-label" id="themeLabel">Light</span></button>
-        <button class="btn-action" id="btnReset" title="Reset all fields to default parameters" aria-label="Reset parameters" data-i18n-title="btn_reset_title"><span data-i18n="btn_reset">â†º Reset</span></button>
+        <button class="btn-action" id="btnLang" title="Switch Language / Comută Limba" aria-label="Switch Language"><span id="btnLangVal">EN</span></button>
+        <button class="btn-action" id="btnManual" title="Measurement Manual & Field Guide" aria-label="Measurement Manual" data-i18n-title="btn_manual_title"><span class="action-icon">📖</span> <span data-i18n="btn_manual">Manual</span></button>
+        <button class="btn-action" id="btnTextSize" title="Adjust Interface Text Size" aria-label="Text Size Settings" data-i18n-title="btn_text_size_title">🗚 Text: <span id="btnTextSizeVal">100%</span></button>
+        <button class="btn-action" id="btnTheme" title="Toggle Light/Dark Theme" aria-label="Toggle theme" data-i18n-title="btn_theme_title"><span class="theme-icon" id="themeIcon">☀️</span> <span class="theme-label" id="themeLabel">Light</span></button>
+        <button class="btn-action" id="btnReset" title="Reset all fields to default parameters" aria-label="Reset parameters" data-i18n-title="btn_reset_title"><span data-i18n="btn_reset">↺ Reset</span></button>
       </div>
     </div>
   </header>
 
   <!-- Global Alert -->
   <div id="crossoverAlert" class="alert-banner" data-i18n="crossover_alert">
-    âš ï¸ <strong>Filter Conflict:</strong> Sub HPF frequency is equal to or higher than Sub â†’ Top crossover frequency!
+    ⚠️ <strong>Filter Conflict:</strong> Sub HPF frequency is equal to or higher than Sub → Top crossover frequency!
   </div>
 
   <div class="layout-grid">
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â• INPUTS COLUMN â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ═════════════ INPUTS COLUMN ═════════════ -->
     <div class="inputs-col">
 
       <!-- PANEL 1: SUB HIGH-PASS FILTER (HPF) -->
@@ -137,11 +137,11 @@
         <div class="field" style="margin-bottom:0;">
           <div class="field-label-row">
             <label for="hpfFreq" data-i18n="hpf_cutoff_label">HPF Cutoff Frequency</label>
-            <span class="field-hint" data-i18n="hpf_range_hint">Range: 20â€“150 Hz</span>
+            <span class="field-hint" data-i18n="hpf_range_hint">Range: 20–150 Hz</span>
           </div>
           <div class="stepper-control">
-            <button type="button" class="step-btn" data-target="hpfFreq" data-step="-5">âˆ’5</button>
-            <button type="button" class="step-btn" data-target="hpfFreq" data-step="-1">âˆ’1</button>
+            <button type="button" class="step-btn" data-target="hpfFreq" data-step="-5">−5</button>
+            <button type="button" class="step-btn" data-target="hpfFreq" data-step="-1">−1</button>
             <div class="stepper-input-wrap">
               <input type="number" id="hpfFreq" class="stepper-input" value="40" min="10" max="250" step="1">
               <span class="unit-tag">Hz</span>
@@ -152,14 +152,14 @@
         </div>
       </div>
 
-      <!-- PANEL 2: SUB â†’ TOP CROSSOVER (XO) -->
+      <!-- PANEL 2: SUB → TOP CROSSOVER (XO) -->
       <div class="panel" id="cardXo">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="filter-card-header">
-          <h2 data-i18n="xo_header">Sub â†’ Top Crossover (XO)</h2>
+          <h2 data-i18n="xo_header">Sub → Top Crossover (XO)</h2>
           <span class="field-hint" id="xoSlopeBadge">24 dB/oct</span>
         </div>
 
@@ -203,11 +203,11 @@
         <div class="field" style="margin-bottom:0;">
           <div class="field-label-row">
             <label for="xoFreq" data-i18n="xo_cutoff_label">Crossover Frequency</label>
-            <span class="field-hint" data-i18n="xo_range_hint">Range: 50â€“300 Hz</span>
+            <span class="field-hint" data-i18n="xo_range_hint">Range: 50–300 Hz</span>
           </div>
           <div class="stepper-control">
-            <button type="button" class="step-btn" data-target="xoFreq" data-step="-5">âˆ’5</button>
-            <button type="button" class="step-btn" data-target="xoFreq" data-step="-1">âˆ’1</button>
+            <button type="button" class="step-btn" data-target="xoFreq" data-step="-5">−5</button>
+            <button type="button" class="step-btn" data-target="xoFreq" data-step="-1">−1</button>
             <div class="stepper-input-wrap">
               <input type="number" id="xoFreq" class="stepper-input" value="125" min="20" max="500" step="1">
               <span class="unit-tag">Hz</span>
@@ -227,7 +227,7 @@
         <div class="geom-header-row">
           <h2 style="margin:0; padding:0;" data-i18n="geom_header">Geometry &amp; Environment</h2>
           <button type="button" class="btn-metal-sync" id="btnSyncSubs" title="Set Sub R distance to match Sub L" aria-label="Sync Sub R to Sub L" data-i18n-title="btn_sync_subs_title">
-            <span data-i18n="btn_sync_subs">âš¡ Sync L=R</span>
+            <span data-i18n="btn_sync_subs">⚡ Sync L=R</span>
           </button>
         </div>
         <!-- Sub Distances -->
@@ -237,8 +237,8 @@
               <label for="subL" data-i18n="subL_label">Sub-L to Listener</label>
             </div>
             <div class="stepper-control">
-              <button type="button" class="step-btn" data-target="subL" data-step="-1">âˆ’1</button>
-              <button type="button" class="step-btn" data-target="subL" data-step="-0.1">âˆ’.1</button>
+              <button type="button" class="step-btn" data-target="subL" data-step="-1">−1</button>
+              <button type="button" class="step-btn" data-target="subL" data-step="-0.1">−.1</button>
               <div class="stepper-input-wrap">
                 <input type="number" id="subL" class="stepper-input" value="20.0" min="0.1" max="250" step="0.1">
                 <span class="unit-tag">m</span>
@@ -252,8 +252,8 @@
               <label for="subR" data-i18n="subR_label">Sub-R to Listener</label>
             </div>
             <div class="stepper-control">
-              <button type="button" class="step-btn" data-target="subR" data-step="-1">âˆ’1</button>
-              <button type="button" class="step-btn" data-target="subR" data-step="-0.1">âˆ’.1</button>
+              <button type="button" class="step-btn" data-target="subR" data-step="-1">−1</button>
+              <button type="button" class="step-btn" data-target="subR" data-step="-0.1">−.1</button>
               <div class="stepper-input-wrap">
                 <input type="number" id="subR" class="stepper-input" value="20.0" min="0.1" max="250" step="0.1">
                 <span class="unit-tag">m</span>
@@ -268,7 +268,7 @@
         <div class="field" id="backlineFieldRow">
           <div class="field-label-row">
             <label for="backlineDist" id="backlineLabel" data-i18n="backlineDist_label">Stage Backline to PA Front</label>
-            <span class="field-hint" id="backlineHint" data-i18n="backline_hint_active">Acoustic drums/amps â†’ PA front</span>
+            <span class="field-hint" id="backlineHint" data-i18n="backline_hint_active">Acoustic drums/amps → PA front</span>
           </div>
           <div style="display:flex; align-items:center; gap:clamp(8px, 1.2vw, 14px);">
             <!-- Compact Half-size Toggle Switch for Backline Enable/Disable -->
@@ -281,8 +281,8 @@
             </div>
             <!-- Backline Distance Stepper Control -->
             <div class="stepper-control" id="backlineStepper" style="flex:1;">
-              <button type="button" class="step-btn" data-target="backlineDist" data-step="-1">âˆ’1</button>
-              <button type="button" class="step-btn" data-target="backlineDist" data-step="-0.1">âˆ’.1</button>
+              <button type="button" class="step-btn" data-target="backlineDist" data-step="-1">−1</button>
+              <button type="button" class="step-btn" data-target="backlineDist" data-step="-0.1">−.1</button>
               <div class="stepper-input-wrap">
                 <input type="number" id="backlineDist" class="stepper-input" value="5.00" min="0" max="50" step="0.1">
                 <span class="unit-tag">m</span>
@@ -300,11 +300,11 @@
             <span class="field-hint" id="speedHint">Speed of sound: 343.4 m/s</span>
           </div>
           <div class="stepper-control">
-            <button type="button" class="step-btn" data-target="temp" data-step="-5">âˆ’5</button>
-            <button type="button" class="step-btn" data-target="temp" data-step="-1">âˆ’1</button>
+            <button type="button" class="step-btn" data-target="temp" data-step="-5">−5</button>
+            <button type="button" class="step-btn" data-target="temp" data-step="-1">−1</button>
             <div class="stepper-input-wrap">
               <input type="number" id="temp" class="stepper-input" value="20" min="-20" max="50" step="1">
-              <span class="unit-tag">Â°C</span>
+              <span class="unit-tag">°C</span>
             </div>
             <button type="button" class="step-btn plus" data-target="temp" data-step="1">+1</button>
             <button type="button" class="step-btn plus" data-target="temp" data-step="5">+5</button>
@@ -317,8 +317,8 @@
             <label for="topSubDist" data-i18n="topSubDist_label">Top-to-Sub Height (V)</label>
           </div>
           <div class="stepper-control">
-            <button type="button" class="step-btn" data-target="topSubDist" data-step="-0.1">âˆ’.1</button>
-            <button type="button" class="step-btn" data-target="topSubDist" data-step="-0.05">âˆ’.05</button>
+            <button type="button" class="step-btn" data-target="topSubDist" data-step="-0.1">−.1</button>
+            <button type="button" class="step-btn" data-target="topSubDist" data-step="-0.05">−.05</button>
             <div class="stepper-input-wrap">
               <input type="number" id="topSubDist" class="stepper-input" value="1.20" min="0" max="15" step="0.05">
               <span class="unit-tag">m</span>
@@ -334,8 +334,8 @@
             <label for="depthOffset" data-i18n="depthOffset_label">Voice Coil Depth Offset</label>
           </div>
           <div class="stepper-control">
-            <button type="button" class="step-btn" data-target="depthOffset" data-step="-0.05">âˆ’.05</button>
-            <button type="button" class="step-btn" data-target="depthOffset" data-step="-0.01">âˆ’.01</button>
+            <button type="button" class="step-btn" data-target="depthOffset" data-step="-0.05">−.05</button>
+            <button type="button" class="step-btn" data-target="depthOffset" data-step="-0.01">−.01</button>
             <div class="stepper-input-wrap">
               <input type="number" id="depthOffset" class="stepper-input" value="0.08" min="-2" max="2" step="0.01">
               <span class="unit-tag">m</span>
@@ -354,13 +354,13 @@
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="qtitle" data-i18n="qref_title">Field Quick Reference</div>
-        <div class="qline"><span class="k" data-i18n="qref_speed">Speed of sound (configured temperature)</span><span class="v" id="qSpeed">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_input_delay">Input Delay: Stage Backline â†’ PA</span><span class="v" id="qInputDelay">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_step1">Step 1: Output delay â†’ closer sub</span><span class="v" id="qStep1">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_step2">Step 2: Output delay (0Â° Normal)</span><span class="v" id="qStep2">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_step2_inv">Step 2: Output delay (180Â° Inverted)</span><span class="v" id="qStep2Inv">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_polarity_rec">Recommended Polarity Setting</span><span class="v" id="qPolarityRec">â€”</span></div>
-        <div class="qline"><span class="k" data-i18n="qref_gd">Total Sub GD @ crossover freq</span><span class="v" id="qGD">â€”</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_speed">Speed of sound (configured temperature)</span><span class="v" id="qSpeed">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_input_delay">Input Delay: Stage Backline → PA</span><span class="v" id="qInputDelay">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_step1">Step 1: Output delay → closer sub</span><span class="v" id="qStep1">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_step2">Step 2: Output delay (0° Normal)</span><span class="v" id="qStep2">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_step2_inv">Step 2: Output delay (180° Inverted)</span><span class="v" id="qStep2Inv">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_polarity_rec">Recommended Polarity Setting</span><span class="v" id="qPolarityRec">—</span></div>
+        <div class="qline"><span class="k" data-i18n="qref_gd">Total Sub GD @ crossover freq</span><span class="v" id="qGD">—</span></div>
       </div>
 
       <!-- FIELD QUICK DIRECT VALUES -->
@@ -372,7 +372,7 @@
         
         <div class="direct-header-row">
           <div class="qtitle" style="margin-bottom:0;" data-i18n="direct_title">Field Quick Direct Values</div>
-          <span class="direct-badge" id="dirBadge">0Â° NORMAL</span>
+          <span class="direct-badge" id="dirBadge">0° NORMAL</span>
         </div>
 
         <!-- Master Backline Input Delay Indicator -->
@@ -386,13 +386,13 @@
           <div class="direct-switch-col">
             <div class="direct-switch-title" data-i18n="polarity_title">POLARITY</div>
             <div class="vintage-switch">
-              <span class="vs-label top active" id="polLabel0">0Â°</span>
-              <div class="vs-track" id="polSwitch" data-pos="top" title="Toggle Polarity Inversion Allowance (0Â° Normal Only vs 180Â° Invert Allowed)" data-i18n-title="pol_toggle_title">
+              <span class="vs-label top active" id="polLabel0">0°</span>
+              <div class="vs-track" id="polSwitch" data-pos="top" title="Toggle Polarity Inversion Allowance (0° Normal Only vs 180° Invert Allowed)" data-i18n-title="pol_toggle_title">
                 <div class="vs-thumb"></div>
               </div>
-              <span class="vs-label bottom" id="polLabel180">180Â°</span>
+              <span class="vs-label bottom" id="polLabel180">180°</span>
             </div>
-            <div class="direct-switch-hint" id="polSwitchHint">0Â° ONLY</div>
+            <div class="direct-switch-hint" id="polSwitchHint">0° ONLY</div>
           </div>
 
           <!-- 2x2 Channel Values Matrix (Output Delays) -->
@@ -420,11 +420,11 @@
           </div>
         </div>
 
-        <div class="direct-note" id="dirNote">0Â° Normal polarity strictly enforced (no phase flip).</div>
+        <div class="direct-note" id="dirNote">0° Normal polarity strictly enforced (no phase flip).</div>
       </div>
     </div>
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â• RESULTS COLUMN â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- ═════════════ RESULTS COLUMN ═════════════ -->
     <div class="results-col">
 
       <!-- STEP 1 RESULT CARD (Nixie Tube) -->
@@ -433,12 +433,12 @@
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
-        <h2><span class="stagenum">1</span> <span data-i18n="step1_header">Sub â†” Sub Sync</span></h2>
+        <h2><span class="stagenum">1</span> <span data-i18n="step1_header">Sub ↔ Sub Sync</span></h2>
         <div id="step1Readout" class="readout">
           <div class="nixie-housing" id="nixieStep1">
             <!-- Digits & status indicators injected by JS -->
           </div>
-          <div class="nixie-plate" id="step1Plate" data-i18n="step1_plate">OUTPUT DELAY Â· SUB-TO-SUB</div>
+          <div class="nixie-plate" id="step1Plate" data-i18n="step1_plate">OUTPUT DELAY · SUB-TO-SUB</div>
           <div class="desc" id="step1Desc">Add this output delay to the closer sub.</div>
         </div>
         <div class="breakdown" id="step1Breakdown"></div>
@@ -450,18 +450,18 @@
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-bl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
-        <h2><span class="stagenum">2</span> <span data-i18n="step2_header">Top â†” Sub Sync</span></h2>
+        <h2><span class="stagenum">2</span> <span data-i18n="step2_header">Top ↔ Sub Sync</span></h2>
         <div id="step2Readout" class="readout">
           <div class="nixie-housing" id="nixieStep2">
             <!-- Digits & status indicators injected by JS -->
           </div>
-          <div class="nixie-plate" id="step2Plate" data-i18n="step2_plate">OUTPUT DELAY Â· TOP-TO-SUB (0Â° NORMAL POLARITY)</div>
+          <div class="nixie-plate" id="step2Plate" data-i18n="step2_plate">OUTPUT DELAY · TOP-TO-SUB (0° NORMAL POLARITY)</div>
           <div class="desc" id="step2Desc">Add this output delay to the target (evaluated at the crossover frequency).</div>
         </div>
         <div class="breakdown" id="step2Breakdown"></div>
       </div>
 
-      <!-- NEW CARD: POLARITY INVERSION & ACOUSTIC WORKAROUND (180Â° TRICK) -->
+      <!-- NEW CARD: POLARITY INVERSION & ACOUSTIC WORKAROUND (180° TRICK) -->
       <div class="panel phase-card" id="phaseCard">
         <div class="chassis-screw screw-tl"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
         <div class="chassis-screw screw-tr"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
@@ -478,7 +478,7 @@
         <div class="phase-grid">
           <div class="phase-option-box" id="phaseBoxNorm">
             <div class="phase-opt-tag">
-              <span data-i18n="norm_opt_tag">0Â° Normal Polarity</span>
+              <span data-i18n="norm_opt_tag">0° Normal Polarity</span>
               <span id="phaseNormTagBadge"></span>
             </div>
             <div class="phase-opt-val" id="phaseNormVal">0.00 <span class="unit">ms</span></div>
@@ -488,7 +488,7 @@
 
           <div class="phase-option-box" id="phaseBoxInv">
             <div class="phase-opt-tag">
-              <span data-i18n="inv_opt_tag">180Â° Inverted Polarity</span>
+              <span data-i18n="inv_opt_tag">180° Inverted Polarity</span>
               <span id="phaseInvTagBadge"></span>
             </div>
             <div class="phase-opt-val" id="phaseInvVal">0.00 <span class="unit">ms</span></div>
@@ -499,7 +499,7 @@
 
         <!-- Actionable Crossover Settings Box -->
         <div class="phase-action-box">
-          <div class="phase-action-title" data-i18n="phase_action_title">ðŸŽ›ï¸ Crossover Menu Configuration Steps</div>
+          <div class="phase-action-title" data-i18n="phase_action_title">🎛️ Crossover Menu Configuration Steps</div>
           <div class="phase-action-steps" id="phaseActionSteps">
             <!-- Steps injected by JS -->
           </div>
@@ -552,7 +552,7 @@
             <rect class="svg-backline-zone" id="flowBacklineZoneLand" x="40" y="18" width="880" height="60" rx="6"/>
             
             <!-- Left Backline Info -->
-            <text class="svg-tag-title" id="flowBacklineTitleLand" x="160" y="42" text-anchor="middle" style="font-size:12px; fill:var(--accent); font-weight:700; letter-spacing:0.06em;" data-i18n="stage_backline_zone">BACKLINE ðŸ¥ðŸŽ¸</text>
+            <text class="svg-tag-title" id="flowBacklineTitleLand" x="160" y="42" text-anchor="middle" style="font-size:12px; fill:var(--accent); font-weight:700; letter-spacing:0.06em;" data-i18n="stage_backline_zone">BACKLINE 🥁🎸</text>
             <text class="svg-tag-sub" id="flowBacklineDistLand" x="160" y="60" text-anchor="middle" style="font-size:11px; fill:var(--dim);">d: 5.00 m</text>
 
             <line class="svg-dim-line" x1="250" y1="48" x2="350" y2="48" stroke="var(--accent)" stroke-opacity="0.5"/>
@@ -564,7 +564,7 @@
             <text class="svg-tag-input-val" id="flowBacklineValLand" x="480" y="60" text-anchor="middle">14.6 ms</text>
 
             <!-- Right Backline Info -->
-            <text class="svg-tag-sub" x="800" y="52" text-anchor="middle" style="font-size:10px; fill:var(--dim2); letter-spacing:0.04em;">DRUMS / AMPS â†’ PA</text>
+            <text class="svg-tag-sub" x="800" y="52" text-anchor="middle" style="font-size:10px; fill:var(--dim2); letter-spacing:0.04em;">DRUMS / AMPS → PA</text>
           </g>
 
           <!-- Stack Left: Top L Mounted Over Sub L -->
@@ -578,8 +578,8 @@
             <!-- Depth Offset Badge (Placed next to Top cabinet with matching speaker gradient) -->
             <rect class="svg-box" x="195" y="112" width="110" height="60" rx="6"/>
             <rect class="svg-box-sub" x="199" y="116" width="102" height="52" rx="4" fill="url(#speakerGradLand)"/>
-            <text class="svg-tag-title" id="flowDepthLTitleLand" x="250" y="134" text-anchor="middle" style="font-size:9.5px;" data-i18n="depth_label_svg">ADÃ‚NCIME</text>
-            <text class="svg-tag-value" id="flowDepthLLand" x="250" y="155" text-anchor="middle" style="font-size:13px;">â¤¹ +0.08 m</text>
+            <text class="svg-tag-title" id="flowDepthLTitleLand" x="250" y="134" text-anchor="middle" style="font-size:9.5px;" data-i18n="depth_label_svg">ADÂNCIME</text>
+            <text class="svg-tag-value" id="flowDepthLLand" x="250" y="155" text-anchor="middle" style="font-size:13px;">⤹ +0.08 m</text>
 
             <!-- Sub Box -->
             <rect class="svg-box" x="40" y="186" width="140" height="64" rx="6"/>
@@ -598,8 +598,8 @@
             <!-- Depth Offset Badge (Placed next to Top cabinet with matching speaker gradient) -->
             <rect class="svg-box" x="655" y="112" width="110" height="60" rx="6"/>
             <rect class="svg-box-sub" x="659" y="116" width="102" height="52" rx="4" fill="url(#speakerGradLand)"/>
-            <text class="svg-tag-title" id="flowDepthRTitleLand" x="710" y="134" text-anchor="middle" style="font-size:9.5px;" data-i18n="depth_label_svg">ADÃ‚NCIME</text>
-            <text class="svg-tag-value" id="flowDepthRLand" x="710" y="155" text-anchor="middle" style="font-size:13px;">â¤¹ +0.08 m</text>
+            <text class="svg-tag-title" id="flowDepthRTitleLand" x="710" y="134" text-anchor="middle" style="font-size:9.5px;" data-i18n="depth_label_svg">ADÂNCIME</text>
+            <text class="svg-tag-value" id="flowDepthRLand" x="710" y="155" text-anchor="middle" style="font-size:13px;">⤹ +0.08 m</text>
 
             <!-- Top Box -->
             <rect class="svg-box" x="780" y="112" width="140" height="60" rx="6"/>
@@ -629,7 +629,7 @@
           <!-- Center Delay Badge (Only delay value, no redundant distances) -->
           <g id="flowSubDelayGroupLand">
             <rect class="svg-badge-bg" x="350" y="196" width="260" height="44" rx="8"/>
-            <text class="svg-tag-title" id="flowStep1TitleLand" x="480" y="211" text-anchor="middle" data-i18n="flow_step1_title">PASUL 1 Â· SINCRONIZARE SUB</text>
+            <text class="svg-tag-title" id="flowStep1TitleLand" x="480" y="211" text-anchor="middle" data-i18n="flow_step1_title">PASUL 1 · SINCRONIZARE SUB</text>
             <text class="svg-tag-value" id="flowSubDelayValLand" x="480" y="230" text-anchor="middle" style="font-size:14.5px;">DELAY: 0.0 ms</text>
           </g>
 
@@ -644,8 +644,8 @@
           <line class="svg-ray-line" x1="850" y1="250" x2="495" y2="385"/>
 
           <!-- Floating Ray Distance + Travel Time Labels along rays -->
-          <text class="flow-ray-floating" id="flowRayL" x="240" y="325" text-anchor="middle">A Â· dL: 20.0 m (58.2 ms)</text>
-          <text class="flow-ray-floating" id="flowRayR" x="720" y="325" text-anchor="middle">B Â· dR: 20.0 m (58.2 ms)</text>
+          <text class="flow-ray-floating" id="flowRayL" x="240" y="325" text-anchor="middle">A · dL: 20.0 m (58.2 ms)</text>
+          <text class="flow-ray-floating" id="flowRayR" x="720" y="325" text-anchor="middle">B · dR: 20.0 m (58.2 ms)</text>
 
           <!-- Centered Reference Listening Position (RTA / FOH) -->
           <circle cx="480" cy="385" r="28" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.25" stroke-dasharray="3 3"/>
@@ -657,7 +657,7 @@
           <line x1="492" y1="385" x2="503" y2="385" stroke="var(--accent)" stroke-width="1.5"/>
 
           <rect class="svg-badge-bg" x="330" y="415" width="300" height="26" rx="5"/>
-          <text class="svg-listener-label" id="flowListenerTitleLand" x="480" y="432" text-anchor="middle" data-i18n="listening_pos">ASCULTÄ‚TOR (RTA / FOH)</text>
+          <text class="svg-listener-label" id="flowListenerTitleLand" x="480" y="432" text-anchor="middle" data-i18n="listening_pos">ASCULTĂTOR (RTA / FOH)</text>
         </svg>
 
         <!-- 2. MOBILE PORTRAIT COMPACT SVG (viewBox="0 0 420 580") -->
@@ -668,7 +668,7 @@
           <!-- Stage Backline Section -->
           <g id="flowBacklineGroupMob">
             <rect class="svg-backline-zone" id="flowBacklineZoneMob" x="18" y="14" width="384" height="64" rx="5"/>
-            <text class="svg-tag-title" id="flowBacklineTitleMob" x="210" y="29" text-anchor="middle" style="font-size:10px; fill:var(--accent);" data-i18n="stage_backline_zone">BACKLINE ðŸ¥ðŸŽ¸</text>
+            <text class="svg-tag-title" id="flowBacklineTitleMob" x="210" y="29" text-anchor="middle" style="font-size:10px; fill:var(--accent);" data-i18n="stage_backline_zone">BACKLINE 🥁🎸</text>
             <rect class="svg-badge-bg svg-badge-input" id="flowBacklineBadgeMob" x="60" y="34" width="300" height="38" rx="5"/>
             <text class="svg-tag-input-val" id="flowBacklineValMob" x="210" y="58" text-anchor="middle" style="font-size:13.5px;">INPUT: 14.6 ms</text>
           </g>
@@ -685,8 +685,8 @@
             <!-- Depth Offset Badge (Matching Top box gradient) -->
             <rect class="svg-box" x="114" y="96" width="90" height="46" rx="4"/>
             <rect class="svg-box-sub" x="116" y="98" width="86" height="42" rx="3" fill="url(#speakerGradLand)"/>
-            <text class="svg-tag-title" x="159" y="110" text-anchor="middle" style="font-size:7.5px;" data-i18n="depth_label_svg">ADÃ‚NCIME</text>
-            <text class="svg-tag-value" id="flowDepthLMob" x="159" y="130" text-anchor="middle" style="font-size:11.5px;">â¤¹ +0.08 m</text>
+            <text class="svg-tag-title" x="159" y="110" text-anchor="middle" style="font-size:7.5px;" data-i18n="depth_label_svg">ADÂNCIME</text>
+            <text class="svg-tag-value" id="flowDepthLMob" x="159" y="130" text-anchor="middle" style="font-size:11.5px;">⤹ +0.08 m</text>
 
             <!-- Sub L Box -->
             <rect class="svg-box" x="16" y="152" width="92" height="52" rx="4"/>
@@ -699,8 +699,8 @@
             <!-- Depth Offset Badge (Matching Top box gradient) -->
             <rect class="svg-box" x="216" y="96" width="90" height="46" rx="4"/>
             <rect class="svg-box-sub" x="218" y="98" width="86" height="42" rx="3" fill="url(#speakerGradLand)"/>
-            <text class="svg-tag-title" x="261" y="110" text-anchor="middle" style="font-size:7.5px;" data-i18n="depth_label_svg">ADÃ‚NCIME</text>
-            <text class="svg-tag-value" id="flowDepthRMob" x="261" y="130" text-anchor="middle" style="font-size:11.5px;">â¤¹ +0.08 m</text>
+            <text class="svg-tag-title" x="261" y="110" text-anchor="middle" style="font-size:7.5px;" data-i18n="depth_label_svg">ADÂNCIME</text>
+            <text class="svg-tag-value" id="flowDepthRMob" x="261" y="130" text-anchor="middle" style="font-size:11.5px;">⤹ +0.08 m</text>
 
             <rect class="svg-box" x="312" y="96" width="92" height="46" rx="4"/>
             <text class="svg-box-label" x="358" y="113" text-anchor="middle" style="font-size:11px;">TOP R</text>
@@ -722,7 +722,7 @@
           <!-- Center Delay Badge (Mobile) -->
           <g id="flowSubDelayGroupMob">
             <rect class="svg-badge-bg" x="146" y="156" width="128" height="44" rx="5"/>
-            <text class="svg-tag-title" id="flowStep1TitleMob" x="210" y="170" text-anchor="middle" style="font-size:8px;" data-i18n="flow_step1_title">PASUL 1 Â· SINCRONIZARE SUB</text>
+            <text class="svg-tag-title" id="flowStep1TitleMob" x="210" y="170" text-anchor="middle" style="font-size:8px;" data-i18n="flow_step1_title">PASUL 1 · SINCRONIZARE SUB</text>
             <text class="svg-tag-value" id="flowSubDelayValMob" x="210" y="190" text-anchor="middle" style="font-size:11.5px;">0.0 ms</text>
           </g>
 
@@ -745,7 +745,7 @@
           <circle cx="210" cy="495" r="14" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-opacity="0.45"/>
           <circle cx="210" cy="495" r="7" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>
           <rect class="svg-badge-bg" x="70" y="530" width="280" height="26" rx="4"/>
-          <text class="svg-listener-label" id="flowListenerTitleMob" x="210" y="547" text-anchor="middle" style="font-size:9.5px;" data-i18n="listening_pos">ASCULTÄ‚TOR (RTA / FOH)</text>
+          <text class="svg-listener-label" id="flowListenerTitleMob" x="210" y="547" text-anchor="middle" style="font-size:9.5px;" data-i18n="listening_pos">ASCULTĂTOR (RTA / FOH)</text>
         </svg>
       </div>
 
@@ -767,7 +767,7 @@
 
     <div class="modal-header">
       <h2 id="textSizeModalTitle" style="margin:0;"><span class="stagenum">Aa</span> <span data-i18n="text_size_title">Text Size Calibration</span></h2>
-      <button class="modal-close-btn" id="btnCloseTextSize" aria-label="Close Text Size Modal">âœ•</button>
+      <button class="modal-close-btn" id="btnCloseTextSize" aria-label="Close Text Size Modal">✕</button>
     </div>
 
     <!-- Nixie-styled readout for current size -->
@@ -780,7 +780,7 @@
     <div class="modal-stepper-row">
       <button class="btn-action modal-step-btn" id="btnScaleDec10" title="Decrease text size by 10%">-10%</button>
       <button class="btn-action modal-step-btn" id="btnScaleDec5" title="Decrease text size by 5%">-5%</button>
-      <button class="btn-action modal-step-btn" id="btnScaleReset" title="Reset text size to default 100%">â†º 100%</button>
+      <button class="btn-action modal-step-btn" id="btnScaleReset" title="Reset text size to default 100%">↺ 100%</button>
       <button class="btn-action modal-step-btn" id="btnScaleInc5" title="Increase text size by 5%">+5%</button>
       <button class="btn-action modal-step-btn" id="btnScaleInc10" title="Increase text size by 10%">+10%</button>
     </div>
@@ -810,11 +810,11 @@
     <!-- Live Preview Sample Card -->
     <div class="modal-preview-box">
       <div class="preview-title" data-i18n="preview_title">Live Preview</div>
-      <div class="preview-text" data-i18n="preview_sample">Sub HPF: 32.0 Hz Â· Crossover: 90.0 Hz Â· Sub L/R: 5.00 m</div>
+      <div class="preview-text" data-i18n="preview_sample">Sub HPF: 32.0 Hz · Crossover: 90.0 Hz · Sub L/R: 5.00 m</div>
     </div>
 
     <div class="modal-footer">
-      <button class="btn-action modal-done-btn" id="btnDoneTextSize" data-i18n="btn_done">âœ“ Done</button>
+      <button class="btn-action modal-done-btn" id="btnDoneTextSize" data-i18n="btn_done">✓ Done</button>
     </div>
   </div>
 </div>
@@ -828,17 +828,17 @@
     <div class="chassis-screw screw-br"><svg viewBox="0 0 14 14" class="screw-svg"><circle cx="7" cy="7" r="6" class="screw-rim"/><polygon points="7,3.6 9.8,5.2 9.8,8.8 7,10.4 4.2,8.8 4.2,5.2" class="screw-hex"/></svg></div>
 
     <div class="modal-header">
-      <h2 id="manualModalTitle" style="margin:0; font-size:calc(clamp(14px, 1.8vw, 17px) * var(--font-scale, 1));"><span class="stagenum">ðŸ“</span> <span data-i18n="manual_modal_title">Measurement Manual &amp; Field Guide</span></h2>
-      <button class="modal-close-btn" id="btnCloseManual" aria-label="Close Manual Modal">âœ•</button>
+      <h2 id="manualModalTitle" style="margin:0; font-size:calc(clamp(14px, 1.8vw, 17px) * var(--font-scale, 1));"><span class="stagenum">📐</span> <span data-i18n="manual_modal_title">Measurement Manual &amp; Field Guide</span></h2>
+      <button class="modal-close-btn" id="btnCloseManual" aria-label="Close Manual Modal">✕</button>
     </div>
 
     <!-- Category Tabs Navigation -->
     <div class="manual-nav-tabs" id="manualNavTabs" role="tablist">
-      <button type="button" class="manual-tab-btn active" data-tab="sub" role="tab" aria-selected="true"><span class="action-icon">ðŸ”Š</span> <span data-i18n="manual_tab_sub">Sub â†” Listener</span></button>
-      <button type="button" class="manual-tab-btn" data-tab="height" role="tab" aria-selected="false"><span class="action-icon">ðŸ“</span> <span data-i18n="manual_tab_height">Top-Sub Height (V)</span></button>
-      <button type="button" class="manual-tab-btn" data-tab="depth" role="tab" aria-selected="false"><span class="action-icon">â¤¹</span> <span data-i18n="manual_tab_depth">Depth Offset</span></button>
-      <button type="button" class="manual-tab-btn" data-tab="backline" role="tab" aria-selected="false"><span class="action-icon">ðŸ¥</span> <span data-i18n="manual_tab_backline">Stage Backline</span></button>
-      <button type="button" class="manual-tab-btn" data-tab="tips" role="tab" aria-selected="false"><span class="action-icon">ðŸ’¡</span> <span data-i18n="manual_tab_tips">Terminology &amp; Tips</span></button>
+      <button type="button" class="manual-tab-btn active" data-tab="sub" role="tab" aria-selected="true"><span class="action-icon">🔊</span> <span data-i18n="manual_tab_sub">Sub ↔ Listener</span></button>
+      <button type="button" class="manual-tab-btn" data-tab="height" role="tab" aria-selected="false"><span class="action-icon">📐</span> <span data-i18n="manual_tab_height">Top-Sub Height (V)</span></button>
+      <button type="button" class="manual-tab-btn" data-tab="depth" role="tab" aria-selected="false"><span class="action-icon">⤹</span> <span data-i18n="manual_tab_depth">Depth Offset</span></button>
+      <button type="button" class="manual-tab-btn" data-tab="backline" role="tab" aria-selected="false"><span class="action-icon">🥁</span> <span data-i18n="manual_tab_backline">Stage Backline</span></button>
+      <button type="button" class="manual-tab-btn" data-tab="tips" role="tab" aria-selected="false"><span class="action-icon">💡</span> <span data-i18n="manual_tab_tips">Terminology &amp; Tips</span></button>
     </div>
 
     <!-- Scrollable Content Body -->
@@ -877,7 +877,7 @@
               
               <!-- Start Callout Tag -->
               <rect x="10" y="4" width="165" height="18" rx="3" fill="rgba(34,197,94,0.18)" stroke="var(--green)" stroke-width="1"/>
-              <text x="92" y="16" fill="var(--green)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">ðŸ“ 0 cm: BETWEEN 2 DRIVERS</text>
+              <text x="92" y="16" fill="var(--green)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">📍 0 cm: BETWEEN 2 DRIVERS</text>
 
               <!-- Measuring Tape Line -->
               <line x1="90" y1="90" x2="440" y2="90" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 3"/>
@@ -885,7 +885,7 @@
 
               <!-- Tape dimension banner -->
               <rect x="200" y="72" width="160" height="22" rx="4" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2"/>
-              <text x="280" y="87" fill="var(--accent)" font-family="var(--mono)" font-size="11" font-weight="800" text-anchor="middle">D_sub Â· LINE OF PROPAGATION</text>
+              <text x="280" y="87" fill="var(--accent)" font-family="var(--mono)" font-size="11" font-weight="800" text-anchor="middle">D_sub · LINE OF PROPAGATION</text>
 
               <!-- Listener / Measurement Mic -->
               <circle cx="455" cy="90" r="18" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
@@ -896,7 +896,7 @@
 
               <!-- Target Callout Tag -->
               <rect x="370" y="4" width="160" height="18" rx="3" fill="rgba(2,132,199,0.18)" stroke="var(--accent)" stroke-width="1"/>
-              <text x="450" y="16" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">ðŸŽ¯ TARGET: FOH MIC / EAR HEIGHT</text>
+              <text x="450" y="16" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">🎯 TARGET: FOH MIC / EAR HEIGHT</text>
             </svg>
           </div>
 
@@ -905,8 +905,8 @@
             <span class="tape-tag start" data-i18n="man_tag_start">0 cm Start</span>
             <div data-i18n="man_sub_step1">
               <strong>Place 0 cm tape tip at the exact acoustic center of the subwoofer front baffle:</strong><br>
-              â€¢ <em>Dual-driver subwoofers (2Ã—18"):</em> Position the tape end dead-center on the front grille, halfway between the centers of the top and bottom drivers.<br>
-              â€¢ <em>Single-driver subwoofers (1Ã—18" / 1Ã—15"):</em> Position the tape end directly over the center of the driver's dust cap.
+              • <em>Dual-driver subwoofers (2×18"):</em> Position the tape end dead-center on the front grille, halfway between the centers of the top and bottom drivers.<br>
+              • <em>Single-driver subwoofers (1×18" / 1×15"):</em> Position the tape end directly over the center of the driver's dust cap.
             </div>
           </div>
 
@@ -925,8 +925,8 @@
           </div>
 
           <div class="manual-pro-box">
-            <strong data-i18n="man_sub_note_title">ðŸ’¡ Pro Sound Tip â€” L/R Symmetry:</strong>
-            <span data-i18n="man_sub_note_desc">Always measure Sub Left and Sub Right independently. Even a 34 cm distance delta produces a 1.0 ms arrival time difference that must be compensated in <em>Step 1 (Sub â†” Sub Sync)</em> on the closer subwoofer.</span>
+            <strong data-i18n="man_sub_note_title">💡 Pro Sound Tip — L/R Symmetry:</strong>
+            <span data-i18n="man_sub_note_desc">Always measure Sub Left and Sub Right independently. Even a 34 cm distance delta produces a 1.0 ms arrival time difference that must be compensated in <em>Step 1 (Sub ↔ Sub Sync)</em> on the closer subwoofer.</span>
           </div>
         </div>
       </div>
@@ -936,7 +936,7 @@
         <div class="manual-card">
           <div class="manual-card-title">
             <span data-i18n="man_height_title">2. Top-to-Sub Vertical Height Offset (V)</span>
-            <span class="manual-formula-tag">V (m) Â· Î” Height</span>
+            <span class="manual-formula-tag">V (m) · Δ Height</span>
           </div>
 
           <!-- Schematic Diagram -->
@@ -981,7 +981,7 @@
               <line x1="80" y1="155" x2="480" y2="155" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="4 3"/>
               <line x1="80" y1="40" x2="480" y2="155" stroke="var(--accent)" stroke-width="2"/>
               <text x="320" y="172" fill="var(--green)" font-family="var(--mono)" font-size="9" text-anchor="middle">D_sub (Horizontal Base)</text>
-              <text x="330" y="85" fill="var(--accent)" font-family="var(--mono)" font-size="10" font-weight="800" text-anchor="middle">D_hyp = âˆš(D_subÂ² + VÂ²)</text>
+              <text x="330" y="85" fill="var(--accent)" font-family="var(--mono)" font-size="10" font-weight="800" text-anchor="middle">D_hyp = √(D_sub² + V²)</text>
 
               <!-- Listener Icon -->
               <circle cx="480" cy="155" r="14" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
@@ -1002,7 +1002,7 @@
           <div class="manual-tape-step">
             <span class="tape-tag pull" data-i18n="man_tag_plumb">Plumb Line</span>
             <div data-i18n="man_height_step2">
-              <strong>Extend the tape vertically straight up (90Â° perpendicular to the floor/stage deck)</strong> along the speaker mounting pole or rigging support line.
+              <strong>Extend the tape vertically straight up (90° perpendicular to the floor/stage deck)</strong> along the speaker mounting pole or rigging support line.
             </div>
           </div>
 
@@ -1015,8 +1015,8 @@
           </div>
 
           <div class="manual-pro-box">
-            <strong data-i18n="man_height_math_title">ðŸ“ Why Height (V) Matters Acoustically:</strong>
-            <span data-i18n="man_height_math_desc">Because the Top is elevated, its sound travels along the hypotenuse <code>D<sub>hyp</sub> = âˆš(D<sub>sub</sub>Â² + VÂ²)</code>. This geometric path difference adds physical propagation delay to the Top cabinet that DelCalc automatically factors into the crossover alignment.</span>
+            <strong data-i18n="man_height_math_title">📐 Why Height (V) Matters Acoustically:</strong>
+            <span data-i18n="man_height_math_desc">Because the Top is elevated, its sound travels along the hypotenuse <code>D<sub>hyp</sub> = √(D<sub>sub</sub>² + V²)</code>. This geometric path difference adds physical propagation delay to the Top cabinet that DelCalc automatically factors into the crossover alignment.</span>
           </div>
         </div>
       </div>
@@ -1026,7 +1026,7 @@
         <div class="manual-card">
           <div class="manual-card-title">
             <span data-i18n="man_depth_title">3. Voice Coil Depth Offset</span>
-            <span class="manual-formula-tag">Offset (m) Â· + / -</span>
+            <span class="manual-formula-tag">Offset (m) · + / -</span>
           </div>
 
           <!-- Schematic Diagram -->
@@ -1062,13 +1062,13 @@
               <!-- Depth Offset Callout Box -->
               <rect x="230" y="40" width="280" height="110" rx="6" fill="var(--panel)" stroke="var(--border-bright)" stroke-width="1.2"/>
               <text x="370" y="60" fill="var(--text)" font-family="var(--sans)" font-size="11" font-weight="800" text-anchor="middle">SIGN CONVENTIONS</text>
-              <text x="245" y="82" fill="var(--amber)" font-family="var(--mono)" font-size="10.5" font-weight="700">â–¶ POSITIVE (+):</text>
+              <text x="245" y="82" fill="var(--amber)" font-family="var(--mono)" font-size="10.5" font-weight="700">▶ POSITIVE (+):</text>
               <text x="340" y="82" fill="var(--text)" font-family="var(--sans)" font-size="9.5">Top is set back BEHIND Sub</text>
               
-              <text x="245" y="104" fill="var(--green)" font-family="var(--mono)" font-size="10.5" font-weight="700">â–¶ FLUSH (0.00):</text>
+              <text x="245" y="104" fill="var(--green)" font-family="var(--mono)" font-size="10.5" font-weight="700">▶ FLUSH (0.00):</text>
               <text x="340" y="104" fill="var(--text)" font-family="var(--sans)" font-size="9.5">Voice coils on same depth line</text>
 
-              <text x="245" y="126" fill="var(--red)" font-family="var(--mono)" font-size="10.5" font-weight="700">â–¶ NEGATIVE (-):</text>
+              <text x="245" y="126" fill="var(--red)" font-family="var(--mono)" font-size="10.5" font-weight="700">▶ NEGATIVE (-):</text>
               <text x="340" y="126" fill="var(--text)" font-family="var(--sans)" font-size="9.5">Top is flown in FRONT of Sub</text>
             </svg>
           </div>
@@ -1086,14 +1086,14 @@
             <span class="tape-tag pull" data-i18n="man_tag_step_b">Step B: Voice Coil Inset</span>
             <div data-i18n="man_depth_step2">
               <strong>Account for internal driver acoustic center depth:</strong><br>
-              â€¢ <em>18" Subwoofers:</em> Deep cone places the voice coil ~8â€“15 cm behind the grille.<br>
-              â€¢ <em>10"/12" Tops:</em> Shallower cone places the voice coil ~4â€“8 cm behind the grille.<br>
-              â€¢ <em>Flush Grilles:</em> If grilles are physically flush, the default offset is typically around <strong>+0.05 m to +0.08 m</strong> (Top voice coil sits physically in front of Sub voice coil).
+              • <em>18" Subwoofers:</em> Deep cone places the voice coil ~8–15 cm behind the grille.<br>
+              • <em>10"/12" Tops:</em> Shallower cone places the voice coil ~4–8 cm behind the grille.<br>
+              • <em>Flush Grilles:</em> If grilles are physically flush, the default offset is typically around <strong>+0.05 m to +0.08 m</strong> (Top voice coil sits physically in front of Sub voice coil).
             </div>
           </div>
 
           <div class="manual-pro-box">
-            <strong data-i18n="man_depth_rule_title">âš™ï¸ Depth Offset Rule of Thumb:</strong>
+            <strong data-i18n="man_depth_rule_title">⚙️ Depth Offset Rule of Thumb:</strong>
             <span data-i18n="man_depth_rule_desc">For standard pole-mounted tops with grilles aligned flush with the sub front, use <code>+0.08 m</code>. If the top is pushed further back on the sub top plate by 10 cm, enter <code>+0.18 m</code>.</span>
           </div>
         </div>
@@ -1104,7 +1104,7 @@
         <div class="manual-card">
           <div class="manual-card-title">
             <span data-i18n="man_backline_title">4. Stage Backline Alignment Distance</span>
-            <span class="manual-formula-tag">Input Delay Â· D<sub>backline</sub></span>
+            <span class="manual-formula-tag">Input Delay · D<sub>backline</sub></span>
           </div>
 
           <!-- Schematic Diagram -->
@@ -1117,9 +1117,9 @@
               <!-- Drum Kit / Backline Source -->
               <circle cx="70" cy="100" r="16" fill="#2d2938" stroke="var(--accent)" stroke-width="1.5"/>
               <circle cx="70" cy="100" r="5" fill="var(--accent)"/>
-              <text x="70" y="80" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">ðŸ¥ SNARE / DRUMS</text>
+              <text x="70" y="80" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">🥁 SNARE / DRUMS</text>
               <rect x="40" y="4" width="130" height="18" rx="3" fill="rgba(34,197,94,0.18)" stroke="var(--green)" stroke-width="1"/>
-              <text x="105" y="16" fill="var(--green)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">ðŸ“ 0 cm: DRUM KIT / AMPS</text>
+              <text x="105" y="16" fill="var(--green)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">📍 0 cm: DRUM KIT / AMPS</text>
 
               <!-- Measuring Tape Line -->
               <line x1="70" y1="100" x2="440" y2="100" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 3"/>
@@ -1127,14 +1127,14 @@
 
               <!-- Tape dimension banner -->
               <rect x="180" y="88" width="170" height="24" rx="4" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2"/>
-              <text x="265" y="104" fill="var(--accent)" font-family="var(--mono)" font-size="11" font-weight="800" text-anchor="middle">D_backline â†’ PA FRONT</text>
+              <text x="265" y="104" fill="var(--accent)" font-family="var(--mono)" font-size="11" font-weight="800" text-anchor="middle">D_backline → PA FRONT</text>
 
               <!-- Main Front PA Speaker Line -->
               <rect x="445" y="40" width="30" height="90" rx="3" fill="#262330" stroke="var(--border-bright)" stroke-width="1.5"/>
               <line x1="445" y1="20" x2="445" y2="160" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
               <text x="460" y="32" fill="var(--accent)" font-family="var(--sans)" font-size="8.5" font-weight="800" text-anchor="middle">FRONT PA LINE</text>
               <rect x="370" y="4" width="150" height="18" rx="3" fill="rgba(2,132,199,0.18)" stroke="var(--accent)" stroke-width="1"/>
-              <text x="445" y="16" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">ðŸŽ¯ TARGET: PA FRONT PLANE</text>
+              <text x="445" y="16" fill="var(--accent)" font-family="var(--sans)" font-size="9" font-weight="800" text-anchor="middle">🎯 TARGET: PA FRONT PLANE</text>
             </svg>
           </div>
 
@@ -1180,12 +1180,12 @@
 
             <div class="glossary-item">
               <div class="glossary-term" data-i18n="man_term_plumb_title">Plumb Line (Fir cu Plumb)</div>
-              <div class="glossary-def" data-i18n="man_term_plumb_desc">A strictly vertical line (90Â° to earth/stage) used to reference depth setback and vertical height between elevated tops and ground subs.</div>
+              <div class="glossary-def" data-i18n="man_term_plumb_desc">A strictly vertical line (90° to earth/stage) used to reference depth setback and vertical height between elevated tops and ground subs.</div>
             </div>
 
             <div class="glossary-item">
               <div class="glossary-term" data-i18n="man_term_hyp_title">Hypotenuse Path (D_hyp)</div>
-              <div class="glossary-def" data-i18n="man_term_hyp_desc">The direct diagonal acoustic sound path from an elevated top speaker to audience ear height: <code>D<sub>hyp</sub> = âˆš(DÂ² + VÂ²)</code>.</div>
+              <div class="glossary-def" data-i18n="man_term_hyp_desc">The direct diagonal acoustic sound path from an elevated top speaker to audience ear height: <code>D<sub>hyp</sub> = √(D² + V²)</code>.</div>
             </div>
 
             <div class="glossary-item">
@@ -1205,17 +1205,17 @@
           </div>
 
           <div class="manual-pro-box" style="margin-top:12px;">
-            <strong data-i18n="man_temp_tip_title">ðŸŒ¡ï¸ Speed of Sound Tip:</strong>
-            <span data-i18n="man_temp_tip_desc">Remember that temperature shifts change the speed of sound (<code>c = 331.3 + 0.606 Ã— T</code>). Always check and update the Ambient Temperature field for daytime vs nighttime outdoor festivals.</span>
+            <strong data-i18n="man_temp_tip_title">🌡️ Speed of Sound Tip:</strong>
+            <span data-i18n="man_temp_tip_desc">Remember that temperature shifts change the speed of sound (<code>c = 331.3 + 0.606 × T</code>). Always check and update the Ambient Temperature field for daytime vs nighttime outdoor festivals.</span>
           </div>
 
           <div class="manual-pro-box" style="margin-top:14px; border-left:3px solid var(--accent);">
-            <div style="font-weight:800; font-size:1.05em; color:var(--accent); margin-bottom:6px;" data-i18n="man_phase_rules_title">ðŸŽ›ï¸ Electro-Acoustic Phase Inversion Rules</div>
+            <div style="font-weight:800; font-size:1.05em; color:var(--accent); margin-bottom:6px;" data-i18n="man_phase_rules_title">🎛️ Electro-Acoustic Phase Inversion Rules</div>
             <div data-i18n="man_phase_rules_desc"></div>
           </div>
 
           <div class="manual-pro-box" style="margin-top:12px; border-left:3px solid var(--green);">
-            <div style="font-weight:800; font-size:1.05em; color:var(--green); margin-bottom:6px;" data-i18n="man_null_test_title">ðŸŽ¯ Sine Wave Null Test Calibration Workflow</div>
+            <div style="font-weight:800; font-size:1.05em; color:var(--green); margin-bottom:6px;" data-i18n="man_null_test_title">🎯 Sine Wave Null Test Calibration Workflow</div>
             <div data-i18n="man_null_test_desc"></div>
           </div>
         </div>
@@ -1225,7 +1225,7 @@
 
     <!-- Modal Footer -->
     <div class="modal-footer">
-      <button class="btn-action modal-done-btn" id="btnDoneManual" data-i18n="btn_done">âœ“ Done</button>
+      <button class="btn-action modal-done-btn" id="btnDoneManual" data-i18n="btn_done">✓ Done</button>
     </div>
   </div>
 </div>
@@ -1242,6 +1242,7 @@
     <span class="sticky-val" id="stickyStep2">0.00 ms</span>
   </div>
 </div>
+
 
 <script src="app.js"></script>
 </body>
