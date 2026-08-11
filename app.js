@@ -42,6 +42,8 @@ const i18n = {
     speed_sound_prefix: 'Speed of sound:',
     topSubDist_label: 'Top-to-Sub Height (V)',
     depthOffset_label: 'Voice Coil Depth Offset',
+    topTuning_label: 'Top Tuning Frequency (Fb)',
+    topTuning_hint: 'JBL 2226H / reflex tuning (Hz)',
     geom_note: 'Vertical distance computes the hypotenuse propagation path to the listener. Depth offset is positive (+) if the Top is set back behind the Sub.',
     qref_title: 'Field Quick Reference',
     qref_speed: 'Speed of sound (configured temperature)',
@@ -73,7 +75,7 @@ const i18n = {
     step2_desc: 'Add {ms} ms of OUTPUT channel delay to the {target} (evaluating phase alignment at {freq}Hz).',
     step2_bd_dsp: 'DSP: Sub protective HPF group delay @ {freq}Hz',
     step2_bd_sub_phase: 'Acoustic: Sub phase wrap (SRC 400 LO @ 38Hz)',
-    step2_bd_top_phase: 'Acoustic: Top phase wrap (JBL 2226H @ 50Hz)',
+    step2_bd_top_phase: 'Acoustic: Top phase wrap (JBL 2226H @ {freq}Hz)',
     step2_bd_geom: 'Geometry: Top vs. Sub hypotenuse path offset',
     step2_bd_total: 'Total delay to apply (0° Normal)',
     phase_header: 'Polarity Inversion & Acoustic Workaround',
@@ -228,6 +230,8 @@ const i18n = {
     speed_sound_prefix: 'Viteza sunetului:',
     topSubDist_label: 'Înălțime Top-Sub (V)',
     depthOffset_label: 'Decalaj Adâncime Voice Coil',
+    topTuning_label: 'Frecvență Acordaj Top (Fb)',
+    topTuning_hint: 'JBL 2226H / acordaj reflex (Hz)',
     geom_note: 'Distanța verticală calculează ipotenuza traseului de propagare către ascultător. Decalajul de adâncime este pozitiv (+) dacă Top-ul este poziționat în spatele Sub-ului.',
     qref_title: 'Ghid Rapid de Referință',
     qref_speed: 'Viteza sunetului (temperatura configurată)',
@@ -259,7 +263,7 @@ const i18n = {
     step2_desc: 'Adăugați {ms} ms de OUTPUT delay pe {target} (evaluând alinierea de fază la {freq}Hz).',
     step2_bd_dsp: 'DSP: Group delay filtru protectiv Sub HPF @ {freq}Hz',
     step2_bd_sub_phase: 'Acustic: Rotație fază Sub (SRC 400 LO @ 38Hz)',
-    step2_bd_top_phase: 'Acustic: Rotație fază Top (JBL 2226H @ 50Hz)',
+    step2_bd_top_phase: 'Acustic: Rotație fază Top (JBL 2226H @ {freq}Hz)',
     step2_bd_geom: 'Geometrie: Decalaj traseu ipotenuză Top vs. Sub',
     step2_bd_total: 'Delay total de aplicat (0° Normal)',
     phase_header: 'Inversare Polaritate & Soluție Acustică',
@@ -525,6 +529,7 @@ const backlineHintEl = document.getElementById('backlineHint');
 const backlineStepperEl = document.getElementById('backlineStepper');
 const topSubDistEl = document.getElementById('topSubDist');
 const depthOffsetEl = document.getElementById('depthOffset');
+const topTuningEl = document.getElementById('topTuning');
 const tempEl = document.getElementById('temp');
 const speedHintEl = document.getElementById('speedHint');
 const crossoverAlertEl = document.getElementById('crossoverAlert');
@@ -846,7 +851,7 @@ document.querySelectorAll('.step-btn').forEach(btn => {
   });
 });
 
-[hpfFreqEl, xoFreqEl, subLEl, subREl, backlineDistEl, topSubDistEl, depthOffsetEl, tempEl].forEach(el => {
+[hpfFreqEl, xoFreqEl, subLEl, subREl, backlineDistEl, topSubDistEl, depthOffsetEl, topTuningEl, tempEl].forEach(el => {
   if(el){
     el.addEventListener('input', recalc);
     el.addEventListener('change', recalc);
@@ -856,16 +861,16 @@ document.querySelectorAll('.step-btn').forEach(btn => {
 // Stage Backline Bypass Switch Handler
 if (backlineSwitchEl) {
   backlineSwitchEl.addEventListener('click', () => {
-    const isTop = backlineSwitchEl.dataset.pos === 'top';
-    backlineSwitchEl.dataset.pos = isTop ? 'bottom' : 'top';
-    if(backlineLabelOn) backlineLabelOn.classList.toggle('active', !isTop);
-    if(backlineLabelOff) backlineLabelOff.classList.toggle('active', isTop);
-    state.enableBackline = !isTop;
+    const isLeft = backlineSwitchEl.dataset.pos === 'left';
+    backlineSwitchEl.dataset.pos = isLeft ? 'right' : 'left';
+    if(backlineLabelOn) backlineLabelOn.classList.toggle('active', !isLeft);
+    if(backlineLabelOff) backlineLabelOff.classList.toggle('active', isLeft);
+    state.enableBackline = !isLeft;
     if(backlineStepperEl) {
-      backlineStepperEl.classList.toggle('bypassed', isTop);
+      backlineStepperEl.classList.toggle('bypassed', isLeft);
     }
     if(backlineHintEl) {
-      backlineHintEl.textContent = !isTop ? t('backline_hint_active') : t('backline_hint_disabled');
+      backlineHintEl.textContent = !isLeft ? t('backline_hint_active') : t('backline_hint_disabled');
     }
     recalc();
   });
@@ -958,12 +963,13 @@ btnReset.addEventListener('click', () => {
 
   hpfFreqEl.value = '40';
   xoFreqEl.value = '125';
-  subLEl.value = '20.0';
-  subREl.value = '20.0';
+  subLEl.value = '5.00';
+  subREl.value = '5.00';
   if(backlineDistEl) backlineDistEl.value = '5.00';
   tempEl.value = '20';
   topSubDistEl.value = '1.20';
   depthOffsetEl.value = '0.08';
+  if(topTuningEl) topTuningEl.value = '50';
 
   document.getElementById('hpfSwitch').dataset.pos = 'top';
   document.getElementById('hpfLabelBW').classList.add('active');
@@ -973,7 +979,7 @@ btnReset.addEventListener('click', () => {
   document.getElementById('xoLabelLR').classList.add('active');
 
   if(backlineSwitchEl) {
-    backlineSwitchEl.dataset.pos = 'top';
+    backlineSwitchEl.dataset.pos = 'left';
     if(backlineLabelOn) backlineLabelOn.classList.add('active');
     if(backlineLabelOff) backlineLabelOff.classList.remove('active');
     if(backlineStepperEl) backlineStepperEl.classList.remove('bypassed');
@@ -1045,8 +1051,9 @@ function recalc(){
   const gdAtXo = subHpfGD; // Differential DSP filter delay on Sub channel
 
   // Acoustic enclosure phase wrap modeling:
-  // JBL 2226H (Top reflex tuned @ 50Hz) and Dynacord SRC 400 LO (Sub Gauss reflex tuned @ 38Hz)
-  const topAcousticGD = butterworthGD(4, 50, xF) * 1000;
+  // JBL 2226H (Top reflex tuned @ topFb Hz) and Dynacord SRC 400 LO (Sub Gauss reflex tuned @ 38Hz)
+  const topFb = Math.max(10, parseFloat(topTuningEl ? topTuningEl.value : '50') || 50);
+  const topAcousticGD = butterworthGD(4, topFb, xF) * 1000;
   const subAcousticGD = butterworthGD(4, 38, xF) * 1000;
   const driverPhaseDiff = subAcousticGD - topAcousticGD;
 
@@ -1078,7 +1085,7 @@ function recalc(){
   document.getElementById('step2Breakdown').innerHTML = `
     <div><span>${t('step2_bd_dsp', { freq: xF })}</span><span class="val">+${fmt(gdAtXo)} ms</span></div>
     <div><span>${t('step2_bd_sub_phase')}</span><span class="val">+${fmt(subAcousticGD)} ms</span></div>
-    <div><span>${t('step2_bd_top_phase')}</span><span class="val">-${fmt(topAcousticGD)} ms</span></div>
+    <div><span>${t('step2_bd_top_phase', { freq: topFb })}</span><span class="val">-${fmt(topAcousticGD)} ms</span></div>
     <div><span>${t('step2_bd_geom')}</span><span class="val">-${fmt(propDiff)} ms</span></div>
     <div style="border-top:1px dashed var(--border); margin-top:4px; padding-top:4px;"><span>${t('step2_bd_total')}</span><span class="val">${fmt(step2abs)} ms → ${targetSide}</span></div>`;
 
