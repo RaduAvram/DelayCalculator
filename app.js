@@ -1160,7 +1160,7 @@ function recalc(){
       recType = 'ok';
       recBadgeText = t('rec_badge_opt');
       recShortText = t('rec_short_opt');
-      normBox.classList.add('optimal');
+      normBox.classList.add('recommended');
     } else if (!s2ok && s2InvOk) {
       // Emergency DSP ceiling workaround: Normal 0° exceeds 10ms hardware limit
       recType = 'alt';
@@ -1178,7 +1178,7 @@ function recalc(){
       recType = 'ok';
       recBadgeText = t('rec_badge_opt');
       recShortText = t('rec_short_opt');
-      normBox.classList.add('optimal');
+      normBox.classList.add('recommended');
     } else {
       recType = 'warn';
       recBadgeText = t('rec_badge_warn');
@@ -1189,17 +1189,31 @@ function recalc(){
   document.getElementById('phaseBadgeContainer').innerHTML =
     `<span class="phase-badge ${recType}">${recBadgeText}</span>`;
 
-  document.getElementById('phaseNormVal').innerHTML = `${fmt(step2abs)} <span class="unit">ms</span>`;
+  const normValEl = document.getElementById('phaseNormVal');
+  const normStatusEl = document.getElementById('phaseNormStatus');
+  if (s2ok) {
+    normValEl.innerHTML = `${fmt(step2abs)} <span class="unit">ms</span>`;
+    normValEl.classList.remove('exceeded');
+    normStatusEl.innerHTML = '';
+  } else {
+    normValEl.innerHTML = `<span class="val-strikethrough">${fmt(step2abs)}</span> <span class="unit">ms</span>`;
+    normValEl.classList.add('exceeded');
+    normStatusEl.innerHTML = `<span class="phase-status-pill fail">${t('exceeds_limit')}</span>`;
+  }
   document.getElementById('phaseNormTarget').textContent = `${t('target_prefix')} ${targetSide}`;
-  document.getElementById('phaseNormStatus').innerHTML = s2ok
-    ? `<span class="phase-status-pill pass">${t('within_limit')}</span>`
-    : `<span class="phase-status-pill fail">${t('exceeds_limit')}</span>`;
 
-  document.getElementById('phaseInvVal').innerHTML = `${fmt(invDelayMs)} <span class="unit">ms</span>`;
+  const invValEl = document.getElementById('phaseInvVal');
+  const invStatusEl = document.getElementById('phaseInvStatus');
+  if (s2InvOk) {
+    invValEl.innerHTML = `${fmt(invDelayMs)} <span class="unit">ms</span>`;
+    invValEl.classList.remove('exceeded');
+    invStatusEl.innerHTML = '';
+  } else {
+    invValEl.innerHTML = `<span class="val-strikethrough">${fmt(invDelayMs)}</span> <span class="unit">ms</span>`;
+    invValEl.classList.add('exceeded');
+    invStatusEl.innerHTML = `<span class="phase-status-pill fail">${t('exceeds_limit')}</span>`;
+  }
   document.getElementById('phaseInvTarget').textContent = `${t('target_prefix')} ${invTargetSide}`;
-  document.getElementById('phaseInvStatus').innerHTML = s2InvOk
-    ? `<span class="phase-status-pill pass">${t('within_limit')}</span>`
-    : `<span class="phase-status-pill fail">${t('exceeds_limit')}</span>`;
 
   // 5. ACTIONABLE STEPS & NULL TEST FIELD CALIBRATION GUIDE:
   let actionHtml = '';
