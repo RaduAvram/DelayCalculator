@@ -85,6 +85,9 @@ const i18n = {
     within_limit: '✓ Within 10ms limit',
     exceeds_limit: '✕ Exceeds 10ms ceiling',
     phase_action_title: '🎛️ Crossover Menu Configuration Steps',
+    phase_disclaimer_title_filter: '⚠️ Electro-Acoustic Alert: Inversion Required to Avoid Destructive Cancellation',
+    phase_disclaimer_desc_filter: 'Even though Normal (0°) polarity shows a smaller delay number ({normDelay} ms), the <strong>{xoType} {xoOrder} dB/oct crossover filter</strong> inherently introduces a <strong>180° phase flip (phase opposition)</strong> between Sub and Top. Applying the smaller 0° delay aligns the drivers into <em>direct acoustic cancellation</em>, creating a <strong>deep cancellation notch (−∞ dB silence)</strong> at {freq} Hz. Inverting Sub polarity to 180° (with {invDelay} ms delay) corrects the filter phase shift, ensuring flat, constructive +6 dB acoustic summation.',
+    phase_disclaimer_manual_link: '📖 View Full Electro-Acoustic Phase Physics in Manual (Tab 5) →',
     phase_bd_freq: 'Crossover Frequency (f<sub>xo</sub>)',
     phase_bd_period: 'Period:',
     phase_bd_half_wave: 'Half-Wavelength (&lambda;/2) Acoustic Shift',
@@ -273,6 +276,9 @@ const i18n = {
     within_limit: '✓ În limita de 10ms',
     exceeds_limit: '✕ Depășește plafonul de 10ms',
     phase_action_title: '🎛️ Pași Configurare Meniu Crossover',
+    phase_disclaimer_title_filter: '⚠️ Alertă Electro-Acustică: Inversare Obligatorie pentru Evitarea Anulării Destructive',
+    phase_disclaimer_desc_filter: 'Deși polaritatea Normală (0°) afișează o valoare numerică mai mică de delay ({normDelay} ms), filtrul de crossover <strong>{xoType} {xoOrder} dB/oct</strong> introduce un <strong>defazaj inerent de 180° (opoziție de fază)</strong> între Sub și Top. Aplicarea delay-ului mai mic pe 0° aliniază difuzoarele în <em>anulare acustică directă</em>, provocând un <strong>gol adânc de anulare (−∞ dB / liniște)</strong> la {freq} Hz. Inversarea polarității Sub-ului la 180° (cu {invDelay} ms delay) compensează rotația filtrului, asigurând o însumare constructivă de +6 dB.',
+    phase_disclaimer_manual_link: '📖 Vezi Explicația Detaliată a Fizicii de Fază în Manual (Tab 5) →',
     phase_bd_freq: 'Frecvență Crossover (f<sub>xo</sub>)',
     phase_bd_period: 'Perioadă:',
     phase_bd_half_wave: 'Decalaj Acustic Semi-Lungime de Undă (&lambda;/2)',
@@ -1296,6 +1302,28 @@ function recalc(){
   }
   document.getElementById('phaseActionSteps').innerHTML = actionHtml;
 
+  const discBox = document.getElementById('phaseDisclaimerBox');
+  const discTitle = document.getElementById('phaseDisclaimerTitle');
+  const discDesc = document.getElementById('phaseDisclaimerDesc');
+  const discLink = document.getElementById('phaseDisclaimerLink');
+
+  if (discBox && discTitle && discDesc) {
+    if (isFilter180 || isFilter270) {
+      discBox.style.display = 'block';
+      discTitle.textContent = t('phase_disclaimer_title_filter');
+      discDesc.innerHTML = t('phase_disclaimer_desc_filter', {
+        xoType: state.xoType,
+        xoOrder: state.xoOrder * 6,
+        freq: xF,
+        normDelay: fmt(step2abs),
+        invDelay: fmt(invDelayMs)
+      });
+      if (discLink) discLink.textContent = t('phase_disclaimer_manual_link');
+    } else {
+      discBox.style.display = 'none';
+    }
+  }
+
   document.getElementById('phaseBreakdown').innerHTML = `
     <div><span>${t('phase_bd_freq')}</span><span class="val">${xF} Hz (${t('phase_bd_period')} ${fmt(tPeriod,1)} ms)</span></div>
     <div><span>${t('phase_bd_half_wave')}</span><span class="val">&plusmn;${fmt(tHalf,2)} ms (&asymp; ${fmt(halfDistM,2)}m)</span></div>
@@ -1771,6 +1799,19 @@ function initManualModal() {
       switchTab(btn.dataset.tab);
     });
   });
+
+  const discLink = document.getElementById('phaseDisclaimerLink');
+  if (discLink) {
+    const handleDiscLink = (e) => {
+      e.preventDefault();
+      openModal();
+      switchTab('tips');
+    };
+    discLink.addEventListener('click', handleDiscLink);
+    discLink.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') handleDiscLink(e);
+    });
+  }
 }
 
 function initLanguage() {
