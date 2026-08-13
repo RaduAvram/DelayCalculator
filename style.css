@@ -2002,6 +2002,26 @@ h1{
   flex:1 1 auto;
   min-width:0;
 }
+.direct-header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-nixie-toggle{
+  height:24px !important;
+  padding:0 8px !important;
+  font-size:calc(10px * var(--font-scale, 1)) !important;
+  font-weight:700 !important;
+  border-radius:4px !important;
+  background:var(--panel) !important;
+  border:1px solid var(--border-bright) !important;
+}
+.btn-nixie-toggle.active{
+  border-color:var(--accent) !important;
+  background:var(--accent-glow) !important;
+  color:var(--accent) !important;
+  box-shadow:0 0 8px var(--accent-glow) !important;
+}
 .direct-ch-card{
   background:rgba(0,0,0,0.35);
   border:1px solid var(--border);
@@ -2012,6 +2032,7 @@ h1{
   align-items:flex-start;
   box-shadow:inset 0 1px 4px rgba(0,0,0,0.4);
   min-width:0;
+  transition:all 0.15s ease;
 }
 [data-theme="light"] .direct-ch-card{
   background:rgba(255,255,255,0.7);
@@ -2034,6 +2055,28 @@ h1{
   color:var(--accent);
   letter-spacing:-0.02em;
   line-height:1.2;
+}
+.direct-ch-val.nixie-mode{
+  display:flex;
+  align-items:center;
+  gap:1.5px;
+  padding:2px 0;
+}
+.direct-ch-val.nixie-mode .nixie-tube,
+.direct-ch-val.nixie-mode .lcd-cell{
+  width:14px;
+  height:22px;
+  border-radius:2px;
+}
+.direct-ch-val.nixie-mode .nixie-dot-tube,
+.direct-ch-val.nixie-mode .lcd-dot-wrap{
+  width:5px;
+  height:22px;
+}
+.direct-ch-val.nixie-mode .nixie-unit-tube,
+.direct-ch-val.nixie-mode .lcd-unit-cell{
+  width:10px;
+  height:18px;
 }
 .direct-ch-dist{
   font-family:var(--mono);
@@ -2084,6 +2127,127 @@ h1{
   margin-top:6px;
   line-height:1.4;
   text-align:center;
+}
+
+/* Manual Calculation Engine Selector Styles */
+.manual-engine-card{
+  margin-top:12px;
+  margin-bottom:14px;
+  padding:12px 14px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--border-bright);
+  border-radius:8px;
+}
+[data-theme="light"] .manual-engine-card{
+  background:rgba(255,255,255,0.75);
+}
+.manual-engine-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:8px;
+}
+.engine-title{
+  font-family:var(--sans);
+  font-size:calc(12px * var(--font-scale, 1));
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:0.02em;
+}
+.engine-badge{
+  font-family:var(--mono);
+  font-size:calc(9.5px * var(--font-scale, 1));
+  font-weight:800;
+  padding:2px 8px;
+  border-radius:4px;
+  background:var(--accent-glow);
+  border:1px solid var(--accent);
+  color:var(--accent);
+  letter-spacing:0.04em;
+}
+.engine-desc{
+  font-family:var(--sans);
+  font-size:calc(11px * var(--font-scale, 1));
+  color:var(--dim);
+  line-height:1.4;
+  margin-bottom:10px;
+}
+.engine-options-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+@media(max-width:700px){
+  .engine-options-grid{
+    grid-template-columns:1fr;
+  }
+}
+.btn-engine-opt{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:10px 12px;
+  text-align:left;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  user-select:none;
+}
+.btn-engine-opt:hover{
+  border-color:var(--accent);
+  background:var(--panel-hover);
+}
+.btn-engine-opt.active{
+  border-color:var(--accent);
+  background:var(--accent-glow);
+  box-shadow:0 0 10px var(--accent-glow);
+}
+.opt-radio{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  border:2px solid var(--border-bright);
+  background:transparent;
+  margin-top:2px;
+  flex-shrink:0;
+  transition:all 0.15s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-engine-opt.active .opt-radio{
+  border-color:var(--accent);
+}
+.btn-engine-opt.active .opt-radio::after{
+  content:'';
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent);
+}
+.opt-info{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.opt-info strong{
+  font-family:var(--sans);
+  font-size:calc(11.5px * var(--font-scale, 1));
+  font-weight:700;
+  color:var(--text);
+}
+.btn-engine-opt.active .opt-info strong{
+  color:var(--accent);
+}
+.opt-info span{
+  font-family:var(--sans);
+  font-size:calc(10px * var(--font-scale, 1));
+  color:var(--dim);
+  line-height:1.35;
 }
 
 /* ═══════════════════════════════════════════════════════════════

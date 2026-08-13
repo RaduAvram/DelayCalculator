@@ -8,7 +8,9 @@ const state = {
   xoType: 'LR',
   xoOrder: 4,
   allowPolarityInvert: false,
-  enableBackline: true
+  enableBackline: true,
+  calcMode: 'phase', // 'phase' (Mode A: Smaart-Grade Phase Angle, Default) | 'gd' (Mode B: Group Delay Slope)
+  matrixNixie: false // false (Clean LCD numbers) | true (Vintage Glowing Nixie Tubes)
 };
 
 const i18n = {
@@ -41,10 +43,12 @@ const i18n = {
     temp_label: 'Ambient Temperature',
     speed_sound_prefix: 'Speed of sound:',
     topSubDist_label: 'Top-to-Sub Height (V)',
-    depthOffset_label: 'Voice Coil Depth Offset',
+    micHeight_label: 'Measurement / Ear Height (H_mic)',
+    micHeight_hint: 'RTA mic / FOH standing (m)',
+    depthOffset_label: 'Voice Coil Depth Offset (+ = Top Forward / − = Recessed)',
     topTuning_label: 'Top Tuning Frequency (Fb)',
     topTuning_hint: 'JBL 2226H / reflex tuning (Hz)',
-    geom_note: 'Vertical distance computes the hypotenuse propagation path to the listener. Depth offset is positive (+) if the Top is set back behind the Sub.',
+    geom_note: 'Vertical distance & mic height compute the true 3D hypotenuse propagation path. Depth offset is positive (+) if the Top driver is physically forward (closer to audience) than the Sub voice coil.',
     qref_title: 'Field Quick Reference',
     qref_speed: 'Speed of sound (configured temperature)',
     qref_input_delay: 'Input Delay: Stage Backline → PA',
@@ -53,7 +57,9 @@ const i18n = {
     qref_step2_inv: 'Step 2: Output delay (180° Inverted)',
     qref_polarity_rec: 'Recommended Polarity Setting',
     qref_gd: 'Total Sub GD @ crossover freq',
+    qref_phase: 'Total Sub Lead @ crossover freq',
     direct_title: 'Field Quick Direct Values',
+    btn_nixie_toggle_title: 'Toggle Nixie Tube / Clean LCD Display Mode',
     input_delay_card_title: 'SYSTEM INPUT DELAY (BACKLINE)',
     polarity_title: 'POLARITY',
     pol_0_only: '0° ONLY',
@@ -74,9 +80,12 @@ const i18n = {
     step2_plate: 'OUTPUT DELAY · TOP-TO-SUB (0° NORMAL POLARITY)',
     step2_desc: 'Add {ms} ms of OUTPUT channel delay to the {target} (evaluating phase alignment at {freq}Hz).',
     step2_bd_dsp: 'DSP: Sub protective HPF group delay @ {freq}Hz',
+    step2_bd_dsp_phase: 'DSP: Sub HPF phase lead @ {freq}Hz ({deg}°)',
     step2_bd_sub_phase: 'Acoustic: Sub phase wrap (SRC 400 LO @ 38Hz)',
+    step2_bd_sub_phase_ang: 'Acoustic: Sub phase lead (SRC 400 LO @ 38Hz · {deg}°)',
     step2_bd_top_phase: 'Acoustic: Top phase wrap (JBL 2226H @ {freq}Hz)',
-    step2_bd_geom: 'Geometry: Top vs. Sub hypotenuse path offset',
+    step2_bd_top_phase_ang: 'Acoustic: Top phase lead (JBL 2226H @ {freq}Hz · {deg}°)',
+    step2_bd_geom: 'Geometry: Top vs. Sub 3D path offset',
     step2_bd_total: 'Total delay to apply (0° Normal)',
     phase_header: 'Polarity Inversion & Acoustic Workaround',
     norm_opt_tag: '0° Normal Polarity',
@@ -113,7 +122,7 @@ const i18n = {
     preview_title: 'Live Preview',
     preview_sample: 'Sub HPF: 32.0 Hz · Crossover: 90.0 Hz · Sub L/R: 5.00 m',
     btn_done: '✓ Done',
-    footer_text: 'Group delay computed from closed-form Butterworth pole positions. Acoustic phase shifts mapped to JBL 2226H (50Hz reflex) and Dynacord SRC 400 LO (38Hz reflex) profiles.',
+    footer_text: 'Phase & Group delay computed from closed-form Butterworth pole positions. Acoustic phase shifts mapped to JBL 2226H (50Hz reflex) and Dynacord SRC 400 LO (38Hz reflex) profiles.',
     sub_pair: 'SUB pair',
     top_pair: 'TOP pair',
     matched: 'Matched',
@@ -165,20 +174,20 @@ const i18n = {
     man_sub_title: '1. Subwoofer to Listening Point (D_sub-L & D_sub-R)',
     man_sub_step1: '<strong>Place 0 cm tape tip at the exact acoustic center of the subwoofer front baffle:</strong><br>• <em>Dual-driver subwoofers (2×18"):</em> Position the tape end dead-center on the front grille, halfway between the centers of the top and bottom drivers.<br>• <em>Single-driver subwoofers (1×18" / 1×15"):</em> Position the tape end directly over the center of the driver\'s dust cap.',
     man_sub_step2: '<strong>Pull the measuring tape in a straight direct line of sight (line-of-propagation)</strong> from the subwoofer baffle to the designated listening position (FOH mix console or RTA measurement mic). Keep the tape taut without sagging.',
-    man_sub_step3: '<strong>Read the distance at ear height (~1.6 m seated / ~1.7 m standing)</strong> or directly at the tip of the RTA measurement microphone diaphragm.',
+    man_sub_step3: '<strong>Read the distance at ear height (~1.6 m seated / ~1.75 m standing)</strong> or directly at the tip of the RTA measurement microphone diaphragm.',
     man_sub_note_title: '💡 Pro Sound Tip — L/R Symmetry:',
     man_sub_note_desc: 'Always measure Sub Left and Sub Right independently. Even a 34 cm distance delta produces a 1.0 ms arrival time difference that must be compensated in <em>Step 1 (Sub ↔ Sub Sync)</em> on the closer subwoofer.',
     man_height_title: '2. Top-to-Sub Vertical Height Offset (V)',
     man_height_step1: '<strong>Place 0 cm tape tip at the horizontal centerline / acoustic center of the Subwoofer:</strong><br>Align the tape with the center line of the subwoofer\'s front baffle.',
     man_height_step2: '<strong>Extend the tape vertically straight up (90° perpendicular to the floor/stage deck)</strong> along the speaker mounting pole or rigging support line.',
     man_height_step3: '<strong>Read the height at the acoustic center of the Top cabinet:</strong><br>Typically located at the vertical midpoint between the high-frequency horn throat and the mid-bass woofer cone.',
-    man_height_math_title: '📐 Why Height (V) Matters Acoustically:',
-    man_height_math_desc: 'Because the Top is elevated, its sound travels along the hypotenuse <code>D<sub>hyp</sub> = √(D<sub>sub</sub>² + V²)</code>. This geometric path difference adds physical propagation delay to the Top cabinet that DelCalc automatically factors into the crossover alignment.',
+    man_height_math_title: '📐 Why Height (V) & Measurement Height (H_mic) Matter:',
+    man_height_math_desc: 'Because the Top is elevated and the measurement mic is at standing height (default 1.75 m), DelCalc computes the true 3D diagonal path <code>D<sub>top</sub> = √(D<sub>sub</sub>² − H<sub>mic</sub>² + (V − H<sub>mic</sub>)²)</code>. This geometric path difference provides millimeter-accurate time-of-flight alignment.',
     man_depth_title: '3. Voice Coil Depth Offset',
     man_depth_step1: '<strong>Measure physical horizontal setback between front grilles:</strong><br>Drop a plumb line or hold a straight edge down from the Top front grille to the Sub front grille. Measure the horizontal distance between the two planes.',
-    man_depth_step2: '<strong>Account for internal driver acoustic center depth:</strong><br>• <em>18" Subwoofers:</em> Deep cone places the voice coil ~8–15 cm behind the grille.<br>• <em>10"/12" Tops:</em> Shallower cone places the voice coil ~4–8 cm behind the grille.<br>• <em>Flush Grilles:</em> If grilles are physically flush, the default offset is typically around <strong>+0.05 m to +0.08 m</strong> (Top voice coil sits physically in front of Sub voice coil).',
+    man_depth_step2: '<strong>Account for internal driver acoustic center depth:</strong><br>• <em>18" Subwoofers:</em> Deep cone places the voice coil ~10–15 cm behind the grille.<br>• <em>10"/12" Tops:</em> Shallower cone places the voice coil ~3–6 cm behind the grille.<br>• <em>Flush Grilles:</em> If grilles are physically flush, the Top 12" driver is physically closer to the audience than the 18" sub voice coil by ~8 cm. This is entered as <strong>+0.08 m</strong>.',
     man_depth_rule_title: '⚙️ Depth Offset Rule of Thumb:',
-    man_depth_rule_desc: 'For standard pole-mounted tops with grilles aligned flush with the sub front, use <code>+0.08 m</code>. If the top is pushed further back on the sub top plate by 10 cm, enter <code>+0.18 m</code>.',
+    man_depth_rule_desc: 'For standard pole-mounted tops with grilles aligned flush with the sub front, use <code>+0.08 m</code> (Top driver is closer to listener $\rightarrow$ receives positive delay). If the top is physically set back behind the sub on the top plate by 10 cm, enter <code>-0.02 m</code> (+0.08m voice coil offset − 0.10m setback).',
     man_backline_title: '4. Stage Backline Alignment Distance',
     man_backline_step1: '<strong>Place 0 cm tape tip at the unamplified acoustic sound source on stage:</strong><br>Usually the center of the acoustic snare drum or the front grille of the loudest guitar/bass amplifier on stage.',
     man_backline_step2: '<strong>Extend tape straight forward downstage</strong> along the center line to the front baffle plane of the main PA speakers (Stage Deck Front line).',
@@ -189,9 +198,9 @@ const i18n = {
     man_term_plumb_title: 'Plumb Line (Fir cu Plumb)',
     man_term_plumb_desc: 'A strictly vertical line (90° to earth/stage) used to reference depth setback and vertical height between elevated tops and ground subs.',
     man_term_hyp_title: 'Hypotenuse Path (D_hyp)',
-    man_term_hyp_desc: 'The direct diagonal acoustic sound path from an elevated top speaker to audience ear height: <code>D<sub>hyp</sub> = √(D² + V²)</code>.',
-    man_term_gd_title: 'Group Delay (GD)',
-    man_term_gd_desc: 'The frequency-dependent time delay introduced by crossover filter slopes and vented loudspeaker enclosures (especially sub HPF filters).',
+    man_term_hyp_desc: 'The direct 3D diagonal acoustic sound path from an elevated top speaker to audience ear height: <code>D<sub>top</sub> = √(D<sub>sub</sub>² − H<sub>mic</sub>² + (V − H<sub>mic</sub>)²)</code>.',
+    man_term_gd_title: 'Group Delay (GD) vs Phase Angle',
+    man_term_gd_desc: 'Group Delay (τ_g = −dφ/dω) measures envelope slope, while Phase Angle (φ) measures instantaneous wave alignment. DelCalc supports both models with Mode A as default.',
     man_term_sum_title: 'Crossover Summation Zone',
     man_term_sum_desc: 'The frequency band around f<sub>xo</sub> where sub and top contribute equal acoustic energy. Phase alignment ensures +6 dB constructive summation.',
     man_term_laser_title: 'Laser Distance Measurer',
@@ -202,6 +211,14 @@ const i18n = {
     man_phase_rules_desc: '<p><strong>1. When to USE Phase Inversion (180°):</strong><br>• <strong>12 dB/Oct Crossovers (LR12 / BW12):</strong> 2nd-order filters introduce 90° LP lag + 90° HP lead = 180° phase flip. Inverting Sub polarity brings waveforms into 0° phase alignment.<br>• <strong>18 dB/Oct Crossovers (BW18):</strong> 3rd-order filters introduce 270° phase shift. Inverting polarity bridges 180°, leaving only 90° (&lambda;/4 fine delay) to be aligned.<br>• <strong>Acoustic Phase Wrap:</strong> When cabinet reflex tuning + 40Hz HPF + physical placement lands near 180° out of phase on an RTA mic.<br><br><strong>2. When NOT to USE Phase Inversion (Keep Normal 0°):</strong><br>• <strong>24 dB / 48 dB Linkwitz-Riley (LR24 / LR48):</strong> Mathematically in-phase (0°). Inverting polarity creates a destructive cancellation notch at crossover.<br>• <strong>Compensating 40Hz Protective HPF:</strong> HPF only introduces ~40°–45° (~1.2ms) delay. Never flip 180° for a 45° delay; compensate via time delay on the tops.<br>• <strong>Large Physical Distance Gaps:</strong> Never use 180° inversion to substitute for speaker distance; doing so destroys transient response and kick drum impulse punch.</p>',
     man_null_test_title: '🎯 Sine Wave Null Test Calibration Workflow',
     man_null_test_desc: '<ol style="margin-left:16px; padding-left:0;"><li><strong>Invert Sub Polarity:</strong> Set Subwoofer output polarity to <code>180° INVERTED</code> in your dbx / DSP crossover menu.</li><li><strong>Play Sine Wave:</strong> Generate a continuous sine wave at your exact crossover frequency (e.g. 90 Hz).</li><li><strong>Adjust Top Delay:</strong> Slowly spin the Output Delay dial for the Tops until the acoustic sound reaches the <em>deepest cancellation null (maximum silence)</em> in the room.</li><li><strong>Restore Normal Polarity:</strong> Switch Sub polarity back to <code>NORMAL (0°)</code>.</li><li><strong>Result:</strong> Tops and subs are now locked in perfect phase alignment with maximum constructive punch (+6 dB).</li></ol>',
+    engine_selector_title: '🎛️ Acoustic Alignment Engine Model',
+    engine_selector_desc: 'Select how DelCalc evaluates enclosure acoustic phase rotation and DSP crossover filter delay at crossover:',
+    engine_opt_phase_title: 'Option A: Phase Angle Alignment (Smaart-Grade · Default)',
+    engine_opt_phase_desc: 'Evaluates exact closed-form phase rotation Δφ(f_xo) between Sub and Top. Matches dual-channel FFT transfer function analyzers.',
+    engine_opt_gd_title: 'Option B: Group Delay Envelope Slope (τ_g = −dφ/dω)',
+    engine_opt_gd_desc: 'Evaluates envelope slope delay. Approximates phase alignment via group delay curves.',
+    engine_badge_phase: 'MODE A: PHASE ANGLE (SMAART-GRADE)',
+    engine_badge_gd: 'MODE B: GROUP DELAY (ENVELOPE SLOPE)'
   },
   ro: {
     lang_btn: 'RO',
@@ -232,10 +249,12 @@ const i18n = {
     temp_label: 'Temperatură Ambientală',
     speed_sound_prefix: 'Viteza sunetului:',
     topSubDist_label: 'Înălțime Top-Sub (V)',
-    depthOffset_label: 'Decalaj Adâncime Voice Coil',
+    micHeight_label: 'Înălțime Microfon / Ureche (H_mic)',
+    micHeight_hint: 'Microfon RTA / în picioare (m)',
+    depthOffset_label: 'Decalaj Adâncime Voice Coil (+ = Top în Față / − = în Spate)',
     topTuning_label: 'Frecvență Acordaj Top (Fb)',
     topTuning_hint: 'JBL 2226H / acordaj reflex (Hz)',
-    geom_note: 'Distanța verticală calculează ipotenuza traseului de propagare către ascultător. Decalajul de adâncime este pozitiv (+) dacă Top-ul este poziționat în spatele Sub-ului.',
+    geom_note: 'Distanța verticală și înălțimea microfonului calculează traseul 3D real de propagare pe ipotenuză. Decalajul este pozitiv (+) dacă difuzorul de Top este fizic mai în față (mai aproape de public) decât bobina Sub-ului.',
     qref_title: 'Ghid Rapid de Referință',
     qref_speed: 'Viteza sunetului (temperatura configurată)',
     qref_input_delay: 'Input Delay: Backline Scenă → PA',
@@ -244,7 +263,9 @@ const i18n = {
     qref_step2_inv: 'Pasul 2: Output delay (180° Inversat)',
     qref_polarity_rec: 'Setare Polaritate Recomandată',
     qref_gd: 'Group Delay total Sub @ frecv. crossover',
+    qref_phase: 'Avans total fază Sub @ frecv. crossover',
     direct_title: 'Valori Directe de Lucru',
+    btn_nixie_toggle_title: 'Comută Mod Afișaj Tuburi Nixie / LCD',
     input_delay_card_title: 'SYSTEM INPUT DELAY (BACKLINE)',
     polarity_title: 'POLARITATE',
     pol_0_only: 'DOAR 0°',
@@ -265,9 +286,12 @@ const i18n = {
     step2_plate: 'OUTPUT DELAY · TOP-LA-SUB (POLARITATE 0° NORMAL)',
     step2_desc: 'Adăugați {ms} ms de OUTPUT delay pe {target} (evaluând alinierea de fază la {freq}Hz).',
     step2_bd_dsp: 'DSP: Group delay filtru protectiv Sub HPF @ {freq}Hz',
+    step2_bd_dsp_phase: 'DSP: Avans fază filtru Sub HPF @ {freq}Hz ({deg}°)',
     step2_bd_sub_phase: 'Acustic: Rotație fază Sub (SRC 400 LO @ 38Hz)',
+    step2_bd_sub_phase_ang: 'Acustic: Avans fază Sub (SRC 400 LO @ 38Hz · {deg}°)',
     step2_bd_top_phase: 'Acustic: Rotație fază Top (JBL 2226H @ {freq}Hz)',
-    step2_bd_geom: 'Geometrie: Decalaj traseu ipotenuză Top vs. Sub',
+    step2_bd_top_phase_ang: 'Acustic: Avans fază Top (JBL 2226H @ {freq}Hz · {deg}°)',
+    step2_bd_geom: 'Geometrie: Decalaj traseu 3D Top vs. Sub',
     step2_bd_total: 'Delay total de aplicat (0° Normal)',
     phase_header: 'Inversare Polaritate & Soluție Acustică',
     norm_opt_tag: 'Polaritate Normală 0°',
@@ -304,7 +328,7 @@ const i18n = {
     preview_title: 'Previzualizare în Direct',
     preview_sample: 'Sub HPF: 32.0 Hz · Crossover: 90.0 Hz · Sub L/R: 5.00 m',
     btn_done: '✓ Gata',
-    footer_text: 'Group delay calculat pe baza polilor formulei closed-form Butterworth. Defazajele acustice sunt mapate pe profilele JBL 2226H (reflex 50Hz) și Dynacord SRC 400 LO (reflex 38Hz).',
+    footer_text: 'Group delay și rotația de fază calculate pe baza polilor formulei closed-form Butterworth. Defazajele acustice sunt mapate pe profilele JBL 2226H (reflex 50Hz) și Dynacord SRC 400 LO (reflex 38Hz).',
     sub_pair: 'Perechea SUB',
     top_pair: 'Perechea TOP',
     matched: 'Echidistant',
@@ -356,20 +380,20 @@ const i18n = {
     man_sub_title: '1. Distanță Subwoofer la Punctul de Ascultare (D_sub-L & D_sub-R)',
     man_sub_step1: '<strong>Plasați capătul de 0 cm al ruletei exact în centrul acustic al măștii frontale a subwooferului:</strong><br>• <em>Subwoofere duble (2×18"):</em> Poziționați capătul ruletei la mijlocul cabinetului, exact între centrele celor două difuzoare.<br>• <em>Subwoofere simple (1×18" / 1×15"):</em> Poziționați capătul direct pe grilă, în dreptul calotei centrale (dust cap) a difuzorului.',
     man_sub_step2: '<strong>Trageți ruleta în linie dreaptă pe traseul direct de propagare (line-of-sight)</strong> de la grila subwooferului către poziția desemnată de ascultare (pupitru FOH sau microfon de măsurare RTA). Țineți ruleta bine întinsă, fără curburi.',
-    man_sub_step3: '<strong>Citiți distanța la nivelul urechii ascultătorului (~1.6 m așezat / ~1.7 m în picioare)</strong> sau direct la capsula microfonului de măsurare RTA.',
+    man_sub_step3: '<strong>Citiți distanța la nivelul urechii ascultătorului (~1.6 m așezat / ~1.75 m în picioare)</strong> sau direct la capsula microfonului de măsurare RTA.',
     man_sub_note_title: '💡 Sfat Profesional — Simetrie L/R:',
     man_sub_note_desc: 'Măsurați întotdeauna Sub Stânga și Sub Dreapta independent. O diferență de doar 34 cm introduce o asimetrie de sosire de 1.0 ms ce trebuie compensată în <em>Pasul 1 (Sincronizare Sub ↔ Sub)</em> pe subwooferul mai apropiat.',
     man_height_title: '2. Înălțime / Decalaj Vertical Top-Sub (V)',
     man_height_step1: '<strong>Plasați capătul de 0 cm al ruletei pe linia mediană / centrul acustic al Subwooferului:</strong><br>Aliniați ruleta cu centrul grilei frontale a cabinetului de bas.',
     man_height_step2: '<strong>Extindeți ruleta vertical în sus (la 90° perpendicular pe podea/scenă)</strong> de-a lungul distanțierului sau tijei de susținere a boxei.',
     man_height_step3: '<strong>Citiți înălțimea la centrul acustic al cabinetului de Top:</strong><br>Situat de regulă la punctul median dintre goarna de înalte HF și difuzorul de medii-joase LF.',
-    man_height_math_title: '📐 De ce contează Înălțimea (V) din punct de vedere acustic:',
-    man_height_math_desc: 'Deoarece Topul este suspendat la înălțime, sunetul său parcurge ipotenuza triunghiului <code>D<sub>hyp</sub> = √(D<sub>sub</sub>² + V²)</code>. Această diferență geometrică de traseu adaugă o întârziere fizică de propagare Topului, integrată automat în calculul DelCalc.',
+    man_height_math_title: '📐 De ce contează Înălțimea (V) & Înălțimea Microfonului (H_mic):',
+    man_height_math_desc: 'Deoarece Topul este suspendat la înălțime și microfonul de măsurare este la nivelul urechii (implicit 1.75 m), DelCalc calculează traseul 3D real pe ipotenuză <code>D<sub>top</sub> = √(D<sub>sub</sub>² − H<sub>mic</sub>² + (V − H<sub>mic</sub>)²)</code>. Această diferență geometrică asigură o aliniere la nivel de milimetru.',
     man_depth_title: '3. Decalaj de Adâncime Voice Coil',
     man_depth_step1: '<strong>Măsurați decalajul orizontal dintre grilele frontale:</strong><br>Coborâți un fir cu plumb sau țineți o riglă verticală de la grila frontală a Topului până la nivelul grilei Subwooferului. Măsurați distanța orizontală dintre cele două plane.',
-    man_depth_step2: '<strong>Luați în calcul adâncimea internă a bobinelor (voice coil):</strong><br>• <em>Subwoofere de 18":</em> Conul adânc plasează bobina la ~8–15 cm în spatele grilei.<br>• <em>Topuri de 10"/12":</em> Conul mai plat plasează bobina la ~4–8 cm în spatele grilei.<br>• <em>Grile aliniate la față:</em> Dacă grilele sunt fizic aliniate, decalajul implicit este de regulă <strong>+0.05 m până la +0.08 m</strong> (bobina Topului este mai în față decât a Subului).',
+    man_depth_step2: '<strong>Luați în calcul adâncimea internă a bobinelor (voice coil):</strong><br>• <em>Subwoofere de 18":</em> Conul adânc plasează bobina la ~10–15 cm în spatele grilei.<br>• <em>Topuri de 10"/12":</em> Conul mai plat plasează bobina la ~3–6 cm în spatele grilei.<br>• <em>Grile aliniate la față:</em> Dacă grilele sunt fizic aliniate, difuzorul de Top de 12" este fizic mai aproape de public decât bobina Sub-ului de 18" cu ~8 cm. Valoarea se introduce ca <strong>+0.08 m</strong>.',
     man_depth_rule_title: '⚙️ Regulă Practică Decalaj Adâncime:',
-    man_depth_rule_desc: 'Pentru topuri standard montate pe distanțier cu grila aliniată la fața subwooferului, folosiți <code>+0.08 m</code>. Dacă topul este așezat mai în spate pe capacul subului cu 10 cm, introduceți <code>+0.18 m</code>.',
+    man_depth_rule_desc: 'Pentru topuri standard montate pe distanțier cu grila aliniată la fața subwooferului, folosiți <code>+0.08 m</code> (difuzorul de top este mai aproape $\rightarrow$ primește delay pozitiv). Dacă topul este așezat mai în spate pe capacul subului cu 10 cm, introduceți <code>-0.02 m</code> (+0.08m decalaj bobină − 0.10m retragere).',
     man_backline_title: '4. Distanță Backline Scenă la Front PA',
     man_backline_step1: '<strong>Plasați capătul de 0 cm al ruletei la sursa acustică neamplificată de pe scenă:</strong><br>De obicei centrul tobei mici (snare drum) sau grila celui mai puternic amplificator de chitară/bas.',
     man_backline_step2: '<strong>Extindeți ruleta în față spre buza scenei</strong> pe linia mediană până la planul frontal al boxelor PA principale (linia Front PA).',
@@ -380,9 +404,9 @@ const i18n = {
     man_term_plumb_title: 'Fir cu Plumb (Plumb Line)',
     man_term_plumb_desc: 'O linie perfect verticală (90° față de sol/scenă) folosită pentru referențierea decalajului de adâncime și a înălțimii dintre top și sub.',
     man_term_hyp_title: 'Traseu Ipotenuză (D_hyp)',
-    man_term_hyp_desc: 'Traseul acustic diagonal direct parcurs de la topul suspendat până la urechea ascultătorului: <code>D<sub>hyp</sub> = √(D² + V²)</code>.',
-    man_term_gd_title: 'Group Delay (GD)',
-    man_term_gd_desc: 'Întârzierea dependentă de frecvență introdusă de pantele filtrelor de crossover și cabinetele bass-reflex (în special filtrul HPF pe sub).',
+    man_term_hyp_desc: 'Traseul acustic 3D diagonal direct parcurs de la topul suspendat până la înălțimea microfonului: <code>D<sub>top</sub> = √(D<sub>sub</sub>² − H<sub>mic</sub>² + (V − H<sub>mic</sub>)²)</code>.',
+    man_term_gd_title: 'Group Delay (GD) vs Unghi de Fază',
+    man_term_gd_desc: 'Group Delay (τ_g = −dφ/dω) măsoară panta anvelopei, în timp ce Unghiul de Fază (φ) măsoară alinierea instantanee a undei. DelCalc suportă ambele modele, cu Modul A ca opțiune implicită.',
     man_term_sum_title: 'Zonă Însumare Crossover',
     man_term_sum_desc: 'Banda de frecvențe din jurul frecvenței f<sub>xo</sub> unde subul și topul emit energie acustică egală. Alinierea de fază asigură o însumare constructivă de +6 dB.',
     man_term_laser_title: 'Telemetru Laser',
@@ -393,6 +417,14 @@ const i18n = {
     man_phase_rules_desc: '<p><strong>1. Când se UTILIZEAZĂ Inversarea de Polaritate (180°):</strong><br>• <strong>Crossovere 12 dB/Oct (LR12 / BW12):</strong> Filtrele de ordinul 2 introduc 90° lag sub + 90° lead top = defazaj de 180°. Inversarea polarității aduce undele în fază la 0°.<br>• <strong>Crossovere 18 dB/Oct (BW18):</strong> Filtrele de ordinul 3 introduc un defazaj de 270°. Inversarea polarității acoperă 180°, rămânând doar 90° (&lambda;/4) pentru reglaj fin de delay.<br>• <strong>Rotație Acustică de Fază:</strong> Când acordajul bass-reflex + filtrul HPF 40Hz + distanța fizică produc o anulare de 180° pe microfonul RTA.<br><br><strong>2. Când NU se UTILIZEAZĂ Inversarea (Păstrare Normal 0°):</strong><br>• <strong>Linkwitz-Riley 24 dB / 48 dB (LR24 / LR48):</strong> Filtrele sunt matematic în fază (0°). Inversarea creează un gol masiv de anulare la frecvența de crossover.<br>• <strong>Compensare Filtru Sub HPF 40Hz:</strong> HPF-ul introduce doar ~40°–45° (~1.2ms) group delay. Nu inversați 180° pentru 45°; compensați prin delay pe topuri.<br>• <strong>Distanțe Fizice Mari:</strong> Nu folosiți inversarea ca scurtătură pentru distanța dintre boxe; cuplarea pe ciclul adiacent distruge atacul tranzitoriu al tobei mari.</p>',
     man_null_test_title: '🎯 Ghid de Calibrare pe Teren: Testul de Nul (Sine Wave Null Test)',
     man_null_test_desc: '<ol style="margin-left:16px; padding-left:0;"><li><strong>Inversați Polaritatea Sub-ului:</strong> Setați polaritatea canalului de Sub pe <code>INVERTED (180°)</code> în meniul crossover dbx / DSP.</li><li><strong>Redați Semnal Sinusoidal:</strong> Generați un ton sinusoidal pur la frecvența exactă de crossover (ex. 90 Hz).</li><li><strong>Ajustați Delay-ul pe Topuri:</strong> Rotiți fin potențiometrul de delay pe Topuri până obțineți <em>anularea acustică maximă (liniște / nul acustic complet)</em> în sală.</li><li><strong>Reveniți la Polaritate Normală:</strong> Comutați polaritatea sub-ului înapoi pe <code>NORMAL (0°)</code>.</li><li><strong>Rezultat:</strong> Topurile și subwooferele sunt acum perfect sincronizate în fază (+6 dB însumare constructivă).</li></ol>',
+    engine_selector_title: '🎛️ Model Motor Aliniere Acustică',
+    engine_selector_desc: 'Selectați modul în care DelCalc evaluează defazajul acustic al incintei și delay-ul filtrului DSP la crossover:',
+    engine_opt_phase_title: 'Opțiunea A: Aliniere pe Unghi de Fază (Nivel Smaart · Implicit)',
+    engine_opt_phase_desc: 'Calculează defazajul exact closed-form Δφ(f_xo) dintre Sub și Top. Corespunde analizorului FFT cu două canale.',
+    engine_opt_gd_title: 'Opțiunea B: Panta Plicului de Group Delay (τ_g = −dφ/dω)',
+    engine_opt_gd_desc: 'Evaluează întârzierea pantei de anvelopă. Aproximează alinierea de fază prin curbele de group delay.',
+    engine_badge_phase: 'MODUL A: UNGHI DE FAZĂ (NIVEL SMAART)',
+    engine_badge_gd: 'MODUL B: GROUP DELAY (PANTA ANVELOPEI)'
   }
 };
 
@@ -443,6 +475,11 @@ function applyLanguage(lang) {
   if (polSwitchHint && polSwitchEl) {
     const isTop = polSwitchEl.dataset.pos === 'top';
     polSwitchHint.textContent = isTop ? t('pol_0_only') : t('pol_allow_180');
+  }
+
+  const engineBadgeEl = document.getElementById('engineBadge');
+  if (engineBadgeEl) {
+    engineBadgeEl.textContent = state.calcMode === 'phase' ? t('engine_badge_phase') : t('engine_badge_gd');
   }
 
   try { localStorage.setItem('delcalc_lang', lang); } catch (e) {}
@@ -508,10 +545,39 @@ function filterGD(topology, order, fcHz, freqHz){
   return butterworthGD(order, fcHz, freqHz);
 }
 
+// Closed-form Phase Response Functions (Mode A: Exact Phase Angle Alignment)
+function butterworthHPPhaseDeg(order, fcHz, freqHz) {
+  if (fcHz <= 0 || freqHz <= 0) return 0;
+  const u = freqHz / fcHz;
+  let denomPhaseRad = 0;
+  for (let k = 1; k <= order; k++) {
+    const theta = Math.PI * (2 * k + order - 1) / (2 * order);
+    const a = Math.cos(theta); // negative
+    const b = Math.sin(theta);
+    denomPhaseRad += Math.atan2(u - b, -a);
+  }
+  const numPhaseDeg = order * 90;
+  const denomPhaseDeg = (denomPhaseRad * 180) / Math.PI;
+  let phaseDeg = (numPhaseDeg - denomPhaseDeg) % 360;
+  if (phaseDeg < 0) phaseDeg += 360;
+  return phaseDeg;
+}
+
+function filterPhaseShiftDeg(topology, order, fcHz, freqHz) {
+  if (topology === 'LR') {
+    const half = order / 2;
+    return (2 * butterworthHPPhaseDeg(half, fcHz, freqHz)) % 360;
+  }
+  return butterworthHPPhaseDeg(order, fcHz, freqHz);
+}
+
+function enclosurePhaseDeg(tuningFb, freqHz) {
+  // 4th-order acoustic behavior of vented bass-reflex enclosure
+  return butterworthHPPhaseDeg(4, tuningFb, freqHz);
+}
+
 function getCrossoverFilterPhaseShift(topology, order){
   // Relative phase shift between Low-Pass (Sub) and High-Pass (Top) at crossover frequency fc
-  // For Butterworth order N: LP phase lag is -N*45°, HP phase lead is +N*45° -> delta = N*90°
-  // For Linkwitz-Riley order N: formed by cascading two Butterworth of order N/2 -> delta = 2*(N/2)*90° = N*90°
   // N=1 (BW6): 90°
   // N=2 (BW12, LR12): 180° (Inverted relative phase)
   // N=3 (BW18): 270° (Inverted 180° + 90° fine delay)
@@ -534,6 +600,7 @@ const backlineLabelOff = document.getElementById('backlineLabelOff');
 const backlineHintEl = document.getElementById('backlineHint');
 const backlineStepperEl = document.getElementById('backlineStepper');
 const topSubDistEl = document.getElementById('topSubDist');
+const micHeightEl = document.getElementById('micHeight');
 const depthOffsetEl = document.getElementById('depthOffset');
 const topTuningEl = document.getElementById('topTuning');
 const tempEl = document.getElementById('temp');
@@ -541,6 +608,12 @@ const speedHintEl = document.getElementById('speedHint');
 const crossoverAlertEl = document.getElementById('crossoverAlert');
 const hpfSlopeBadge = document.getElementById('hpfSlopeBadge');
 const xoSlopeBadge = document.getElementById('xoSlopeBadge');
+const btnNixieMatrixToggle = document.getElementById('btnNixieMatrixToggle');
+const nixieToggleIcon = document.getElementById('nixieToggleIcon');
+const nixieToggleText = document.getElementById('nixieToggleText');
+const btnEnginePhase = document.getElementById('btnEnginePhase');
+const btnEngineGD = document.getElementById('btnEngineGD');
+const engineBadge = document.getElementById('engineBadge');
 
 class RotaryKnobController {
   constructor(filterKey, containerEl, rotorEl, ticksSvgEl, valueEl) {
@@ -839,6 +912,49 @@ function renderNixieValue(containerEl, value, intDigits = 3, fracDigits = 2, isO
   containerEl.innerHTML = nixieHtml + lcdHtml;
 }
 
+function renderMatrixChannelVal(containerEl, value, isOk = true) {
+  if (!containerEl) return;
+  if (!state.matrixNixie) {
+    containerEl.classList.remove('nixie-mode');
+    containerEl.textContent = `${fmt(value)} ms`;
+    return;
+  }
+
+  containerEl.classList.add('nixie-mode');
+  const abs = Math.abs(value);
+  const str = abs.toFixed(2);
+  const parts = str.split('.');
+  const intPart = parts[0].padStart(2, '0');
+  const fracPart = parts[1] || '00';
+
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  let html = '';
+  if (!isLight) {
+    for (let i = 0; i < intPart.length; i++) {
+      const isDim = (i === 0 && intPart[i] === '0');
+      html += `<div class="nixie-tube">${build16SegSvg(intPart[i], isDim)}</div>`;
+    }
+    html += `<div class="nixie-dot-tube">${build16SegDot()}</div>`;
+    for (let i = 0; i < fracPart.length; i++) {
+      html += `<div class="nixie-tube">${build16SegSvg(fracPart[i], false)}</div>`;
+    }
+    html += `<div class="nixie-tube nixie-unit-tube">${build16SegSvg('m')}</div>`;
+    html += `<div class="nixie-tube nixie-unit-tube">${build16SegSvg('s')}</div>`;
+  } else {
+    for (let i = 0; i < intPart.length; i++) {
+      const isDim = (i === 0 && intPart[i] === '0');
+      html += `<div class="lcd-cell">${build16SegSvg(intPart[i], isDim)}</div>`;
+    }
+    html += `<div class="lcd-dot-wrap">${build16SegDot()}</div>`;
+    for (let i = 0; i < fracPart.length; i++) {
+      html += `<div class="lcd-cell">${build16SegSvg(fracPart[i], false)}</div>`;
+    }
+    html += `<div class="lcd-cell lcd-unit-cell">${build16SegSvg('m')}</div>`;
+    html += `<div class="lcd-cell lcd-unit-cell">${build16SegSvg('s')}</div>`;
+  }
+  containerEl.innerHTML = html;
+}
+
 document.querySelectorAll('.step-btn').forEach(btn => {
   const targetId = btn.dataset.target;
   const step = parseFloat(btn.dataset.step);
@@ -857,7 +973,7 @@ document.querySelectorAll('.step-btn').forEach(btn => {
   });
 });
 
-[hpfFreqEl, xoFreqEl, subLEl, subREl, backlineDistEl, topSubDistEl, depthOffsetEl, topTuningEl, tempEl].forEach(el => {
+[hpfFreqEl, xoFreqEl, subLEl, subREl, backlineDistEl, topSubDistEl, micHeightEl, depthOffsetEl, topTuningEl, tempEl].forEach(el => {
   if(el){
     el.addEventListener('input', recalc);
     el.addEventListener('change', recalc);
@@ -869,14 +985,13 @@ if (backlineSwitchEl) {
   backlineSwitchEl.addEventListener('click', () => {
     const isLeft = backlineSwitchEl.dataset.pos === 'left';
     backlineSwitchEl.dataset.pos = isLeft ? 'right' : 'left';
-    if(backlineLabelOn) backlineLabelOn.classList.toggle('active', !isLeft);
-    if(backlineLabelOff) backlineLabelOff.classList.toggle('active', isLeft);
     state.enableBackline = !isLeft;
-    if(backlineStepperEl) {
-      backlineStepperEl.classList.toggle('bypassed', isLeft);
-    }
-    if(backlineHintEl) {
-      backlineHintEl.textContent = !isLeft ? t('backline_hint_active') : t('backline_hint_disabled');
+
+    if (backlineLabelOn) backlineLabelOn.classList.toggle('active', !isLeft);
+    if (backlineLabelOff) backlineLabelOff.classList.toggle('active', isLeft);
+    if (backlineStepperEl) backlineStepperEl.classList.toggle('bypassed', isLeft);
+    if (backlineHintEl) {
+      backlineHintEl.textContent = isLeft ? t('backline_hint_disabled') : t('backline_hint_active');
     }
     recalc();
   });
@@ -966,6 +1081,7 @@ btnReset.addEventListener('click', () => {
   state.xoType = 'LR';
   state.xoOrder = 4;
   state.enableBackline = true;
+  state.calcMode = 'phase';
 
   hpfFreqEl.value = '40';
   xoFreqEl.value = '125';
@@ -974,6 +1090,7 @@ btnReset.addEventListener('click', () => {
   if(backlineDistEl) backlineDistEl.value = '5.00';
   tempEl.value = '20';
   topSubDistEl.value = '1.20';
+  if(micHeightEl) micHeightEl.value = '1.75';
   depthOffsetEl.value = '0.08';
   if(topTuningEl) topTuningEl.value = '50';
 
@@ -991,6 +1108,15 @@ btnReset.addEventListener('click', () => {
     if(backlineStepperEl) backlineStepperEl.classList.remove('bypassed');
     if(backlineHintEl) backlineHintEl.textContent = t('backline_hint_active');
   }
+
+  if (btnEnginePhase && btnEngineGD) {
+    btnEnginePhase.classList.add('active');
+    btnEngineGD.classList.remove('active');
+  }
+  if (engineBadge) {
+    engineBadge.textContent = t('engine_badge_phase');
+  }
+  try { localStorage.setItem('delcalc_calc_mode', 'phase'); } catch(e){}
 
   hpfKnob.updateDetents();
   xoKnobCtrl.updateDetents();
@@ -1023,7 +1149,8 @@ function recalc(){
   const dL = Math.max(0.1, parseFloat(subLEl.value) || 0.1);
   const dR = Math.max(0.1, parseFloat(subREl.value) || 0.1);
   const topSubDist = Math.max(0, parseFloat(topSubDistEl.value) || 0);
-  const depthOffset = parseFloat(depthOffsetEl.value) || 0;
+  const hMic = Math.max(0, parseFloat(micHeightEl ? micHeightEl.value : '1.75') || 1.75);
+  const depthOffset = parseFloat(depthOffsetEl.value) || 0; // Positive (+) = Top driver is forward/closer to audience than sub voice coil
   const backlineDist = Math.max(0, parseFloat(backlineDistEl ? backlineDistEl.value : '5.00') || 0);
 
   // 1. STAGE BACKLINE TO PA FRONT INPUT DELAY CALCULATION
@@ -1049,37 +1176,71 @@ function recalc(){
     <div><span>${t('step1_bd_subR')} (${dR.toFixed(1)}m)</span><span class="val">${fmt(tR)} ms</span></div>
     <div><span>${t('step1_bd_diff')}</span><span class="val">${fmt(step1ms)} ms</span></div>`;
 
-  // 2. ELECTRO-ACOUSTIC PHYSICS & GROUP DELAY:
-  // Sub protective HPF group delay evaluated at crossover frequency xF.
-  // In symmetrical active crossovers (e.g. LR24 Sub LP & Top HP @ xF), Low-Pass and High-Pass filter group delays
-  // are mathematically identical (tau_LP == tau_HP), so differential crossover filter GD is 0.0 ms.
-  const subHpfGD = filterGD(hType, hOrd, hF, xF) * 1000; // ms
-  const gdAtXo = subHpfGD; // Differential DSP filter delay on Sub channel
-
-  // Acoustic enclosure phase wrap modeling:
-  // JBL 2226H (Top reflex tuned @ topFb Hz) and Dynacord SRC 400 LO (Sub Gauss reflex tuned @ 38Hz)
+  // 2. ELECTRO-ACOUSTIC PHYSICS & CALCULATION ENGINE (Mode A: Phase Angle vs Mode B: Group Delay)
   const topFb = Math.max(10, parseFloat(topTuningEl ? topTuningEl.value : '50') || 50);
-  const topAcousticGD = butterworthGD(4, topFb, xF) * 1000;
-  const subAcousticGD = butterworthGD(4, 38, xF) * 1000;
-  const driverPhaseDiff = subAcousticGD - topAcousticGD;
+  let dspAcousticDelayMs = 0;
+  let breakdownDsp = '';
+  let breakdownSubPhase = '';
+  let breakdownTopPhase = '';
+  let qRefLeadVal = '';
 
-  // 3. 3D GEOMETRY & PROPAGATION DELAYS:
-  const topPathL = Math.sqrt(dL * dL + topSubDist * topSubDist) + depthOffset;
+  if (state.calcMode === 'phase') {
+    // Mode A: Exact Phase Angle Alignment (Smaart-Grade · Default)
+    const subHpfPhaseDeg = filterPhaseShiftDeg(hType, hOrd, hF, xF);
+    const subAcousticPhaseDeg = enclosurePhaseDeg(38, xF);
+    const topAcousticPhaseDeg = enclosurePhaseDeg(topFb, xF);
+    const driverPhaseDiffDeg = subAcousticPhaseDeg - topAcousticPhaseDeg;
+    const totalSubPhaseDeg = subHpfPhaseDeg + driverPhaseDiffDeg;
+
+    const tPeriod = 1000 / xF;
+    dspAcousticDelayMs = (totalSubPhaseDeg / 360) * tPeriod;
+
+    const hpfDelayMs = (subHpfPhaseDeg / 360) * tPeriod;
+    const subPhaseMs = (subAcousticPhaseDeg / 360) * tPeriod;
+    const topPhaseMs = (topAcousticPhaseDeg / 360) * tPeriod;
+
+    breakdownDsp = `<div><span>${t('step2_bd_dsp_phase', { freq: xF, deg: subHpfPhaseDeg.toFixed(0) })}</span><span class="val">+${fmt(hpfDelayMs)} ms</span></div>`;
+    breakdownSubPhase = `<div><span>${t('step2_bd_sub_phase_ang', { deg: subAcousticPhaseDeg.toFixed(0) })}</span><span class="val">+${fmt(subPhaseMs)} ms</span></div>`;
+    breakdownTopPhase = `<div><span>${t('step2_bd_top_phase_ang', { freq: topFb, deg: topAcousticPhaseDeg.toFixed(0) })}</span><span class="val">-${fmt(topPhaseMs)} ms</span></div>`;
+    qRefLeadVal = `${totalSubPhaseDeg.toFixed(0)}° (${fmt(dspAcousticDelayMs)} ms)`;
+  } else {
+    // Mode B: Group Delay Envelope Slope
+    const subHpfGD = filterGD(hType, hOrd, hF, xF) * 1000;
+    const topAcousticGD = butterworthGD(4, topFb, xF) * 1000;
+    const subAcousticGD = butterworthGD(4, 38, xF) * 1000;
+    const driverPhaseDiff = subAcousticGD - topAcousticGD;
+    dspAcousticDelayMs = subHpfGD + driverPhaseDiff;
+
+    breakdownDsp = `<div><span>${t('step2_bd_dsp', { freq: xF })}</span><span class="val">+${fmt(subHpfGD)} ms</span></div>`;
+    breakdownSubPhase = `<div><span>${t('step2_bd_sub_phase')}</span><span class="val">+${fmt(subAcousticGD)} ms</span></div>`;
+    breakdownTopPhase = `<div><span>${t('step2_bd_top_phase', { freq: topFb })}</span><span class="val">-${fmt(topAcousticGD)} ms</span></div>`;
+    qRefLeadVal = `${fmt(dspAcousticDelayMs)} ms`;
+  }
+
+  // 3. 3D GEOMETRY & PROPAGATION DELAYS (Factoring Mic Height H_mic & Positive Forward Depth Offset):
+  // D_sub = slant line of sight to ground sub: X = sqrt(max(0.01, D_sub^2 - H_mic^2))
+  // D_top = sqrt(X^2 + (V - H_mic)^2) - depthOffset
+  const groundDistSqL = Math.max(0.01, dL * dL - hMic * hMic);
+  const groundDistSqR = Math.max(0.01, dR * dR - hMic * hMic);
+  const topPathL = Math.sqrt(groundDistSqL + Math.pow(topSubDist - hMic, 2)) - depthOffset;
+  const topPathR = Math.sqrt(groundDistSqR + Math.pow(topSubDist - hMic, 2)) - depthOffset;
   const propDiffL = ((topPathL - dL) / c) * 1000;
-  const topPathR = Math.sqrt(dR * dR + topSubDist * topSubDist) + depthOffset;
   const propDiffR = ((topPathR - dR) / c) * 1000;
   const propDiff = (propDiffL + propDiffR) / 2;
 
-  const step2total = gdAtXo + driverPhaseDiff - propDiff;
+  const step2total = dspAcousticDelayMs - propDiff;
   const step2abs = Math.abs(step2total);
   const targetSideKey = step2total >= 0 ? 'top_pair' : 'sub_pair';
   const targetSide = t(targetSideKey);
   const s2ok = step2abs <= 10.0;
 
-  const step2total_L = gdAtXo + driverPhaseDiff - propDiffL;
+  const step2total_L = dspAcousticDelayMs - propDiffL;
   const step2abs_L = Math.abs(step2total_L);
-  const step2total_R = gdAtXo + driverPhaseDiff - propDiffR;
+  const targetSideKey_L = step2total_L >= 0 ? 'top_pair' : 'sub_pair';
+
+  const step2total_R = dspAcousticDelayMs - propDiffR;
   const step2abs_R = Math.abs(step2total_R);
+  const targetSideKey_R = step2total_R >= 0 ? 'top_pair' : 'sub_pair';
 
   renderNixieValue(document.getElementById('nixieStep2'), step2abs, 3, 2, s2ok);
 
@@ -1089,22 +1250,29 @@ function recalc(){
   document.getElementById('step2Readout').className = 'readout' + (s2ok ? '' : ' warn');
 
   document.getElementById('step2Breakdown').innerHTML = `
-    <div><span>${t('step2_bd_dsp', { freq: xF })}</span><span class="val">+${fmt(gdAtXo)} ms</span></div>
-    <div><span>${t('step2_bd_sub_phase')}</span><span class="val">+${fmt(subAcousticGD)} ms</span></div>
-    <div><span>${t('step2_bd_top_phase', { freq: topFb })}</span><span class="val">-${fmt(topAcousticGD)} ms</span></div>
+    ${breakdownDsp}
+    ${breakdownSubPhase}
+    ${breakdownTopPhase}
     <div><span>${t('step2_bd_geom')}</span><span class="val">-${fmt(propDiff)} ms</span></div>
     <div style="border-top:1px dashed var(--border); margin-top:4px; padding-top:4px;"><span>${t('step2_bd_total')}</span><span class="val">${fmt(step2abs)} ms → ${targetSide}</span></div>`;
 
   const tPeriod = 1000 / xF;
   const tHalf = tPeriod / 2;
   const halfDistM = (c * (tHalf / 1000));
+  const xoPhaseShift = getCrossoverFilterPhaseShift(xType, xOrd);
+  const isFilter180 = (xoPhaseShift === 180);
+  const isFilter270 = (xoPhaseShift === 270);
+  const isFilterInPhase = (xoPhaseShift === 0);
 
+  // BW18 270° (180° + 90°) fine delay offset = T/4 (bridges 90° remaining shift)
+  const fineShiftMs = isFilter270 ? (tPeriod / 4) : 0;
+
+  // Global Headline 180° Inverted Delay
   let invDelayMs = 0;
   let invTargetSideKey = 'top_pair';
-
-  if(step2total >= 0){
-    const diffInv = step2total - tHalf;
-    if(diffInv >= 0){
+  if (step2total >= 0) {
+    const diffInv = step2total - tHalf + fineShiftMs;
+    if (diffInv >= 0) {
       invDelayMs = diffInv;
       invTargetSideKey = 'top_pair';
     } else {
@@ -1112,8 +1280,8 @@ function recalc(){
       invTargetSideKey = 'sub_pair';
     }
   } else {
-    const diffInv = Math.abs(step2total) - tHalf;
-    if(diffInv >= 0){
+    const diffInv = Math.abs(step2total) - tHalf + fineShiftMs;
+    if (diffInv >= 0) {
       invDelayMs = diffInv;
       invTargetSideKey = 'sub_pair';
     } else {
@@ -1124,12 +1292,53 @@ function recalc(){
   const invTargetSide = t(invTargetSideKey);
   const s2InvOk = invDelayMs <= 10.0;
 
-  // 4. CROSSOVER-TOPOLOGY PHASE RECOMMENDATION ENGINE:
-  const xoPhaseShift = getCrossoverFilterPhaseShift(xType, xOrd);
-  const isFilter180 = (xoPhaseShift === 180); // LR12, BW12, BW36, LR36
-  const isFilter270 = (xoPhaseShift === 270); // BW18
-  const isFilterInPhase = (xoPhaseShift === 0); // LR24, LR48, BW24, BW48
+  // Independent Left Stack Inverted Delay
+  let invDelayMs_L = 0;
+  let invTargetSide_L = 'top_pair';
+  if (step2total_L >= 0) {
+    const diffInvL = step2total_L - tHalf + fineShiftMs;
+    if (diffInvL >= 0) {
+      invDelayMs_L = diffInvL;
+      invTargetSide_L = 'top_pair';
+    } else {
+      invDelayMs_L = Math.abs(diffInvL);
+      invTargetSide_L = 'sub_pair';
+    }
+  } else {
+    const diffInvL = Math.abs(step2total_L) - tHalf + fineShiftMs;
+    if (diffInvL >= 0) {
+      invDelayMs_L = diffInvL;
+      invTargetSide_L = 'sub_pair';
+    } else {
+      invDelayMs_L = Math.abs(diffInvL);
+      invTargetSide_L = 'top_pair';
+    }
+  }
 
+  // Independent Right Stack Inverted Delay
+  let invDelayMs_R = 0;
+  let invTargetSide_R = 'top_pair';
+  if (step2total_R >= 0) {
+    const diffInvR = step2total_R - tHalf + fineShiftMs;
+    if (diffInvR >= 0) {
+      invDelayMs_R = diffInvR;
+      invTargetSide_R = 'top_pair';
+    } else {
+      invDelayMs_R = Math.abs(diffInvR);
+      invTargetSide_R = 'sub_pair';
+    }
+  } else {
+    const diffInvR = Math.abs(step2total_R) - tHalf + fineShiftMs;
+    if (diffInvR >= 0) {
+      invDelayMs_R = diffInvR;
+      invTargetSide_R = 'sub_pair';
+    } else {
+      invDelayMs_R = Math.abs(diffInvR);
+      invTargetSide_R = 'top_pair';
+    }
+  }
+
+  // 4. CROSSOVER-TOPOLOGY PHASE RECOMMENDATION ENGINE:
   let recType = 'ok';
   let recBadgeText = '';
   let recShortText = '';
@@ -1140,29 +1349,22 @@ function recalc(){
   invBox.className = 'phase-option-box';
 
   if (isFilter180) {
-    // 2nd-order (LR12, BW12) & 6th-order (BW36, LR36) filters create an inherent 180° phase inversion.
-    // Inverting subwoofer polarity in DSP brings waveforms back into 0° phase alignment.
     recType = 'rec';
     recBadgeText = t('rec_badge_180_filter');
     recShortText = t('rec_short_180');
     invBox.classList.add('recommended');
   } else if (isFilter270) {
-    // 3rd-order (BW18) introduces a 270° phase shift (180° + 90°).
-    // Inverting polarity bridges 180°, leaving only 90° (T/4 fine delay).
     recType = 'rec';
     recBadgeText = t('rec_badge_bw18');
     recShortText = t('rec_short_180_fine');
     invBox.classList.add('recommended');
   } else if (isFilterInPhase) {
-    // 4th-order (LR24, BW24) & 8th-order (LR48, BW48) are mathematically in-phase (0°).
-    // Polarity must remain 0° Normal to avoid a destructive cancellation notch at fxo.
     if (s2ok) {
       recType = 'ok';
       recBadgeText = t('rec_badge_opt');
       recShortText = t('rec_short_opt');
       normBox.classList.add('recommended');
     } else if (!s2ok && s2InvOk) {
-      // Emergency DSP ceiling workaround: Normal 0° exceeds 10ms hardware limit
       recType = 'alt';
       recBadgeText = t('rec_badge_workaround_180');
       recShortText = t('rec_short_workaround');
@@ -1173,7 +1375,6 @@ function recalc(){
       recShortText = t('rec_short_warn');
     }
   } else {
-    // 1st order (BW6) or general
     if (s2ok) {
       recType = 'ok';
       recBadgeText = t('rec_badge_opt');
@@ -1255,7 +1456,7 @@ function recalc(){
       actionHtml = `
         <ol>
           <li>Păstrați <strong>Polarity în Crossover dbx / DSP</strong> pe <span class="phase-code">NORMAL (0°)</span> — filtrele ${state.xoType}${state.xoOrder*6} sunt matematic în fază (0°).</li>
-          <li>Setați <strong>Output Delay</strong> pe <span class="phase-code">${targetSide}</span> la <strong style="color:var(--accent);">${fmt(step2abs)} ms</strong> (compensează group delay-ul filtrului Sub HPF de ${hF}Hz și decalajul geometric).</li>
+          <li>Setați <strong>Output Delay</strong> pe <span class="phase-code">${targetSide}</span> la <strong style="color:var(--accent);">${fmt(step2abs)} ms</strong> (compensează defazajul filtrului Sub HPF de ${hF}Hz și decalajul 3D geometric).</li>
           <li><strong>Procedură Calibrare pe Teren (Testul de Nul):</strong>
             <ul style="margin:4px 0 0 16px; font-size:0.92em; color:var(--dim);">
               <li>Inversați temporar polaritatea sub-ului la <span class="phase-code">180°</span> și redați un ton sinusoidal pur la ${xF}Hz.</li>
@@ -1303,7 +1504,7 @@ function recalc(){
       actionHtml = `
         <ol>
           <li>Keep <strong>dbx / DSP Crossover Polarity</strong> on <span class="phase-code">NORMAL (0°)</span> — ${state.xoType}${state.xoOrder*6} filters are mathematically in-phase (0°).</li>
-          <li>Set <strong>Output Delay</strong> on the <span class="phase-code">${targetSide}</span> to <strong style="color:var(--accent);">${fmt(step2abs)} ms</strong> (compensates ${hF}Hz sub HPF group delay and geometric path difference).</li>
+          <li>Set <strong>Output Delay</strong> on the <span class="phase-code">${targetSide}</span> to <strong style="color:var(--accent);">${fmt(step2abs)} ms</strong> (compensates ${hF}Hz sub HPF phase delay and 3D geometric path difference).</li>
           <li><strong>Field Micro-Delay Calibration (Sine Wave Null Test):</strong>
             <ul style="margin:4px 0 0 16px; font-size:0.92em; color:var(--dim);">
               <li>Temporarily set Sub polarity to <span class="phase-code">180° INVERTED</span> and play a pure ${xF}Hz sine wave.</li>
@@ -1343,9 +1544,6 @@ function recalc(){
     <div><span>${t('phase_bd_half_wave')}</span><span class="val">&plusmn;${fmt(tHalf,2)} ms (&asymp; ${fmt(halfDistM,2)}m)</span></div>
     <div><span>${t('phase_bd_norm_req')}</span><span class="val">${fmt(step2abs)} ms &rarr; ${targetSide}</span></div>
     <div><span>${t('phase_bd_inv_req')}</span><span class="val">${fmt(invDelayMs)} ms &rarr; ${invTargetSide}</span></div>`;
-
-  const step1Text = step1ms < 0.005 ? (state.lang === 'ro' ? '0.0 ms (Echidistant)' : '0.0 ms (Matched)') : `${fmt(step1ms, 1)}ms → ${closerSide}`;
-  const step2Text = `${fmt(step2abs, 1)}ms (${targetSide.replace(' pair', '').replace('Perechea ', '')})`;
 
   // Update Landscape / Fullscreen SVG Diagram Elements
   const flowBacklineBadgeLand = document.getElementById('flowBacklineBadgeLand');
@@ -1435,6 +1633,7 @@ function recalc(){
   const mobRayR = document.getElementById('flowRayR_mob');
   if (mobRayR) mobRayR.textContent = `B: ${dR.toFixed(2)}m (${fmt(tR, 1)}ms)`;
 
+  // Quick Reference Card updates
   document.getElementById('qSpeed').textContent = `${c.toFixed(1)} m/s`;
   const qInputDelay = document.getElementById('qInputDelay');
   if (qInputDelay) {
@@ -1444,24 +1643,29 @@ function recalc(){
   document.getElementById('qStep2').textContent = `${fmt(step2abs)} ms → ${targetSide}`;
   document.getElementById('qStep2Inv').textContent = `${fmt(invDelayMs)} ms → ${invTargetSide}`;
   document.getElementById('qPolarityRec').textContent = recShortText;
-  document.getElementById('qGD').textContent = `${fmt(gdAtXo + driverPhaseDiff)} ms`;
+  
+  const qGDLabel = document.querySelector('[data-i18n="qref_gd"]');
+  if (qGDLabel) {
+    qGDLabel.textContent = state.calcMode === 'phase' ? t('qref_phase') : t('qref_gd');
+  }
+  document.getElementById('qGD').textContent = qRefLeadVal;
 
-  // 6. DIRECT VALUES ROUTING & STEREO PA STACK COUPLING:
+  // 6. DIRECT VALUES ROUTING & STEREO PA STACK COUPLING (Independent Per-Channel Inversion!):
   const subL_step1 = diff1 < -0.005 ? step1ms : 0;
   const subR_step1 = diff1 > 0.005 ? step1ms : 0;
 
-  // Stack coupling: When Step 1 delays the closer subwoofer, the closer top must also receive
-  // that Step 1 delay so the entire Left/Right PA stack moves together in time!
-  const normSubL = (targetSideKey === 'top_pair') ? subL_step1 : (subL_step1 + step2abs_L);
-  const normSubR = (targetSideKey === 'top_pair') ? subR_step1 : (subR_step1 + step2abs_R);
-  const normTopL = (targetSideKey === 'top_pair') ? (subL_step1 + step2abs_L) : subL_step1;
-  const normTopR = (targetSideKey === 'top_pair') ? (subR_step1 + step2abs_R) : subR_step1;
+  // 0° Normal per-channel stack coupling:
+  const normSubL = (targetSideKey_L === 'top_pair') ? subL_step1 : (subL_step1 + step2abs_L);
+  const normSubR = (targetSideKey_R === 'top_pair') ? subR_step1 : (subR_step1 + step2abs_R);
+  const normTopL = (targetSideKey_L === 'top_pair') ? (subL_step1 + step2abs_L) : subL_step1;
+  const normTopR = (targetSideKey_R === 'top_pair') ? (subR_step1 + step2abs_R) : subR_step1;
   const normExceeds10 = (normTopL > 10.0) || (normTopR > 10.0) || (normSubL > 10.0) || (normSubR > 10.0);
 
-  const invSubL = (invTargetSideKey === 'top_pair') ? subL_step1 : (subL_step1 + invDelayMs);
-  const invSubR = (invTargetSideKey === 'top_pair') ? subR_step1 : (subR_step1 + invDelayMs);
-  const invTopL = (invTargetSideKey === 'top_pair') ? (subL_step1 + invDelayMs) : subL_step1;
-  const invTopR = (invTargetSideKey === 'top_pair') ? (subR_step1 + invDelayMs) : subR_step1;
+  // 180° Inverted per-channel stack coupling (independent per-side diffInv!):
+  const invSubL = (invTargetSide_L === 'top_pair') ? subL_step1 : (subL_step1 + invDelayMs_L);
+  const invSubR = (invTargetSide_R === 'top_pair') ? subR_step1 : (subR_step1 + invDelayMs_R);
+  const invTopL = (invTargetSide_L === 'top_pair') ? (subL_step1 + invDelayMs_L) : subL_step1;
+  const invTopR = (invTargetSide_R === 'top_pair') ? (subR_step1 + invDelayMs_R) : subR_step1;
   const invWithin10 = (invTopL <= 10.0) && (invTopR <= 10.0) && (invSubL <= 10.0) && (invSubR <= 10.0);
 
   let dirSubL = 0, dirSubR = 0, dirTopL = 0, dirTopR = 0;
@@ -1497,10 +1701,10 @@ function recalc(){
     }
   }
 
-  document.getElementById('dirSubL').textContent = `${fmt(dirSubL)} ms`;
-  document.getElementById('dirSubR').textContent = `${fmt(dirSubR)} ms`;
-  document.getElementById('dirTopL').textContent = `${fmt(dirTopL)} ms`;
-  document.getElementById('dirTopR').textContent = `${fmt(dirTopR)} ms`;
+  renderMatrixChannelVal(document.getElementById('dirSubL'), dirSubL, dirSubL <= 10.0);
+  renderMatrixChannelVal(document.getElementById('dirSubR'), dirSubR, dirSubR <= 10.0);
+  renderMatrixChannelVal(document.getElementById('dirTopL'), dirTopL, dirTopL <= 10.0);
+  renderMatrixChannelVal(document.getElementById('dirTopR'), dirTopR, dirTopR <= 10.0);
   document.getElementById('dirSubLDist').textContent = `${fmt((dirSubL * c) / 1000, 2)} m`;
   document.getElementById('dirSubRDist').textContent = `${fmt((dirSubR * c) / 1000, 2)} m`;
   document.getElementById('dirNote').textContent = dirNoteText;
@@ -1597,6 +1801,41 @@ if (polSwitchEl) {
     }
     recalc();
   });
+}
+
+// Field Quick Direct Values Nixie / LCD Toggle Button
+if (btnNixieMatrixToggle) {
+  btnNixieMatrixToggle.addEventListener('click', () => {
+    state.matrixNixie = !state.matrixNixie;
+    btnNixieMatrixToggle.classList.toggle('active', state.matrixNixie);
+    if (nixieToggleText) {
+      nixieToggleText.textContent = state.matrixNixie ? 'NIXIE ON' : 'NIXIE OFF';
+    }
+    try { localStorage.setItem('delcalc_matrix_nixie', state.matrixNixie.toString()); } catch(e){}
+    recalc();
+  });
+}
+
+// Manual Tab 5 Calculation Engine Mode Buttons (Option A vs Option B)
+function setCalcMode(mode) {
+  if (mode !== 'phase' && mode !== 'gd') mode = 'phase';
+  state.calcMode = mode;
+  if (btnEnginePhase && btnEngineGD) {
+    btnEnginePhase.classList.toggle('active', mode === 'phase');
+    btnEngineGD.classList.toggle('active', mode === 'gd');
+  }
+  if (engineBadge) {
+    engineBadge.textContent = mode === 'phase' ? t('engine_badge_phase') : t('engine_badge_gd');
+  }
+  try { localStorage.setItem('delcalc_calc_mode', mode); } catch(e){}
+  recalc();
+}
+
+if (btnEnginePhase) {
+  btnEnginePhase.addEventListener('click', () => setCalcMode('phase'));
+}
+if (btnEngineGD) {
+  btnEngineGD.addEventListener('click', () => setCalcMode('gd'));
 }
 
 // Signal Flow & Delay Routing Fullscreen Toggle
@@ -1828,6 +2067,29 @@ function initManualModal() {
   }
 }
 
+function initEngineAndMatrixSettings() {
+  try {
+    const savedMode = localStorage.getItem('delcalc_calc_mode');
+    if (savedMode === 'phase' || savedMode === 'gd') {
+      state.calcMode = savedMode;
+    }
+    const savedNixie = localStorage.getItem('delcalc_matrix_nixie');
+    if (savedNixie === 'true') {
+      state.matrixNixie = true;
+      if (btnNixieMatrixToggle) btnNixieMatrixToggle.classList.add('active');
+      if (nixieToggleText) nixieToggleText.textContent = 'NIXIE ON';
+    }
+  } catch (e) {}
+
+  if (btnEnginePhase && btnEngineGD) {
+    btnEnginePhase.classList.toggle('active', state.calcMode === 'phase');
+    btnEngineGD.classList.toggle('active', state.calcMode === 'gd');
+  }
+  if (engineBadge) {
+    engineBadge.textContent = state.calcMode === 'phase' ? t('engine_badge_phase') : t('engine_badge_gd');
+  }
+}
+
 function initLanguage() {
   let savedLang = 'en';
   try {
@@ -1843,6 +2105,7 @@ function initLanguage() {
 initTextScale();
 initTextSizeModal();
 initManualModal();
+initEngineAndMatrixSettings();
 initLanguage();
 
 /* ═══════════════════════════════════════════════════════════════
